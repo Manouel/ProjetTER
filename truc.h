@@ -1,5 +1,5 @@
-#ifndef truc_h
-#define truc_h
+#ifndef TRUC_H
+#define TRUC_H
 
 class Truc
 {
@@ -10,6 +10,7 @@ public:
 	Truc();
 	Truc(int val);
 	Truc(int val, char ori);
+	Truc(const Truc& nvT); //Constructeur par recopie
 	
 	int getValeur()const;
 	char getOrientation()const;
