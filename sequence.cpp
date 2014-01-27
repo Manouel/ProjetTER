@@ -3,12 +3,10 @@
 using namespace std;
 
 
-Sequence::Sequence(){
-	
-}
+Sequence::Sequence(){}
 
 vector<vector<Truc>> Sequence::getSequence() const{
-	return this.sequence;
+	return this->sequence;
 }
 
 void Sequence::ajoutElement(Truc& t){
