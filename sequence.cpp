@@ -9,14 +9,14 @@ vector<vector<Truc>> Sequence::getSequence() const{
 	return this->sequence;
 }
 
-void Sequence::ajoutElement(Truc& t){
+void Sequence::ajoutElement(Marqueur& t){
 
 }
 
-void Sequence::supElement(Truc& t){
+void Sequence::supElement(Marqueur& t){
 
 }
 
-bool Sequence::rechercheElement(Truc& t){
+bool Sequence::rechercheElement(Marqueur& t){
 
 }
