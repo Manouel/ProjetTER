@@ -1,6 +1,7 @@
 #include <iostream>
-#include "truc.h"
+#include "marqueur.h"
 #include "sequence.h"
+
 using namespace std;
 
 
