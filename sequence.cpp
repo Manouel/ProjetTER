@@ -1,32 +1,63 @@
 #include "sequence.h"
 
 
-Sequence::Sequence(){}
+Sequence::Sequence(){
+ajoutSousSeq();
+}
 
-vector<vector<Truc>> Sequence::getSequence() const{
+Sequence::Sequence(const string& nomFichier){
+	load(nomFichier);
+}
+
+
+vector<vector<Marqueur> > Sequence::getSequence() const{
 	return this->sequence;
 }
 
+Marqueur Sequence::getElement(int i, int j) const{
+	return this->sequence[i][j];
+}
+
+vector<Marqueur> Sequence::getVecteur(int i) const{
+	return this->sequence[i];
+}
+
+int Sequence::nbSousSeq() const{
+	return this->sequence.size();
+}
+
 void Sequence::ajoutElement(Marqueur& t){
+	this->sequence[this->nbSousSeq()-1].push_back(t);
+}
+
+void Sequence::ajoutSousSeq(){
+	this->sequence.push_back(vector<Marqueur>());
+}
+
+void Sequence::affichage() const{
+	for(int i=0;i<nbSousSeq();i++)
+	{
+		for(int j=0;j<this->sequence[i].size();j++)
+		{
+			cout<<getElement(i,j).getValeur()<<" ";
+		}
+		cout<<"\t";
+	}
+	cout<<endl;
+}
+
+void Sequence::load(const string& nomFichier){
 
 }
 
-void Sequence::supElement(Marqueur& t){
-
-}
-
-bool Sequence::rechercheElement(Marqueur& t){
-
-}
-
-int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int match) const
+int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int match) const
 {
 	int gauche; //valeur si on vient de la gauche
 	int diag; //valeur si on vient de la diagonale
 	int haut; //valeur si on vient du haut
 	
 	int mat[this->sequence[0].size()+1][sequBis.size()+1];
-	
+
 	mat[0][0]=0;
 	
 	/*Initialisation ligne et colonne 0 :*/
@@ -47,7 +78,8 @@ int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int ma
 			/*Calcul des 3 valeurs possibles pour mat[i][j]*/
 			gauche=mat[i][j-1]+indel;
 			haut=mat[i-1][j]+indel;
-			if(this->sequence[0][i]==seq[j])
+			
+			if(this->sequence[0][i-1]==sequBis[j-1])
 			{
 				diag=mat[i-1][j-1]+match;
 			}
@@ -79,10 +111,18 @@ int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int ma
 					mat[i][j]=diag;
 				}
 			}
-			
-			
-		}	
+		}
 	}
+	
+	for(int i=0;i<this->sequence[0].size()+1;i++)
+	{
+		for(int j=0;j<sequBis.size()+1;j++)
+		{
+			cout<<mat[i][j]<<" ";
+		}
+		cout<<"\n";
+	}
+	cout<<endl;
 		
 	return mat[this->sequence[0].size()][sequBis.size()]; //On retourne la dernière case de la matrice (le score)
 }
