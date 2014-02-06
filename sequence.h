@@ -1,6 +1,7 @@
 #ifndef SEQUENCE_H
 #define SEQUENCE_H
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include "marqueur.h"
@@ -21,14 +22,17 @@ class Sequence{
 		Marqueur getElement(int i, int j) const;
 		vector<Marqueur> getVecteur(int i) const;
 		
-		int taille() const;
+		int nbSousSeq() const;
 		
 		void ajoutElement(Marqueur& t);
+		void ajoutSousSeq();
 		void supElement(Marqueur& t);
 		bool rechercheElement(const Marqueur& t);
 		
 		void load(const string& nomFichier);
 		void save(const string& nomFichier);
+		
+		void affichage() const;
 		
 		
 		/* Algo alignement global */
@@ -38,7 +42,7 @@ class Sequence{
 		 @param sub, inser, delet, match valeur des couts des opérations
 		 @return score
 		*/
-		int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int inser, int delet, int match) const;
+		int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int match) const;
 };
 
 

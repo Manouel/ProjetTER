@@ -20,4 +20,7 @@ class Marqueur
 	  void setOrientation(char ori);
 };
 
+bool operator== (const Marqueur& m1, const Marqueur& m2);
+
+
 #endif
