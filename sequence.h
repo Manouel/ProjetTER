@@ -38,7 +38,7 @@ class Sequence{
 		 @param sub, inser, delet, match valeur des couts des opérations
 		 @return score
 		*/
-		int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int inser, int delet, int match) const;
+		int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int match) const;
 };
 
 
