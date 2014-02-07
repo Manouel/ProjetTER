@@ -37,7 +37,7 @@ void Sequence::ajoutSousSeq(){
 void Sequence::affichage() const{
 	for(int i=0;i<nbSousSeq();i++)
 	{
-		for(int j=0;j<this->sequence[i].size();j++)
+		for(int j=0;j<this->getVecteur(i).size();j++)
 		{
 			cout<<getElement(i,j).getValeur()<<" ";
 		}
@@ -56,12 +56,12 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 	int diag; //valeur si on vient de la diagonale
 	int haut; //valeur si on vient du haut
 	
-	int mat[this->sequence[0].size()+1][sequBis.size()+1];
+	int mat[this->getVecteur(0).size()+1][sequBis.size()+1];
 
 	mat[0][0]=0;
 	
 	/*Initialisation ligne et colonne 0 :*/
-	for(int i=1;i<this->sequence[0].size()+1;i++)
+	for(int i=1;i<this->getVecteur(0).size()+1;i++)
 	{
 		mat[i][0]=mat[i-1][0]+indel;
 	}
@@ -71,7 +71,7 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 	}
 	
 	/*Calcul des valeurs de la matrice*/
-	for(int i=1;i<this->sequence[0].size()+1;i++)
+	for(int i=1;i<this->getVecteur(0).size()+1;i++)
 	{
 		for(int j=1;j<sequBis.size()+1;j++)
 		{
@@ -79,7 +79,7 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 			gauche=mat[i][j-1]+indel;
 			haut=mat[i-1][j]+indel;
 			
-			if(this->sequence[0][i-1]==sequBis[j-1])
+			if(this->getElement(0,i-1)==sequBis[j-1])
 			{
 				diag=mat[i-1][j-1]+match;
 			}
@@ -114,7 +114,7 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 		}
 	}
 	
-	for(int i=0;i<this->sequence[0].size()+1;i++)
+	for(int i=0;i<this->getVecteur(0).size()+1;i++)
 	{
 		for(int j=0;j<sequBis.size()+1;j++)
 		{
@@ -124,5 +124,5 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 	}
 	cout<<endl;
 		
-	return mat[this->sequence[0].size()][sequBis.size()]; //On retourne la dernière case de la matrice (le score)
+	return mat[this->getVecteur(0).size()][sequBis.size()]; //On retourne la dernière case de la matrice (le score)
 }
