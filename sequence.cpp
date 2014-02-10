@@ -87,7 +87,7 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 			{
 				diag=mat[i-1][j-1]+sub;
 			}
-			
+			if(indel<0){
 			/*Calcul de la valeur la plus grande pour mettre dans mat[i][j]*/
 			if(gauche>haut)
 			{
@@ -110,6 +110,31 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 				{
 					mat[i][j]=diag;
 				}
+			}
+			}else
+			{
+				if(gauche<haut)
+			{
+				if(gauche<diag)
+				{
+					mat[i][j]=gauche;
+				}
+				else
+				{
+					mat[i][j]=diag;
+				}
+			}
+			else
+			{
+				if(haut<diag)
+				{
+					mat[i][j]=haut;
+				}
+				else
+				{
+					mat[i][j]=diag;
+				}
+			}
 			}
 		}
 	}
