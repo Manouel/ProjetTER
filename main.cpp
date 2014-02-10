@@ -28,7 +28,7 @@ int main()
 	seq1.affichage();
 	*/
 	
-	
+	/*
 	Marqueur B(1);
 	Marqueur A(2);
 	Marqueur N(3);
@@ -58,7 +58,28 @@ int main()
 	
 	// this = ANANAS ; sequBis = BANANE
 	cout<< "Score : " << ANANAS.alignementGlobal(BANANE.getVecteur(0),-1,-1,0)<<endl;	
+	*/
+	Sequence GGCTGAC;
+	Sequence GATC;
 	
+	Marqueur G(1);
+	Marqueur C(2);
+	Marqueur T(3);
+	Marqueur A(4);
 	
+	GGCTGAC.ajoutElement(G);
+	GGCTGAC.ajoutElement(G);
+	GGCTGAC.ajoutElement(C);
+	GGCTGAC.ajoutElement(T);
+	GGCTGAC.ajoutElement(G);
+	GGCTGAC.ajoutElement(A);
+	GGCTGAC.ajoutElement(C);
+	
+	GATC.ajoutElement(G);
+	GATC.ajoutElement(A);
+	GATC.ajoutElement(T);
+	GATC.ajoutElement(C);
+	
+	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
 	return 0;
 }
