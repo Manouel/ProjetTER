@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <string>
+#include <string> 
 #include "marqueur.h"
 using namespace std;
 
@@ -14,7 +14,7 @@ class Sequence{
 	public:
 		
 		Sequence();
-		Sequence(const string& nomFichier);
+		Sequence(const string& nomFichier, char delim);
 		//Sequence(const Sequence& sequ);
 		
 		vector<vector<Marqueur> > getSequence() const;
@@ -28,8 +28,8 @@ class Sequence{
 		void supElement(Marqueur& t);
 		bool rechercheElement(const Marqueur& t);
 		
-		void load(const string& nomFichier);
-		void save(const string& nomFichier);
+		void load(const string& nomFichier, char delim);
+		void save(const string& nomFichier,char delim);
 		
 		void affichage() const;
 		

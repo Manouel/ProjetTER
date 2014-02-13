@@ -3,7 +3,7 @@
 using namespace std;
 
 Marqueur::Marqueur(){}
-Marqueur::Marqueur(int val){this->valeur= val;}
+Marqueur::Marqueur(int val){this->valeur= val; this->orientation ='+';}
 Marqueur::Marqueur(int val, char ori){this->valeur= val; this->orientation= ori;}
 Marqueur::Marqueur(const Marqueur& nvT){this->valeur=nvT.valeur; this->orientation=nvT.orientation;}
 
