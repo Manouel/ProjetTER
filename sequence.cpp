@@ -1,3 +1,13 @@
+/*========================================================================
+Nom: sequence.cpp           auteur: Jonathan Dufetel
+Maj:  13/02/2014           Creation: 27/01/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient la classe Adjacence. 
+Ce fichier contient l'implémentation des fonctions de la classe Sequence.
+=========================================================================*/
+
 #include <fstream>
 #include <string>
 #include <stdlib.h>
