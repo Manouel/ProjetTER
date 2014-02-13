@@ -1,3 +1,12 @@
+/*========================================================================
+Nom: adjacence.cpp           auteur: Morgane Vidal
+Maj:  13/02/2014         Creation: 13/02/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient l'implémentation des fonctions de la classe Adjacence.
+=========================================================================*/
+
 #include "adjacence.h"
 
 using namespace std;
@@ -17,6 +26,7 @@ Marqueur Adjacence::getMarqueur2() const{
 }
 
 bool operator== (const Adjacence& a1, const Adjacence& a2){
+
 	
 	if(a1.getMarqueur1()==a2.getMarqueur1())
 	{
