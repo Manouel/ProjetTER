@@ -1,5 +1,5 @@
 #include "sequence.h"
-
+#include "adjacence.h"
 
 Sequence::Sequence(){
 ajoutSousSeq();
@@ -79,7 +79,7 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 			gauche=mat[i][j-1]+indel;
 			haut=mat[i-1][j]+indel;
 			
-			if(this->getElement(0,i-1)==sequBis[j-1])
+			if(this->getElement(0,i-1).getValeur()==sequBis[j-1].getValeur()) //Modif pour pas prendre en compte orientation dans comparaison
 			{
 				diag=mat[i-1][j-1]+match;
 			}
