@@ -20,5 +20,5 @@ void Marqueur::setOrientation(char ori)
 {this->orientation= ori;}
 
 bool operator== (const Marqueur& m1, const Marqueur& m2){
-	return m1.getValeur() == m2.getValeur();
+	return (m1.getValeur() == m2.getValeur() && m1.getOrientation()==m2.getOrientation());
 }

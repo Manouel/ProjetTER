@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 #include "marqueur.h"
-
 using namespace std;
 
 
