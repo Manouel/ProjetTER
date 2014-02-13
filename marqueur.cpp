@@ -1,3 +1,11 @@
+/*========================================================================
+Nom: marqueur.cpp           auteur: Geoffrey DUMAS
+Maj:  13/02/2014         Creation: 27/01/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient l'implémentation des fonctions de la classe Marqueur.
+=========================================================================*/
 #include "marqueur.h"
 
 using namespace std;
