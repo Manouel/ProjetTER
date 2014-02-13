@@ -60,7 +60,7 @@ int main()
 	cout<< "Score : " << ANANAS.alignementGlobal(BANANE.getVecteur(0),-1,-1,0)<<endl;	
 	*/
 	Sequence GGCTGAC;
-	Sequence GATC;
+	Sequence GATC("sequences.txt",'&');
 	
 	Marqueur G(1);
 	Marqueur C(2);
@@ -75,11 +75,14 @@ int main()
 	GGCTGAC.ajoutElement(A);
 	GGCTGAC.ajoutElement(C);
 	
-	GATC.ajoutElement(G);
+	GGCTGAC.save("test.txt",'&');
+	
+	/*GATC.ajoutElement(G);
 	GATC.ajoutElement(A);
 	GATC.ajoutElement(T);
 	GATC.ajoutElement(C);
-	
+	*/
 	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
+	
 	return 0;
 }
