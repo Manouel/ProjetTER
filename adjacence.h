@@ -20,10 +20,12 @@ private:
 	Marqueur marqueur2;
 
 public:
+	Adjacence();
 	Adjacence(Marqueur m1, Marqueur m2);
 	virtual ~Adjacence();
 	Marqueur getMarqueur1() const;
 	Marqueur getMarqueur2() const;
+	void affiche() const;
 	
 };
 
@@ -35,5 +37,6 @@ public:
 	   	  ( +1 +2 ) == ( -2 -1 ) 
 */
 bool operator== (const Adjacence& a1, const Adjacence& a2);
+bool operator< (const Adjacence& a1, const Adjacence& a2);
 
 #endif

@@ -6,11 +6,12 @@ Projet: Comparaison de séquences de gènes
 Specification:
 Ce fichier contient l'implémentation des fonctions de la classe Adjacence.
 =========================================================================*/
-
+#include <iostream>
 #include "adjacence.h"
 
 using namespace std;
 
+Adjacence::Adjacence(){}
 
 Adjacence::Adjacence(Marqueur m1, Marqueur m2) : marqueur1(m1), marqueur2(m2) {}
 
@@ -22,6 +23,10 @@ Marqueur Adjacence::getMarqueur1() const{
 
 Marqueur Adjacence::getMarqueur2() const{
 	return this->marqueur2;	
+}
+
+void Adjacence::affiche() const{
+	cout << "(" << marqueur1.getOrientation() << marqueur1.getValeur() << "|" << marqueur2.getOrientation() << marqueur2.getValeur() << ")"<<endl;
 }
 
 bool operator== (const Adjacence& a1, const Adjacence& a2){
@@ -50,4 +55,28 @@ bool operator== (const Adjacence& a1, const Adjacence& a2){
 	
 	}
 	return false;
+}
+
+bool operator< (const Adjacence& a1, const Adjacence& a2){
+	if(a1.getMarqueur1().getValeur() < a2.getMarqueur1().getValeur()){
+		return true;
+	}
+	else if(a1.getMarqueur1().getValeur() > a2.getMarqueur1().getValeur()){
+		return false;
+	}
+	else{
+		if(a1.getMarqueur2().getValeur() < a2.getMarqueur2().getValeur()){
+			return true;
+		}
+		else if(a1.getMarqueur2().getValeur() > a2.getMarqueur2().getValeur()){
+			return false;
+		}
+		else if(a1.getMarqueur1().getOrientation() > a2.getMarqueur1().getOrientation()){
+			return true;
+		}
+		else if(a1.getMarqueur1().getOrientation() < a2.getMarqueur1().getOrientation()){
+			return false;
+		}
+		else return (a1.getMarqueur2().getOrientation() > a2.getMarqueur2().getOrientation());
+	}
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "marqueur.h"
 #include "sequence.h"
+#include "adjacence.h"
 
 using namespace std;
 
@@ -60,11 +61,11 @@ int main()
 	cout<< "Score : " << ANANAS.alignementGlobal(BANANE.getVecteur(0),-1,-1,0)<<endl;	
 	*/
 	Sequence GGCTGAC;
-	Sequence GATC("sequences.txt",'&');
+	Sequence un("sequences.txt",'&');
+	Sequence deux("sequence2.txt",'&');
+	//GATC.affichage();
 	
-	GATC.affichage();
-	
-	/**Marqueur G(1);
+	/*Marqueur G(1);
 	Marqueur C(2);
 	Marqueur T(3);
 	Marqueur A(4);
@@ -86,5 +87,16 @@ int main()
 	
 	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
 	*/
+	/*Marqueur A(4,'+');
+	Marqueur B(3,'-');
+	Marqueur C(4,'-');
+	Adjacence a1(A,A);
+	Adjacence a2(A,C);
+	vector<Adjacence> l = GATC.listeAdjacence();
+	for(int i =0; i<l.size();i++){
+		l[i].affiche();
+	}*/
+	
+	cout<<deux.breakpoints(un)<<endl;
 	return 0;
 }
