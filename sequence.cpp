@@ -14,9 +14,6 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 #include "sequence.h"
 #include "adjacence.h"
 
-// Valeur absolue
-#define ABS(x) ((x)<0 ? (-x) : (x))
-
 using namespace std;
 
 Sequence::Sequence(){
@@ -76,23 +73,21 @@ void Sequence::load(const string& nomFichier, char delim){
 	
 	char ori;
 	int val;
-	string ligne;
-	string s = "";
-	s += delim;
 	
-	while (getline(fichier, ligne))
+	/* Lecture du signe puis de la valeur du marqueur */
+	while (fichier >> ori)
 	{
-		if (ligne.compare(s) == 0)
+		if (ori == delim)
 		{
 			this->ajoutSousSeq();
 		}
 		else
 		{
-			ori = ligne.at(0);
-			val = ABS(atoi(ligne.c_str()));
+			fichier >> val;
 			Marqueur m(val, ori);
-		
+			
 			this->ajoutElement(m);
+			cout << "Ori : " << ori << " - val : " << val << endl;			
 		}
 	}
 	
@@ -101,8 +96,8 @@ void Sequence::load(const string& nomFichier, char delim){
 
 void Sequence::save(const string& nomFichier,char delim)
 {
-ofstream fichier(nomFichier.c_str());
-if (!fichier)
+	ofstream fichier(nomFichier.c_str());
+	if (!fichier)
 	{
 		cout << "Erreur ouverture fichier.\n" << endl;
 	}

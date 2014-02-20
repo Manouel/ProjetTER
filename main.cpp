@@ -62,7 +62,9 @@ int main()
 	Sequence GGCTGAC;
 	Sequence GATC("sequences.txt",'&');
 	
-	Marqueur G(1);
+	GATC.affichage();
+	
+	/**Marqueur G(1);
 	Marqueur C(2);
 	Marqueur T(3);
 	Marqueur A(4);
@@ -81,8 +83,8 @@ int main()
 	GATC.ajoutElement(A);
 	GATC.ajoutElement(T);
 	GATC.ajoutElement(C);
-	*/
-	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
 	
+	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
+	*/
 	return 0;
 }
