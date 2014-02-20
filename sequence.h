@@ -16,6 +16,7 @@ sous-séquences de marqueurs.
 #include <vector>
 #include <string> 
 #include "marqueur.h"
+#include "adjacence.h"
 
 
 class Sequence{
@@ -65,6 +66,7 @@ class Sequence{
 		
 		void affichage() const;
 		
+		std::vector<Adjacence> listeAdjacence() const;
 		
 		/* Algo alignement global */
 		
@@ -74,6 +76,8 @@ class Sequence{
 		 @return score
 		*/
 		int alignementGlobal(const std::vector<Marqueur>& sequBis, int sub, int indel, int match) const;
+		
+		int breakpoints(Sequence& s) const;
 };
 
 

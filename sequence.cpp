@@ -11,6 +11,7 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+#include <algorithm>
 #include "sequence.h"
 #include "adjacence.h"
 
@@ -86,8 +87,7 @@ void Sequence::load(const string& nomFichier, char delim){
 			fichier >> val;
 			Marqueur m(val, ori);
 			
-			this->ajoutElement(m);
-			cout << "Ori : " << ori << " - val : " << val << endl;			
+			this->ajoutElement(m);			
 		}
 	}
 	
@@ -117,6 +117,17 @@ void Sequence::save(const string& nomFichier,char delim)
 	fichier.close();
 }
 
+vector<Adjacence> Sequence::listeAdjacence() const{
+	vector<Adjacence> liste;
+	for(int i=0; i<this->nbSousSeq(); i++){
+		int tailleSousSeq = this->getVecteur(i).size();
+		for(int j=0; j<tailleSousSeq-1;j++){
+			Adjacence a(this->getElement(i,j),this->getElement(i,j+1));
+			liste.push_back(a);
+		}
+	}
+	return liste;
+}
 
 int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int match) const
 {
@@ -218,4 +229,21 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 	cout<<endl;
 		
 	return mat[this->getVecteur(0).size()][sequBis.size()]; //On retourne la dernière case de la matrice (le score)
+}
+
+int Sequence::breakpoints(Sequence& s) const{
+	
+	vector<Adjacence> liste1 = this->listeAdjacence();
+	vector<Adjacence> liste2 = s.listeAdjacence();
+	
+	sort(liste1.begin(),liste1.begin()+liste1.size());
+	sort(liste2.begin(),liste2.begin()+liste2.size());
+	
+	vector<Adjacence> diff(liste1.size()+liste2.size());
+	vector<Adjacence>::iterator it;
+	
+	it = set_difference(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),diff.begin());
+	diff.resize(it-diff.begin());
+	
+	return diff.size();
 }
