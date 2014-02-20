@@ -17,21 +17,20 @@ sous-séquences de marqueurs.
 #include <string> 
 #include "marqueur.h"
 
-using namespace std;
-
 
 class Sequence{
 	private:
-		vector<vector<Marqueur> > sequence;
+		std::vector<std::vector<Marqueur> > sequence;
 	public:
 		
 		Sequence();
-		Sequence(const string& nomFichier, char delim);
+		Sequence(const std::string& nomFichier, char delim);
 		//Sequence(const Sequence& sequ);
+		virtual ~Sequence();
 		
-		vector<vector<Marqueur> > getSequence() const;
+		std::vector<std::vector<Marqueur> > getSequence() const;
 		Marqueur getElement(int i, int j) const;
-		vector<Marqueur> getVecteur(int i) const;
+		std::vector<Marqueur> getVecteur(int i) const;
 		
 		/**
 		  @return Nombre de sous-séquences
@@ -51,18 +50,18 @@ class Sequence{
 		bool rechercheElement(const Marqueur& t);
 		
 		/**
-      @action Créé une Séquence à partir du fichier
-      @param Nom du fichier à lire 
-      @param Délimiteur indiquant le changement de sous-séquences 
-    */
-		void load(const string& nomFichier, char delim);
+		  @action Créé une Séquence à partir du fichier
+		  @param Nom du fichier à lire 
+		  @param Délimiteur indiquant le changement de sous-séquences 
+		*/
+		void load(const std::string& nomFichier, char delim);
 		
 		/**
-      @action Ecris le contenu d'une Séquence dans le fichier
-      @param Nom du fichier à écrire 
-      @param Délimiteur indiquant le changement de sous-séquences 
-    */
-		void save(const string& nomFichier,char delim);
+		  @action Ecris le contenu d'une Séquence dans le fichier
+		  @param Nom du fichier à écrire 
+		  @param Délimiteur indiquant le changement de sous-séquences 
+		*/
+		void save(const std::string& nomFichier,char delim);
 		
 		void affichage() const;
 		
@@ -74,7 +73,7 @@ class Sequence{
 		 @param sub, inser, delet, match valeur des couts des opérations
 		 @return score
 		*/
-		int alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int match) const;
+		int alignementGlobal(const std::vector<Marqueur>& sequBis, int sub, int indel, int match) const;
 };
 
 

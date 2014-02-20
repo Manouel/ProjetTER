@@ -12,10 +12,9 @@ Ce fichier contient l'implémentation des fonctions de la classe Adjacence.
 using namespace std;
 
 
-Adjacence::Adjacence(Marqueur m1, Marqueur m2){
-	this->marqueur1=m1;
-	this->marqueur2=m2;
-}
+Adjacence::Adjacence(Marqueur m1, Marqueur m2) : marqueur1(m1), marqueur2(m2) {}
+
+Adjacence::~Adjacence() {}
 
 Marqueur Adjacence::getMarqueur1() const{
 	return this->marqueur1;

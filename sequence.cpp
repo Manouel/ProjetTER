@@ -20,13 +20,15 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 using namespace std;
 
 Sequence::Sequence(){
-ajoutSousSeq();
+	ajoutSousSeq();
 }
 
 Sequence::Sequence(const string& nomFichier, char delim){
 	ajoutSousSeq();
 	load(nomFichier, delim);
 }
+
+Sequence::~Sequence() {}
 
 
 vector<vector<Marqueur> > Sequence::getSequence() const{

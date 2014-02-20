@@ -21,6 +21,7 @@ private:
 
 public:
 	Adjacence(Marqueur m1, Marqueur m2);
+	virtual ~Adjacence();
 	Marqueur getMarqueur1() const;
 	Marqueur getMarqueur2() const;
 	

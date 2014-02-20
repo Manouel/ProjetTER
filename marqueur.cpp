@@ -11,9 +11,11 @@ Ce fichier contient l'implémentation des fonctions de la classe Marqueur.
 using namespace std;
 
 Marqueur::Marqueur(){}
-Marqueur::Marqueur(int val){this->valeur= val; this->orientation ='+';}
-Marqueur::Marqueur(int val, char ori){this->valeur= val; this->orientation= ori;}
-Marqueur::Marqueur(const Marqueur& nvT){this->valeur=nvT.valeur; this->orientation=nvT.orientation;}
+Marqueur::Marqueur(int val) : valeur(val), orientation('+') {}
+Marqueur::Marqueur(int val, char ori) : valeur(val), orientation(ori) {}
+Marqueur::Marqueur(const Marqueur& m) : valeur(m.valeur), orientation(m.orientation) {}
+
+Marqueur::~Marqueur() {}
 
 int Marqueur::getValeur() const
 {return this->valeur;}
