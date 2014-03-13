@@ -6,99 +6,46 @@
 using namespace std;
 
 
-int main()
+int main(int argc, char *argv[])
 {
-
-
-	Sequence GGCTGAC;
-	Sequence un("sequences.txt",'&');
-	Sequence deux("sequence2.txt",'&');
-	cout<<deux.breakpoints(un)<<endl;
+	if (argc != 4 && argc != 5)
+	{
+		cerr << "Mauvais nombre d'arguments ! (file1 file2 separateur algo [l])" << endl;
+	}
 	
-	//GATC.affichage();
-	/*Marqueur G(1);
-	Marqueur C(2);
-	Marqueur T(3);
-	Marqueur A(4);
+	char separateur = argv[3][0];
+	Sequence seq1(argv[1], separateur);
+	Sequence seq2(argv[2], separateur);
 	
-	GGCTGAC.ajoutElement(G);
-	GGCTGAC.ajoutElement(G);
-	GGCTGAC.ajoutElement(C);
-	GGCTGAC.ajoutElement(T);
-	GGCTGAC.ajoutElement(G);
-	GGCTGAC.ajoutElement(A);
-	GGCTGAC.ajoutElement(C);
 	
-	GGCTGAC.save("test.txt",'&');
+	if (strcmp(argv[4], "AG") == 0)
+	{
+		int sub, indel, match;
 	
-	/*GATC.ajoutElement(G);
-	GATC.ajoutElement(A);
-	GATC.ajoutElement(T);
-	GATC.ajoutElement(C);
-	
-	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
-	*/
-	/*Marqueur A(4,'+');
-	Marqueur B(3,'-');
-	Marqueur C(4,'-');
-	Adjacence a1(A,A);
-	Adjacence a2(A,C);
-	vector<Adjacence> l = GATC.listeAdjacence();
-	for(int i =0; i<l.size();i++){
-		l[i].affiche();
-	}*/
-	
-	/*
-	Marqueur m1(3);
-	Marqueur m2(3);
-	cout<<"m1 :"<<m1.getValeur()<<endl;
-	m1.setValeur(10);
-	cout<<"m1 :"<<m1.getValeur()<<endl;
-	
-	Sequence seq1;
-	seq1.ajoutElement(m1);
-	seq1.ajoutElement(m2);
-	
-	seq1.affichage();
-	
-	seq1.ajoutSousSeq();
-	Marqueur m3(7);
-	seq1.ajoutElement(m3);
-	
-	seq1.affichage();
-	*/
-	
-	/*
-	Marqueur B(1);
-	Marqueur A(2);
-	Marqueur N(3);
-	Marqueur E(4);
-	Marqueur S(5);
-	
-	Sequence BANANE;
-	Sequence ANANAS;
-	
-	BANANE.ajoutElement(B);
-	BANANE.ajoutElement(A);
-	BANANE.ajoutElement(N);
-	BANANE.ajoutElement(A);
-	BANANE.ajoutElement(N);
-	BANANE.ajoutElement(E);
-	
-	ANANAS.ajoutElement(A);
-	ANANAS.ajoutElement(N);
-	ANANAS.ajoutElement(A);
-	ANANAS.ajoutElement(N);
-	ANANAS.ajoutElement(A);
-	ANANAS.ajoutElement(S);
-	
-	BANANE.affichage();
-	ANANAS.affichage();
-	cout << endl;
-	
-	// this = ANANAS ; sequBis = BANANE
-	cout<< "Score : " << ANANAS.alignementGlobal(BANANE.getVecteur(0),-1,-1,0)<<endl;	
-	*/
+		cout << "Veuillez entrer le cout de substitution de l'alignement global : ";
+		cin >> sub;
+		cout << "Veuillez entrer le cout d'insertion et de délétion de l'alignement global : ";
+		cin >> indel;
+		cout << "Veuillez entrer le cout de correspondance de l'alignement global : ";
+		cin >> match;
+		
+		
+		int val = seq1.alignementGlobal(seq2.getVecteur(0), sub, indel, match);
+		if (indel < 0)
+			cout << "Score alignement global : " << val << endl;
+		else
+			cout << "Distance alignement global : " << val << endl;
+		
+	}
+	else if(strcmp(argv[4], "BP") == 0)
+	{
+		int nbBreakpoints = seq1.breakpoints(seq2);
+		cout << "Nombre de breakpoints : " << nbBreakpoints << endl;
+	}
+	else if(strcmp(argv[4], "IC") == 0)
+	{
+		;
+	}
 	
 
 	return 0;
