@@ -71,12 +71,20 @@ class Sequence{
 		/* Algo alignement global */
 		
 		/**
+		 @action Applique l'algorithme d'alignement global entre la séquence this et une séquence sequBis, puis retourne le score obtenu
 		 @param sequBis sequence à comparer avec this
 		 @param sub, inser, delet, match valeur des couts des opérations
 		 @return score
 		*/
 		int alignementGlobal(const std::vector<Marqueur>& sequBis, int sub, int indel, int match) const;
 		
+		/* Algo breakpoints */
+		
+		/**
+		 @action Retourne le nombre d'adjacences différentes entre la séquence this et une séquence s
+		 @param s sequence à comparer avec this
+		 @return nombre d'adjacences différentes
+		*/
 		int breakpoints(Sequence& s) const;
 };
 
