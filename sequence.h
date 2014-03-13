@@ -18,10 +18,10 @@ sous-séquences de marqueurs.
 #include "marqueur.h"
 #include "adjacence.h"
 
-
+template<typename TypeValeur>
 class Sequence{
 	private:
-		std::vector<std::vector<Marqueur> > sequence;
+		std::vector<std::vector<Marqueur<TypeValeur> > > sequence;
 	public:
 		
 		Sequence();
@@ -29,9 +29,9 @@ class Sequence{
 		//Sequence(const Sequence& sequ);
 		virtual ~Sequence();
 		
-		std::vector<std::vector<Marqueur> > getSequence() const;
-		Marqueur getElement(int i, int j) const;
-		std::vector<Marqueur> getVecteur(int i) const;
+		std::vector<std::vector<Marqueur<TypeValeur> > > getSequence() const;
+		Marqueur<TypeValeur> getElement(int i, int j) const;
+		std::vector<Marqueur<TypeValeur> > getVecteur(int i) const;
 		
 		/**
 		  @return Nombre de sous-séquences
@@ -41,14 +41,14 @@ class Sequence{
 		/**
 		  @param Marqueur à ajouter en fin de Séquence
 		*/
-		void ajoutElement(Marqueur& t);
+		void ajoutElement(Marqueur<TypeValeur>& t);
 		
 		/**
 		  @action Ajout d'une nouvelle sous-séquence
 		*/
 		void ajoutSousSeq();
-		void supElement(Marqueur& t);
-		bool rechercheElement(const Marqueur& t);
+		void supElement(Marqueur<TypeValeur>& t);
+		bool rechercheElement(const Marqueur<TypeValeur>& t);
 		
 		/**
 		  @action Créé une Séquence à partir du fichier
@@ -66,7 +66,7 @@ class Sequence{
 		
 		void affichage() const;
 		
-		std::vector<Adjacence> listeAdjacence() const;
+		std::vector<Adjacence<TypeValeur> > listeAdjacence() const;
 		
 		/* Algo alignement global */
 		
@@ -76,7 +76,7 @@ class Sequence{
 		 @param sub, inser, delet, match valeur des couts des opérations
 		 @return score
 		*/
-		int alignementGlobal(const std::vector<Marqueur>& sequBis, int sub, int indel, int match) const;
+		int alignementGlobal(const std::vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const;
 		
 		/* Algo breakpoints */
 		
