@@ -233,17 +233,17 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 
 int Sequence::breakpoints(Sequence& s) const{
 	
-	vector<Adjacence> liste1 = this->listeAdjacence();
+	vector<Adjacence> liste1 = this->listeAdjacence(); 
 	vector<Adjacence> liste2 = s.listeAdjacence();
 	
-	sort(liste1.begin(),liste1.begin()+liste1.size());
-	sort(liste2.begin(),liste2.begin()+liste2.size());
+	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_difference
+	sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_difference
 	
-	vector<Adjacence> diff(liste1.size()+liste2.size());
-	vector<Adjacence>::iterator it;
+	vector<Adjacence> diff(liste1.size()+liste2.size()); //Création du tableau des différences entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
+	vector<Adjacence>::iterator it; //Itérateur sur la dernière différence retenue
 	
-	it = set_difference(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),diff.begin());
-	diff.resize(it-diff.begin());
+	it = set_difference(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),diff.begin()); //Execution de la différence entre les deux listes, stockage des différences dans diff et stockage du nombre d'adjacences différentes dans it
+	diff.resize(it-diff.begin()); //Modification de la taille de diff pour que celle ci soit égale au nombre de différences stockées
 	
-	return diff.size();
+	return diff.size(); //Nombre de différences retourné
 }
