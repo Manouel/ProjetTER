@@ -5,10 +5,13 @@ Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
 Ce fichier contient classe Marqueur.
-Un marqueur est un objet composé d'une valeur et d'une orientation appartenant à une sequence de gène.
+Un marqueur est un objet composé d'une valeur et d'une orientation 
+appartenant à une sequence de gène.
 =========================================================================*/
 #ifndef MARQUEUR_H
 #define MARQUEUR_H
+
+#include<iostream>
 
 class Marqueur
 {
@@ -28,6 +31,9 @@ class Marqueur
 	
 	  void setValeur(int val);
 	  void setOrientation(char ori);
+	  
+	  void saisie(std::istream& is); //Fonction pour saisir un Marqueur
+	  void affiche(std::ostream& os)const; //Fonction d'affichage d'un Marqueur
 };
 
 bool operator== (const Marqueur& m1, const Marqueur& m2);

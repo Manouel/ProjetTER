@@ -9,7 +9,46 @@ using namespace std;
 int main()
 {
 
-/*
+
+	Sequence GGCTGAC;
+	Sequence un("sequences.txt",'&');
+	Sequence deux("sequence2.txt",'&');
+	cout<<deux.breakpoints(un)<<endl;
+	
+	//GATC.affichage();
+	/*Marqueur G(1);
+	Marqueur C(2);
+	Marqueur T(3);
+	Marqueur A(4);
+	
+	GGCTGAC.ajoutElement(G);
+	GGCTGAC.ajoutElement(G);
+	GGCTGAC.ajoutElement(C);
+	GGCTGAC.ajoutElement(T);
+	GGCTGAC.ajoutElement(G);
+	GGCTGAC.ajoutElement(A);
+	GGCTGAC.ajoutElement(C);
+	
+	GGCTGAC.save("test.txt",'&');
+	
+	/*GATC.ajoutElement(G);
+	GATC.ajoutElement(A);
+	GATC.ajoutElement(T);
+	GATC.ajoutElement(C);
+	
+	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
+	*/
+	/*Marqueur A(4,'+');
+	Marqueur B(3,'-');
+	Marqueur C(4,'-');
+	Adjacence a1(A,A);
+	Adjacence a2(A,C);
+	vector<Adjacence> l = GATC.listeAdjacence();
+	for(int i =0; i<l.size();i++){
+		l[i].affiche();
+	}*/
+	
+	/*
 	Marqueur m1(3);
 	Marqueur m2(3);
 	cout<<"m1 :"<<m1.getValeur()<<endl;
@@ -60,43 +99,7 @@ int main()
 	// this = ANANAS ; sequBis = BANANE
 	cout<< "Score : " << ANANAS.alignementGlobal(BANANE.getVecteur(0),-1,-1,0)<<endl;	
 	*/
-	Sequence GGCTGAC;
-	Sequence un("sequences.txt",'&');
-	Sequence deux("sequence2.txt",'&');
-	//GATC.affichage();
 	
-	/*Marqueur G(1);
-	Marqueur C(2);
-	Marqueur T(3);
-	Marqueur A(4);
-	
-	GGCTGAC.ajoutElement(G);
-	GGCTGAC.ajoutElement(G);
-	GGCTGAC.ajoutElement(C);
-	GGCTGAC.ajoutElement(T);
-	GGCTGAC.ajoutElement(G);
-	GGCTGAC.ajoutElement(A);
-	GGCTGAC.ajoutElement(C);
-	
-	GGCTGAC.save("test.txt",'&');
-	
-	/*GATC.ajoutElement(G);
-	GATC.ajoutElement(A);
-	GATC.ajoutElement(T);
-	GATC.ajoutElement(C);
-	
-	cout<< "Dist : " << GATC.alignementGlobal(GGCTGAC.getVecteur(0),3,3,0)<<endl;
-	*/
-	/*Marqueur A(4,'+');
-	Marqueur B(3,'-');
-	Marqueur C(4,'-');
-	Adjacence a1(A,A);
-	Adjacence a2(A,C);
-	vector<Adjacence> l = GATC.listeAdjacence();
-	for(int i =0; i<l.size();i++){
-		l[i].affiche();
-	}*/
-	
-	cout<<deux.breakpoints(un)<<endl;
+
 	return 0;
 }
