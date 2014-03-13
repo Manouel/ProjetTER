@@ -13,18 +13,19 @@ sous-séquence de marqueurs.
 #define ADJACENCE_H
 #include "marqueur.h"
 
+template<typename TypeValeur>
 class Adjacence{
 
 private:
-	Marqueur marqueur1;
-	Marqueur marqueur2;
+	Marqueur<TypeValeur> marqueur1;
+	Marqueur<TypeValeur> marqueur2;
 
 public:
 	Adjacence();
-	Adjacence(Marqueur m1, Marqueur m2);
+	Adjacence(Marqueur<TypeValeur> m1, Marqueur<TypeValeur> m2);
 	virtual ~Adjacence();
-	Marqueur getMarqueur1() const;
-	Marqueur getMarqueur2() const;
+	Marqueur<TypeValeur> getMarqueur1() const;
+	Marqueur<TypeValeur> getMarqueur2() const;
 	void affiche() const;
 	
 };
@@ -36,7 +37,10 @@ public:
 	exemple : ( +1 +2 ) == ( +1 +2 )
 	   	  ( +1 +2 ) == ( -2 -1 ) 
 */
-bool operator== (const Adjacence& a1, const Adjacence& a2);
-bool operator< (const Adjacence& a1, const Adjacence& a2);
+template<typename TypeValeur>
+bool operator== (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2);
+
+template<typename TypeValeur>
+bool operator< (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2);
 
 #endif

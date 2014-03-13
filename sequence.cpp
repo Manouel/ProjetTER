@@ -17,43 +17,52 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 
 using namespace std;
 
-Sequence::Sequence(){
+template<typename TypeValeur>
+Sequence<TypeValeur>::Sequence(){
 	ajoutSousSeq();
 }
 
-Sequence::Sequence(const string& nomFichier, char delim){
+template<typename TypeValeur>
+Sequence<TypeValeur>::Sequence(const string& nomFichier, char delim){
 	ajoutSousSeq();
 	load(nomFichier, delim);
 }
 
-Sequence::~Sequence() {}
+template<typename TypeValeur>
+Sequence<TypeValeur>::~Sequence() {}
 
-
-vector<vector<Marqueur> > Sequence::getSequence() const{
+template<typename TypeValeur>
+vector<vector<Marqueur<TypeValeur> > > Sequence<TypeValeur>::getSequence() const{
 	return this->sequence;
 }
 
-Marqueur Sequence::getElement(int i, int j) const{
+template<typename TypeValeur>
+Marqueur<TypeValeur> Sequence<TypeValeur>::getElement(int i, int j) const{
 	return this->sequence[i][j];
 }
 
-vector<Marqueur> Sequence::getVecteur(int i) const{
+template<typename TypeValeur>
+vector<Marqueur<TypeValeur> > Sequence<TypeValeur>::getVecteur(int i) const{
 	return this->sequence[i];
 }
 
-int Sequence::nbSousSeq() const{
+template<typename TypeValeur>
+int Sequence<TypeValeur>::nbSousSeq() const{
 	return this->sequence.size();
 }
 
-void Sequence::ajoutElement(Marqueur& m){
+template<typename TypeValeur>
+void Sequence<TypeValeur>::ajoutElement(Marqueur<TypeValeur>& m){
 	this->sequence[this->nbSousSeq()-1].push_back(m);
 }
 
-void Sequence::ajoutSousSeq(){
-	this->sequence.push_back(vector<Marqueur>());
+template<typename TypeValeur>
+void Sequence<TypeValeur>::ajoutSousSeq(){
+	this->sequence.push_back(vector<Marqueur<TypeValeur> >());
 }
 
-void Sequence::affichage() const{
+template<typename TypeValeur>
+void Sequence<TypeValeur>::affichage() const{
 	for(int i=0;i<nbSousSeq();i++)
 	{
 		for(int j=0;j<this->getVecteur(i).size();j++)
@@ -65,7 +74,8 @@ void Sequence::affichage() const{
 	cout<<endl;
 }
 
-void Sequence::load(const string& nomFichier, char delim){
+template<typename TypeValeur>
+void Sequence<TypeValeur>::load(const string& nomFichier, char delim){
 	ifstream fichier(nomFichier.c_str());
 	if (!fichier)
 	{
@@ -85,7 +95,7 @@ void Sequence::load(const string& nomFichier, char delim){
 		else
 		{
 			fichier >> val;
-			Marqueur m(val, ori);
+			Marqueur<TypeValeur> m(val, ori);
 			
 			this->ajoutElement(m);			
 		}
@@ -94,7 +104,8 @@ void Sequence::load(const string& nomFichier, char delim){
 	fichier.close();
 }
 
-void Sequence::save(const string& nomFichier,char delim)
+template<typename TypeValeur>
+void Sequence<TypeValeur>::save(const string& nomFichier,char delim)
 {
 	ofstream fichier(nomFichier.c_str());
 	if (!fichier)
@@ -117,19 +128,21 @@ void Sequence::save(const string& nomFichier,char delim)
 	fichier.close();
 }
 
-vector<Adjacence> Sequence::listeAdjacence() const{
-	vector<Adjacence> liste;
+template<typename TypeValeur>
+vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence() const{
+	vector<Adjacence<TypeValeur> > liste;
 	for(int i=0; i<this->nbSousSeq(); i++){
 		int tailleSousSeq = this->getVecteur(i).size();
 		for(int j=0; j<tailleSousSeq-1;j++){
-			Adjacence a(this->getElement(i,j),this->getElement(i,j+1));
+			Adjacence<TypeValeur> a(this->getElement(i,j),this->getElement(i,j+1));
 			liste.push_back(a);
 		}
 	}
 	return liste;
 }
 
-int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int indel, int match) const
+template<typename TypeValeur>
+int Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const
 {
 	int gauche; //valeur si on vient de la gauche
 	int diag; //valeur si on vient de la diagonale
@@ -231,16 +244,17 @@ int Sequence::alignementGlobal(const vector<Marqueur>& sequBis, int sub, int ind
 	return mat[this->getVecteur(0).size()][sequBis.size()]; //On retourne la dernière case de la matrice (le score)
 }
 
-int Sequence::breakpoints(Sequence& s) const{
+template<typename TypeValeur>
+int Sequence<TypeValeur>::breakpoints(Sequence<TypeValeur>& s) const{
 	
-	vector<Adjacence> liste1 = this->listeAdjacence(); 
-	vector<Adjacence> liste2 = s.listeAdjacence();
+	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence(); 
+	vector<Adjacence<TypeValeur> > liste2 = s.listeAdjacence();
 	
 	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_difference
 	sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_difference
 	
-	vector<Adjacence> diff(liste1.size()+liste2.size()); //Création du tableau des différences entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
-	vector<Adjacence>::iterator it; //Itérateur sur la dernière différence retenue
+	vector<Adjacence<TypeValeur> > diff(liste1.size()+liste2.size()); //Création du tableau des différences entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
+	typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière différence retenue
 	
 	it = set_difference(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),diff.begin()); //Execution de la différence entre les deux listes, stockage des différences dans diff et stockage du nombre d'adjacences différentes dans it
 	diff.resize(it-diff.begin()); //Modification de la taille de diff pour que celle ci soit égale au nombre de différences stockées

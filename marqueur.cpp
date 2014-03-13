@@ -10,34 +10,49 @@ Ce fichier contient l'implémentation des fonctions de la classe Marqueur.
 
 using namespace std;
 
-Marqueur::Marqueur(){}
-Marqueur::Marqueur(int val) : valeur(val), orientation('+') {}
-Marqueur::Marqueur(int val, char ori) : valeur(val), orientation(ori) {}
-Marqueur::Marqueur(const Marqueur& m) : valeur(m.valeur), orientation(m.orientation) {}
+template<typename TypeValeur>
+Marqueur<TypeValeur>::Marqueur(){}
 
-Marqueur::~Marqueur() {}
+template<typename TypeValeur>
+Marqueur<TypeValeur>::Marqueur(TypeValeur val) : valeur(val), orientation('+') {}
 
-int Marqueur::getValeur() const
+template<typename TypeValeur>
+Marqueur<TypeValeur>::Marqueur(TypeValeur val, char ori) : valeur(val), orientation(ori) {}
+
+template<typename TypeValeur>
+Marqueur<TypeValeur>::Marqueur(const Marqueur& m) : valeur(m.valeur), orientation(m.orientation) {}
+
+template<typename TypeValeur>
+Marqueur<TypeValeur>::~Marqueur() {}
+
+template<typename TypeValeur>
+TypeValeur Marqueur<TypeValeur>::getValeur() const
 {return this->valeur;}
 
-char Marqueur::getOrientation() const
+template<typename TypeValeur>
+char Marqueur<TypeValeur>::getOrientation() const
 {return this->orientation;}
 
-void Marqueur::setValeur(int val)
+template<typename TypeValeur>
+void Marqueur<TypeValeur>::setValeur(TypeValeur val)
 {this->valeur= val;}
 
-void Marqueur::setOrientation(char ori)
+template<typename TypeValeur>
+void Marqueur<TypeValeur>::setOrientation(char ori)
 {this->orientation= ori;}
 
-void Marqueur::saisie(istream& is){
+template<typename TypeValeur>
+void Marqueur<TypeValeur>::saisie(istream& is){
 	is>>valeur>>orientation;
 }
 
-void Marqueur::affiche(ostream& os)const{
-	os<<this->getOrientation()<<" "<<this->getValeur()<<endl; 
+template<typename TypeValeur>
+void Marqueur<TypeValeur>::affiche(ostream& os)const{
+	os<<getOrientation()<<" "<<getValeur()<<endl; 
 }
 
-bool operator== (const Marqueur& m1, const Marqueur& m2){
+template<typename TypeValeur> //A enlever ? 
+bool operator== (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2){
 	return (m1.getValeur() == m2.getValeur() && m1.getOrientation()==m2.getOrientation());
 }
 

@@ -13,30 +13,30 @@ appartenant à une sequence de gène.
 
 #include<iostream>
 
+template<typename TypeValeur>
 class Marqueur
 {
   private:
-	  int valeur;
+	  TypeValeur valeur;
 	  char orientation;
 	  
   public:
 	  Marqueur(); //Constructeur vide
-	  Marqueur(int val);
-	  Marqueur(int val, char ori);
+	  Marqueur(TypeValeur val);
+	  Marqueur(TypeValeur val, char ori);
 	  Marqueur(const Marqueur& nvT); //Constructeur par recopie
 	  virtual ~Marqueur();
 	
-	  int getValeur()const;
+	  TypeValeur getValeur()const;
 	  char getOrientation()const;
 	
-	  void setValeur(int val);
+	  void setValeur(TypeValeur val);
 	  void setOrientation(char ori);
 	  
 	  void saisie(std::istream& is); //Fonction pour saisir un Marqueur
 	  void affiche(std::ostream& os)const; //Fonction d'affichage d'un Marqueur
 };
 
-bool operator== (const Marqueur& m1, const Marqueur& m2);
 
 /*
 @param Marqueur m1 
@@ -44,4 +44,8 @@ bool operator== (const Marqueur& m1, const Marqueur& m2);
 @return vrai ssi le marqueur m1 est égal au marqueur m2 
 	exemple : 	 +1 == +1 // +1 != -1
 */
+template<typename TypeValeur>
+bool operator== (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2);
+
+
 #endif

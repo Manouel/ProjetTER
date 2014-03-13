@@ -11,25 +11,32 @@ Ce fichier contient l'implémentation des fonctions de la classe Adjacence.
 
 using namespace std;
 
-Adjacence::Adjacence(){}
+template<typename TypeValeur>
+Adjacence<TypeValeur>::Adjacence(){}
 
-Adjacence::Adjacence(Marqueur m1, Marqueur m2) : marqueur1(m1), marqueur2(m2) {}
+template<typename TypeValeur>
+Adjacence<TypeValeur>::Adjacence(Marqueur<TypeValeur> m1, Marqueur<TypeValeur> m2) : marqueur1(m1), marqueur2(m2) {}
 
-Adjacence::~Adjacence() {}
+template<typename TypeValeur>
+Adjacence<TypeValeur>::~Adjacence() {}
 
-Marqueur Adjacence::getMarqueur1() const{
+template<typename TypeValeur>
+Marqueur<TypeValeur> Adjacence<TypeValeur>::getMarqueur1() const{
 	return this->marqueur1;
 }
 
-Marqueur Adjacence::getMarqueur2() const{
+template<typename TypeValeur>
+Marqueur<TypeValeur> Adjacence<TypeValeur>::getMarqueur2() const{
 	return this->marqueur2;	
 }
 
-void Adjacence::affiche() const{
+template<typename TypeValeur>
+void Adjacence<TypeValeur>::affiche() const{
 	cout << "(" << marqueur1.getOrientation() << marqueur1.getValeur() << "|" << marqueur2.getOrientation() << marqueur2.getValeur() << ")"<<endl;
 }
 
-bool operator== (const Adjacence& a1, const Adjacence& a2){
+template<typename TypeValeur>
+bool operator== (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2){
 
 	
 	if(a1.getMarqueur1()==a2.getMarqueur1())
@@ -57,7 +64,8 @@ bool operator== (const Adjacence& a1, const Adjacence& a2){
 	return false;
 }
 
-bool operator< (const Adjacence& a1, const Adjacence& a2){
+template<typename TypeValeur>
+bool operator< (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2){
 	if(a1.getMarqueur1().getValeur() < a2.getMarqueur1().getValeur()){
 		return true;
 	}
