@@ -1,3 +1,13 @@
+/*========================================================================
+Nom: main.cpp           auteur: Manuel Chataigner
+Maj:  14/03/2014           Creation: 14/03/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient le main du projet et l'appel aux différents 
+algorithmes de comparaison.
+=========================================================================*/
+
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -6,6 +16,9 @@
 #include "adjacence.h"
 
 using namespace std;
+
+
+bool log = false;
 
 
 int main(int argc, char *argv[])
@@ -19,6 +32,8 @@ int main(int argc, char *argv[])
 	Sequence<string> seq1(argv[1], separateur);
 	Sequence<string> seq2(argv[2], separateur);
 	
+	if (strcmp(argv[5], "l") == 0)
+		log = true;
 	
 	if (strcmp(argv[4], "AG") == 0)
 	{

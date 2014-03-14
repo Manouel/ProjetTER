@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: adjacence.cpp           auteur: Morgane Vidal
-Maj:  13/02/2014         Creation: 13/02/2014
+Maj:  14/03/2014         Creation: 13/02/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
@@ -38,7 +38,6 @@ void Adjacence<TypeValeur>::affiche() const{
 template<typename TypeValeur>
 bool operator== (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2){
 
-	
 	if(a1.getMarqueur1()==a2.getMarqueur1())
 	{
 		if(a1.getMarqueur2()==a2.getMarqueur2())
@@ -66,7 +65,11 @@ bool operator== (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a
 
 template<typename TypeValeur>
 bool operator< (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2){
-	if(a1.getMarqueur1().getValeur() < a2.getMarqueur1().getValeur()){
+	
+	if (a1 == a2){
+		return false;
+	}
+	else if(a1.getMarqueur1().getValeur() < a2.getMarqueur1().getValeur()){
 		return true;
 	}
 	else if(a1.getMarqueur1().getValeur() > a2.getMarqueur1().getValeur()){

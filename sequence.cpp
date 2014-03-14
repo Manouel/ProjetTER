@@ -25,7 +25,10 @@ Sequence<TypeValeur>::Sequence(){
 template<typename TypeValeur>
 Sequence<TypeValeur>::Sequence(const string& nomFichier, char delim){
 	ajoutSousSeq();
-	load(nomFichier, delim);
+	if (!load(nomFichier, delim))
+	{
+		cerr << "Erreur du chargement depuis le fichier " << nomFichier << endl;
+	}
 }
 
 template<typename TypeValeur>
@@ -75,12 +78,10 @@ void Sequence<TypeValeur>::affichage() const{
 }
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::load(const string& nomFichier, char delim){
+int Sequence<TypeValeur>::load(const string& nomFichier, char delim){
 	ifstream fichier(nomFichier.c_str());
 	if (!fichier)
-	{
-		cout << "Erreur ouverture fichier.\n" << endl;
-	}
+		return 0;
 	
 	char ori;
 	TypeValeur val;
@@ -97,21 +98,20 @@ void Sequence<TypeValeur>::load(const string& nomFichier, char delim){
 			fichier >> val;
 			Marqueur<TypeValeur> m(val, ori);
 			
-			this->ajoutElement(m);			
+			this->ajoutElement(m);
 		}
 	}
 	
 	fichier.close();
+	return 1;
 }
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::save(const string& nomFichier,char delim)
+int Sequence<TypeValeur>::save(const string& nomFichier,char delim)
 {
 	ofstream fichier(nomFichier.c_str());
 	if (!fichier)
-	{
-		cout << "Erreur ouverture fichier.\n" << endl;
-	}
+		return 0;
 	
 	for(int i = 0; i<nbSousSeq(); i++)
 	{
@@ -126,14 +126,14 @@ void Sequence<TypeValeur>::save(const string& nomFichier,char delim)
 	}
 	
 	fichier.close();
+	return 1;
 }
 
 template<typename TypeValeur>
 vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence() const{
 	vector<Adjacence<TypeValeur> > liste;
 	for(int i=0; i<this->nbSousSeq(); i++){
-		int tailleSousSeq = this->getVecteur(i).size();
-		for(int j=0; j<tailleSousSeq-1;j++){
+		for(int j=0; j+1<this->getVecteur(i).size();j++){
 			Adjacence<TypeValeur> a(this->getElement(i,j),this->getElement(i,j+1));
 			liste.push_back(a);
 		}

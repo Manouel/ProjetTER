@@ -33,6 +33,12 @@ class Sequence{
 		*/
 		/*void preproscessing(std::vector<Marqueur<TypeValeur>*>& s1, Sequence& s2, 
 				std::map<Marqueur<TypeValeur>,std::vector<int> >& pos, int num[][]) const;*/
+				
+		/**
+		 @return Liste des adjacences de la séquence
+		*/
+		std::vector<Adjacence<TypeValeur> > listeAdjacence() const;		
+		
 	public:
 		
 		Sequence();
@@ -66,18 +72,17 @@ class Sequence{
 		  @param Nom du fichier à lire 
 		  @param Délimiteur indiquant le changement de sous-séquences 
 		*/
-		void load(const std::string& nomFichier, char delim);
+		int load(const std::string& nomFichier, char delim);
 		
 		/**
 		  @action Ecris le contenu d'une Séquence dans le fichier
 		  @param Nom du fichier à écrire 
 		  @param Délimiteur indiquant le changement de sous-séquences 
 		*/
-		void save(const std::string& nomFichier,char delim);
+		int save(const std::string& nomFichier,char delim);
 		
 		void affichage() const;
 		
-		std::vector<Adjacence<TypeValeur> > listeAdjacence() const;
 		
 		/* Algo alignement global */
 		
