@@ -51,9 +51,20 @@ void Marqueur<TypeValeur>::affiche(ostream& os)const{
 	os<<getOrientation()<<" "<<getValeur()<<endl; 
 }
 
-template<typename TypeValeur> //A enlever ? 
+
+template<typename TypeValeur>
 bool operator== (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2){
 	return (m1.getValeur() == m2.getValeur() && m1.getOrientation()==m2.getOrientation());
+}
+
+template<typename TypeValeur>
+bool operator< (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2){
+	if (m1.getValeur() < m2.getValeur())
+		return true;
+	else if (m1.getValeur() > m2.getValeur())
+		return false;
+	else
+		return (m1.getOrientation() > m2.getOrientation());
 }
 
 

@@ -83,7 +83,7 @@ void Sequence<TypeValeur>::load(const string& nomFichier, char delim){
 	}
 	
 	char ori;
-	int val;
+	TypeValeur val;
 	
 	/* Lecture du signe puis de la valeur du marqueur */
 	while (fichier >> ori)
@@ -261,3 +261,65 @@ int Sequence<TypeValeur>::breakpoints(Sequence<TypeValeur>& s) const{
 	
 	return diff.size(); //Nombre de différences retourné
 }
+
+/*
+template<typename TypeValeur>
+void Sequence<TypeValeur>::preproscessing(vector<Marqueur<TypeValeur>*>& s1, Sequence& s2, 
+		map<Marqueur<TypeValeur>,vector<int> >& pos, int num[][]) const
+{
+
+}*/
+
+template<typename TypeValeur>
+int Sequence<TypeValeur>::intervallesCommuns(Sequence<TypeValeur>& s2) const
+{
+	vector<Marqueur<TypeValeur>*> s1;
+
+	for(int i=0; i<this->nbSousSeq(); i++){
+		for(int j=0; j< s2.getVecteur(i).size(); j++){
+			s1.push_back(&s2.sequence[i][j]);
+		}
+		s1.push_back(NULL);
+	}
+	
+	map<Marqueur<TypeValeur>,vector<int> > pos;
+	int num[s1.size()][s1.size()];
+	
+	
+	// Remplissage de pos : parcours de s1 et ajout des positions pour chaque marqueur
+	for(int i=0; i< s1.size();i++){
+		if(s1[i] != NULL){
+			pos[*s1[i]].push_back(i);
+		}
+	}
+	
+	// Remplissage de num : calcul du nombre de marqueurs différents entre chaque indices de s1
+	for(int i=0; i<s1.size();i++){
+		for(int j=0; j<s1.size();j++){
+			if(i == j){					// Entre l'indice i et i, 1 marqueur donc 1 différence
+				num[i][j] = 1;
+			}
+			else if (j<i){				// Partie vide de la matrice (j,i -> i,j)
+				num[i][j] = 0;
+			}
+			else{						// Calcul du nombre de marqueurs différents entre i et j
+				vector<Marqueur<TypeValeur> > present;			// Liste des marqueurs différents présents de i à j
+				
+				// Parcours des marqueurs de i à j
+				for(int k = i; k<j;k++){
+					if(!(find(present.begin(), present.end(), *s1[k]) != present.end())){		// Si le marqueur n'existe pas, on l'ajoute
+						present.push_back(*s1[k]);
+					}
+				}
+				
+				// On stocke le nombre de marqueurs différents trouvés
+				num[i][j]= present.size();
+			}
+		}
+	}
+	
+	//preproscessing(s1, s2, pos, num);
+}
+
+
+

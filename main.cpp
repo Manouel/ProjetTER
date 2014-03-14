@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <string.h>
 #include "marqueur.h"
 #include "sequence.h"
 #include "adjacence.h"
@@ -14,8 +16,8 @@ int main(int argc, char *argv[])
 	}
 	
 	char separateur = argv[3][0];
-	Sequence seq1(argv[1], separateur);
-	Sequence seq2(argv[2], separateur);
+	Sequence<string> seq1(argv[1], separateur);
+	Sequence<string> seq2(argv[2], separateur);
 	
 	
 	if (strcmp(argv[4], "AG") == 0)

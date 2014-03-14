@@ -47,5 +47,7 @@ class Marqueur
 template<typename TypeValeur>
 bool operator== (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2);
 
+template<typename TypeValeur>
+bool operator< (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2);
 
 #endif

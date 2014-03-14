@@ -15,6 +15,7 @@ sous-séquences de marqueurs.
 #include <iostream>
 #include <vector>
 #include <string> 
+#include <map>
 #include "marqueur.h"
 #include "adjacence.h"
 
@@ -22,6 +23,16 @@ template<typename TypeValeur>
 class Sequence{
 	private:
 		std::vector<std::vector<Marqueur<TypeValeur> > > sequence;
+		
+		/**
+		 @action Remplissage de pos et num
+		 @param s1 Liste de pointeurs vers les marqueurs de la sequence this
+		 @param s2 Sequence à comparer
+		 @param pos Tableau des positions de chaque marqueur dans s1
+		 @param num Matrice des différences entre 2 marqueurs dans s1
+		*/
+		/*void preproscessing(std::vector<Marqueur<TypeValeur>*>& s1, Sequence& s2, 
+				std::map<Marqueur<TypeValeur>,std::vector<int> >& pos, int num[][]) const;*/
 	public:
 		
 		Sequence();
@@ -85,7 +96,14 @@ class Sequence{
 		 @param s sequence à comparer avec this
 		 @return nombre d'adjacences différentes
 		*/
-		int breakpoints(Sequence& s) const;
+		int breakpoints(Sequence<TypeValeur>& s) const;
+		
+		
+		/* Intervalles communs */
+		
+		int intervallesCommuns(Sequence& s2) const;
+		
+		
 };
 
 
