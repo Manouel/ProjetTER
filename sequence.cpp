@@ -15,6 +15,7 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 #include "sequence.h"
 #include "adjacence.h"
 
+
 using namespace std;
 
 template<typename TypeValeur>
@@ -142,24 +143,24 @@ vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence() const{
 }
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const
+Alignement Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const
 {
 	int gauche; //valeur si on vient de la gauche
 	int diag; //valeur si on vient de la diagonale
 	int haut; //valeur si on vient du haut
 	
-	int mat[this->getVecteur(0).size()+1][sequBis.size()+1];
+	Alignement mat(this->getVecteur(0).size()+1,sequBis.size()+1);
 
-	mat[0][0]=0;
+	mat.setElement(0,0,0);
 	
 	/*Initialisation ligne et colonne 0 :*/
 	for(int i=1;i<this->getVecteur(0).size()+1;i++)
 	{
-		mat[i][0]=mat[i-1][0]+indel;
+		mat.setElement(i,0,0);
 	}
 	for(int j=1;j<sequBis.size()+1;j++)
 	{
-		mat[0][j]=mat[0][j-1]+indel;
+		mat.setElement(0,j,0);
 	}
 	
 	/*Calcul des valeurs de la matrice*/
@@ -168,16 +169,16 @@ int Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& 
 		for(int j=1;j<sequBis.size()+1;j++)
 		{
 			/*Calcul des 3 valeurs possibles pour mat[i][j]*/
-			gauche=mat[i][j-1]+indel;
-			haut=mat[i-1][j]+indel;
+			gauche=mat.getElement(i,j-1)+indel;
+			haut=mat.getElement(i-1,j)+indel;
 			
 			if(this->getElement(0,i-1).getValeur()==sequBis[j-1].getValeur()) //Modif pour pas prendre en compte orientation dans comparaison
 			{
-				diag=mat[i-1][j-1]+match;
+				diag=mat.getElement(i-1,j-1)+match;
 			}
 			else
 			{
-				diag=mat[i-1][j-1]+sub;
+				diag=mat.getElement(i-1,j-1)+sub;
 			}
 			if(indel<0){
 			/*Calcul de la valeur la plus grande pour mettre dans mat[i][j]*/
@@ -185,22 +186,22 @@ int Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& 
 			{
 				if(gauche>diag)
 				{
-					mat[i][j]=gauche;
+					mat.setElement(i,j,gauche);
 				}
 				else
 				{
-					mat[i][j]=diag;
+					mat.setElement(i,j,diag);
 				}
 			}
 			else
 			{
 				if(haut>diag)
 				{
-					mat[i][j]=haut;
+					mat.setElement(i,j,haut);
 				}
 				else
 				{
-					mat[i][j]=diag;
+					mat.setElement(i,j,diag);
 				}
 			}
 			}else
@@ -209,22 +210,22 @@ int Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& 
 			{
 				if(gauche<diag)
 				{
-					mat[i][j]=gauche;
+					mat.setElement(i,j,gauche);
 				}
 				else
 				{
-					mat[i][j]=diag;
+					mat.setElement(i,j,diag);
 				}
 			}
 			else
 			{
 				if(haut<diag)
 				{
-					mat[i][j]=haut;
+					mat.setElement(i,j,haut);
 				}
 				else
 				{
-					mat[i][j]=diag;
+					mat.setElement(i,j,diag);
 				}
 			}
 			}
@@ -235,13 +236,13 @@ int Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& 
 	{
 		for(int j=0;j<sequBis.size()+1;j++)
 		{
-			cout<<mat[i][j]<<" ";
+			cout<<mat.getElement(i,j)<<" ";
 		}
 		cout<<"\n";
 	}
 	cout<<endl;
 		
-	return mat[this->getVecteur(0).size()][sequBis.size()]; //On retourne la dernière case de la matrice (le score)
+	return mat; //On retourne la dernière case de la matrice (le score)
 }
 
 template<typename TypeValeur>
