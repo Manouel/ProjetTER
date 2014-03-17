@@ -18,6 +18,7 @@ sous-séquences de marqueurs.
 #include <map>
 #include "marqueur.h"
 #include "adjacence.h"
+#include "alignement.h"
 
 template<typename TypeValeur>
 class Sequence{
@@ -90,9 +91,9 @@ class Sequence{
 		 @action Applique l'algorithme d'alignement global entre la séquence this et une séquence sequBis, puis retourne le score obtenu
 		 @param sequBis sequence à comparer avec this
 		 @param sub, inser, delet, match valeur des couts des opérations
-		 @return score
+		 @return un alignement contenant la matrice finale
 		*/
-		int alignementGlobal(const std::vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const;
+		Alignement alignementGlobal(const std::vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const;
 		
 		/* Algo breakpoints */
 		
