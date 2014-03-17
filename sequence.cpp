@@ -271,15 +271,19 @@ void Sequence<TypeValeur>::preproscessing(vector<Marqueur<TypeValeur>*>& s1, Seq
 }*/
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::intervallesCommuns(Sequence<TypeValeur>& s2) const
-{
+int Sequence<TypeValeur>::intervallesCommuns(Sequence<TypeValeur>& s2)
+{	
+
+	//Partie 1: Init
+		
 	vector<Marqueur<TypeValeur>*> s1;
 
 	for(int i=0; i<this->nbSousSeq(); i++){
-		for(int j=0; j< s2.getVecteur(i).size(); j++){
-			s1.push_back(&s2.sequence[i][j]);
+		for(int j=0; j< this->getVecteur(i).size(); j++){
+			Marqueur<TypeValeur> *m = &(this->sequence[i][j]);
+			s1.push_back(m);
 		}
-		s1.push_back(NULL);
+		//s1.push_back(NULL);
 	}
 	
 	map<Marqueur<TypeValeur>,vector<int> > pos;
@@ -306,8 +310,8 @@ int Sequence<TypeValeur>::intervallesCommuns(Sequence<TypeValeur>& s2) const
 				vector<Marqueur<TypeValeur> > present;			// Liste des marqueurs différents présents de i à j
 				
 				// Parcours des marqueurs de i à j
-				for(int k = i; k<j;k++){
-					if(!(find(present.begin(), present.end(), *s1[k]) != present.end())){		// Si le marqueur n'existe pas, on l'ajoute
+				for(int k = i; k<=j;k++){
+					if(find(present.begin(), present.end(), *s1[k]) == present.end()){		// Si le marqueur n'existe pas, on l'ajoute
 						present.push_back(*s1[k]);
 					}
 				}
@@ -317,8 +321,90 @@ int Sequence<TypeValeur>::intervallesCommuns(Sequence<TypeValeur>& s2) const
 			}
 		}
 	}
+
+
+	// Partie 2: Algo
 	
-	//preproscessing(s1, s2, pos, num);
+	vector<vector<int> > output;
+	
+	// Parcours S2
+	int i=0;
+	
+	while(i<s2.getVecteur(0).size())
+	{
+		int j = i;
+		bool tab1[s1.size()];
+		for (int j = 0; j < s1.size(); j++)
+		{
+			tab1[j] = 0;
+		}
+		
+		vector<Marqueur<TypeValeur> > tab2;
+
+		while(j< s2.getVecteur(0).size() && !pos[ s2.getElement(0,j) ].empty())
+		{
+			if(find(tab2.begin(), tab2.end(), s2.getElement(0,j)) == tab2.end() )
+			{
+				tab2.push_back(s2.getElement(0,j));
+				// on étend à droite
+
+				while(j+1 < s2.getVecteur(0).size() && find(tab2.begin(), tab2.end(), s2.getElement(0,j+1)) != tab2.end() )
+				{
+					j++;
+				}
+				
+			}
+			for(int k= 0 ; k<pos[s2.getElement(0,j)].size();k++ )
+			{
+				tab1[pos[s2.getElement(0,j)][k]]=1; // encadrement
+			}
+				//parcours du tableau de booléens
+				int l = 0;
+				while (l < s1.size())
+				{
+					int debut, fin;
+					
+					if(tab1[l] == 1)
+					{
+						debut=l;
+						fin=l;
+						while(tab1[l+1] == 1)
+						{fin++;
+						l++;}
+					}
+					else
+					{
+						debut = -1;
+						fin = -1;
+					}
+					
+					if (debut != -1 && fin != -1)
+					{
+						if(num[debut][fin] == tab2.size() )
+						{
+							//ajout ligne output
+							output.push_back(vector< int >());
+							output.back().push_back(i);
+							output.back().push_back(j);
+							output.back().push_back(debut);
+							output.back().push_back(fin);
+							
+							//cout << i+1 << " - " << j+1 << " - " << debut+1 << " - " << fin+1 << endl;
+						}
+					}
+					l++;
+				}
+			j++;	
+		}
+	Marqueur<TypeValeur> valprec(s2.getElement(0,i) );
+	
+	while(i<s2.getVecteur(0).size() && s2.getElement(0,i) == valprec)
+	i++;
+	
+	}
+	
+	return output.size();
+	
 }
 
 

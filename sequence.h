@@ -106,7 +106,7 @@ class Sequence{
 		
 		/* Intervalles communs */
 		
-		int intervallesCommuns(Sequence& s2) const;
+		int intervallesCommuns(Sequence& s2);
 		
 		
 };

@@ -32,8 +32,10 @@ int main(int argc, char *argv[])
 	Sequence<string> seq1(argv[1], separateur);
 	Sequence<string> seq2(argv[2], separateur);
 	
-	if (strcmp(argv[5], "l") == 0)
+	/*if (argc == 5 && strcmp(argv[5], "l") == 0)
 		log = true;
+		*/
+
 	
 	if (strcmp(argv[4], "AG") == 0)
 	{
@@ -61,7 +63,7 @@ int main(int argc, char *argv[])
 	}
 	else if(strcmp(argv[4], "IC") == 0)
 	{
-		;
+		cout << seq1.intervallesCommuns(seq2) << endl;
 	}
 	
 
