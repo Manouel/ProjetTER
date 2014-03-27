@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: marqueur.cpp           auteur: Geoffrey DUMAS
-Maj:  13/02/2014         Creation: 27/01/2014
+Maj:  27/03/2014         Creation: 27/01/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
