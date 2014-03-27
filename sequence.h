@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: sequence.h           auteur: Jonathan Dufetel
-Maj:  13/02/2014           Creation: 27/01/2014
+Maj:  27/03/2014           Creation: 27/01/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
@@ -47,42 +47,42 @@ class Sequence{
 		//Sequence(const Sequence& sequ);
 		virtual ~Sequence();
 		
-		std::vector<std::vector<Marqueur<TypeValeur> > > getSequence() const;
-		Marqueur<TypeValeur> getElement(int i, int j) const;
-		std::vector<Marqueur<TypeValeur> > getVecteur(int i) const;
+		virtual std::vector<std::vector<Marqueur<TypeValeur> > > getSequence() const;
+		virtual Marqueur<TypeValeur> getElement(int i, int j) const;
+		virtual std::vector<Marqueur<TypeValeur> > getVecteur(int i) const;
 		
 		/**
 		  @return Nombre de sous-séquences
 		*/
-		int nbSousSeq() const;
+		virtual int nbSousSeq() const;
 		
 		/**
 		  @param Marqueur à ajouter en fin de Séquence
 		*/
-		void ajoutElement(Marqueur<TypeValeur>& t);
+		virtual void ajoutElement(Marqueur<TypeValeur>& t);
 		
 		/**
 		  @action Ajout d'une nouvelle sous-séquence
 		*/
-		void ajoutSousSeq();
-		void supElement(Marqueur<TypeValeur>& t);
-		bool rechercheElement(const Marqueur<TypeValeur>& t);
+		virtual void ajoutSousSeq();
+		//virtual void supElement(Marqueur<TypeValeur>& t);
+		//virtual bool rechercheElement(const Marqueur<TypeValeur>& t);
 		
 		/**
 		  @action Créé une Séquence à partir du fichier
 		  @param Nom du fichier à lire 
 		  @param Délimiteur indiquant le changement de sous-séquences 
 		*/
-		int load(const std::string& nomFichier, char delim);
+		virtual int load(const std::string& nomFichier, char delim);
 		
 		/**
 		  @action Ecris le contenu d'une Séquence dans le fichier
 		  @param Nom du fichier à écrire 
 		  @param Délimiteur indiquant le changement de sous-séquences 
 		*/
-		int save(const std::string& nomFichier,char delim);
+		virtual int save(const std::string& nomFichier,char delim);
 		
-		void affichage() const;
+		virtual void affichage() const;
 		
 		
 		/* Algo alignement global */
@@ -93,7 +93,7 @@ class Sequence{
 		 @param sub, inser, delet, match valeur des couts des opérations
 		 @return un alignement contenant la matrice finale
 		*/
-		Alignement alignementGlobal(const std::vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const;
+		virtual Alignement alignementGlobal(const std::vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const;
 		
 		/* Algo breakpoints */
 		
@@ -102,13 +102,17 @@ class Sequence{
 		 @param s sequence à comparer avec this
 		 @return nombre d'adjacences différentes
 		*/
-		int breakpoints(Sequence<TypeValeur>& s) const;
+		virtual int breakpoints(const Sequence<TypeValeur>& s) const;
 		
 		
 		/* Intervalles communs */
 		
-		int intervallesCommuns(Sequence& s2);
-		
+		/**
+		 @action Retourne le nombre d'intervalles communs entre la séquence this et s2
+		 @param s2 sequence à comparer avec this
+		 @return nombre d'intervalles communs
+		*/
+		virtual int intervallesCommuns(const Sequence& s2) const;
 		
 };
 

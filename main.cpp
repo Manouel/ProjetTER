@@ -34,8 +34,9 @@ int main(int argc, char *argv[])
 	Sequence<char> seq2(argv[2], separateur);
 	
 	if (argc == 6 && strcmp(argv[5], "l") == 0)
+	{
 		log = true;
-		
+	}	
 
 	
 	if (strcmp(argv[4], "AG") == 0)
