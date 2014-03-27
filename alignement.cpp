@@ -1,3 +1,11 @@
+/*========================================================================
+Nom: alignement.cpp           auteur: Manuel CHATAIGNER
+Maj:  27/03/2014         Creation: 17/03/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient l'implémentation des fonctions de la classe Alignement.
+=========================================================================*/
 #include "alignement.h"
 
 
