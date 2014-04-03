@@ -7,7 +7,7 @@ Specification:
 Ce fichier contient l'implémentation des fonctions de la classe Alignement.
 =========================================================================*/
 #include "alignement.h"
-
+using namespace std;
 
 
 Alignement::Alignement(int lignes, int colonnes){
@@ -52,4 +52,13 @@ int Alignement::getResultat() const{
 
 void Alignement::setElement(int i, int j, int val){
 	this->mat[i][j] = val;
+}
+
+void Alignement::affiche(ostream& os) const{
+	for(int i=0;i<this->lignes;i++){
+		for(int j=0; j<this->colonnes;j++){
+			os<<this->mat[i][j]<<" ";
+		}
+		os<<endl;
+	}
 }

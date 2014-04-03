@@ -12,7 +12,7 @@ d'alignement global, du nombre de lignes et du nombre de colonnes.
 
 #ifndef ALIGNEMENT_H
 #define ALIGNEMENT_H
-
+#include<iostream>
 class Alignement{
 	private:
 		int** mat; //matrice résultat de l'algorithme d'alignement local
@@ -27,6 +27,7 @@ class Alignement{
 		virtual int getElement(int i,int j) const;
 		virtual int getResultat() const;
 		virtual void setElement(int i, int j, int val);
+		virtual void affiche(std::ostream& os)const;
 };
 
 
