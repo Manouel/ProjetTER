@@ -20,22 +20,27 @@ using namespace std;
 
 
 bool log = false;
+string nomFichier="out.txt";
 
 
 int main(int argc, char *argv[])
 {
-	if (argc != 5 && argc != 6)
+	if (argc != 5 && argc != 6 && argc !=7)
 	{
-		cerr << "Mauvais nombre d'arguments ! (file1 file2 separateur algo [l])" << endl;
+		cerr << "Mauvais nombre d'arguments ! (file1 file2 separateur algo [l] [nomfichier])" << endl;
 	}
 	
 	char separateur = argv[3][0];
 	Sequence<char> seq1(argv[1], separateur);
 	Sequence<char> seq2(argv[2], separateur);
 	
-	if (argc == 6 && strcmp(argv[5], "l") == 0)
+	if (argc >= 6  && strcmp(argv[5], "l") == 0)
 	{
 		log = true;
+		if(argc==7){
+			nomFichier=argv[6];
+		}
+		
 	}	
 
 	

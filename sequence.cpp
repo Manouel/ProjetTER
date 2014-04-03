@@ -12,6 +12,7 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 #include <string>
 #include <stdlib.h>
 #include <algorithm>
+#include <time.h>
 #include "sequence.h"
 #include "adjacence.h"
 
@@ -66,16 +67,16 @@ void Sequence<TypeValeur>::ajoutSousSeq(){
 }
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::affichage() const{
+void Sequence<TypeValeur>::affichage(ostream& os) const{
 	for(int i=0;i<nbSousSeq();i++)
 	{
 		for(int j=0;j<this->getVecteur(i).size();j++)
 		{
-			cout<< getElement(i,j).getOrientation() << getElement(i,j).getValeur()<<" ";
+			os<< getElement(i,j).getOrientation() << getElement(i,j).getValeur()<<" ";
 		}
-		cout<<"\t";
+		os<<"& ";
 	}
-	cout<<endl;
+	
 }
 
 template<typename TypeValeur>
@@ -291,6 +292,32 @@ void Sequence<TypeValeur>::preproscessing(vector<Marqueur<TypeValeur>*>& s1, Seq
 template<typename TypeValeur>
 int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) const
 {	
+	extern bool log;
+	extern string nomFichier;
+	ofstream fichier;
+	
+	//Si log, ouverture du fichier dans lequel on mettra le resultat de la fonction :
+	if(log==true){
+		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
+		if(!fichier){
+			cerr<<"Erreur lors de l'ouverture du fichier "<<nomFichier<<endl;
+		}
+		
+		//Affichage de la date du jour
+		struct tm date;
+		time_t maintenant;
+		time(&maintenant);
+		date=*localtime(&maintenant);
+		fichier<<"========================================================================"<<endl;
+		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
+		fichier<<"Algorithme : Intervalles Communs"<<endl;
+		fichier<<"Sequence 1 : ";
+		this->affichage(fichier);
+		fichier<<endl<<"Sequence 2 : ";
+		s.affichage(fichier );
+		fichier<<endl;
+		fichier<<"========================================================================"<<endl;
+	}
 
 	//Partie 1: Init
 		
@@ -348,8 +375,20 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	
 	
 	// Parcours S2
+
 	for (int t = 0; t < s.nbSousSeq(); t++)
 	{	
+		int cpt=0;
+		if(log==true){
+			fichier<<"Sequence 2."<<t+1<<" : ";
+			for(int i=0; i<s.getVecteur(t).size();i++){
+				
+				s.getElement(t,i).affiche(fichier);
+				fichier<<" ";
+			}
+			//fichier<<"CACA";
+			fichier<<endl;
+		}
 		vector<Marqueur<TypeValeur> > s2;
 		
 		// Création d'un vecteur avec l'ensemble des marqueurs de la sous-séquence de s2
@@ -437,8 +476,14 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 								output.back().push_back(fin);
 								output.back().push_back(i);
 								output.back().push_back(j);
-						
-								cout << debut+1 << " - " << fin+1 << " - " << i+1 << " - " << j+1 << endl;
+								cpt++;
+								if(log==true){
+									
+									fichier <<"\t"<< debut+1 << " - " << fin+1 << " - " << i+1 << " - " << j+1 << endl;
+								}
+								else{ //A ENLEVER PLUS TARD
+									cout<< debut+1 << " - " << fin+1 << " - " << i+1 << " - " << j+1 << endl;
+								}
 							}
 						}
 						l++;
@@ -451,10 +496,19 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 			Marqueur<TypeValeur> valprec(s2[i]);
 	
 			while(i<s2.size() && s2[i] == valprec)
+			{
 				i++;
+			}
+		}
+		if(log==true){
+			fichier<<"Nombre d'intervales communs : "<<cpt<<endl<<endl;
 		}
 	}
-	
+	if(log==true){
+		fichier<<"Nombre total d'intervales communs : "<<output.size()<<endl;
+		fichier<<endl << endl;
+		fichier.close(); //fermeture du ficher car on a fini d'écrire dedans
+	}
 	return output.size();
 }
 

@@ -48,7 +48,7 @@ void Marqueur<TypeValeur>::saisie(istream& is){
 
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::affiche(ostream& os)const{
-	os<<getOrientation()<<" "<<getValeur()<<endl; 
+	os<<getOrientation()<<getValeur(); 
 }
 
 
