@@ -250,16 +250,51 @@ Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<Typ
 template<typename TypeValeur>
 void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const
 {
+	extern bool log;
+	extern string nomFichier;
+	ofstream fichier;
+	
+	if(log==true){
+		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
+		if(!fichier){
+			cerr<<"Erreur lors de l'ouverture du fichier "<<nomFichier<<endl;
+		}
+		
+		//Affichage de la date du jour
+		struct tm date;
+		time_t maintenant;
+		time(&maintenant);
+		date=*localtime(&maintenant);
+		fichier<<"========================================================================"<<endl;
+		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
+		fichier<<"Algorithme : Alignement local"<<endl;
+		fichier<<"Sequence 1 : ";
+		this->affichage(fichier);
+		fichier<<endl<<"Sequence 2 : ";
+		s.affichage(fichier);
+		fichier<<endl;
+		fichier<<"========================================================================"<<endl;
+	}
+	
 	// On applique l'algo d'alignement à chaque sous-séquence de s
 	for (int i = 0; i < s.nbSousSeq(); i++)
 	{
 		Alignement matrice = this->calculAlignement(s.getVecteur(i), sub, indel, match);
+		if(log==true){
+			matrice.affiche(fichier<<endl);
+			if (indel < 0)
+				fichier<< "Score alignement local : " << matrice.getResultat() << endl;
+			else fichier<< "Distance alignement local : " << matrice.getResultat() << endl;
+		}
 		
 		if (indel < 0)
 			cout << "Score alignement local : " << matrice.getResultat() << endl;
 		else
 			cout << "Distance alignement local : " << matrice.getResultat() << endl;
 	}
+	
+	if(log==true)
+		fichier.close();
 }
 
 
@@ -321,7 +356,7 @@ int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 		fichier <<"Score relatif : " << scoreRelatif << endl ;
 		
 		
-		
+		fichier.close();
 	}
 	
 	return inter.size(); //Nombre d'intersection retourné
@@ -432,7 +467,6 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 				s.getElement(t,i).affiche(fichier);
 				fichier<<" ";
 			}
-			//fichier<<"CACA";
 			fichier<<endl;
 		}
 		vector<Marqueur<TypeValeur> > s2;
