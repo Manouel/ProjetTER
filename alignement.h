@@ -21,6 +21,7 @@ class Alignement{
 	
 	public:
 		Alignement(int lignes, int colonnes);
+		Alignement(const Alignement& a);
 		virtual ~Alignement();
 		
 		virtual int getElement(int i,int j) const;

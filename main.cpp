@@ -39,24 +39,19 @@ int main(int argc, char *argv[])
 	}	
 
 	
-	if (strcmp(argv[4], "AG") == 0)
+	if (strcmp(argv[4], "AL") == 0)
 	{
 		int sub, indel, match;
 	
-		cout << "Veuillez entrer le cout de substitution de l'alignement global : ";
+		cout << "Veuillez entrer le cout de substitution de l'alignement local : ";
 		cin >> sub;
-		cout << "Veuillez entrer le cout d'insertion et de délétion de l'alignement global : ";
+		cout << "Veuillez entrer le cout d'insertion et de délétion de l'alignement local : ";
 		cin >> indel;
-		cout << "Veuillez entrer le cout de correspondance de l'alignement global : ";
+		cout << "Veuillez entrer le cout de correspondance de l'alignement local : ";
 		cin >> match;
 		
 		
-		Alignement mat = seq1.alignementGlobal(seq2.getVecteur(0), sub, indel, match);
-		if (indel < 0)
-			cout << "Score alignement global : " << mat.getResultat() << endl;
-		else
-			cout << "Distance alignement global : " << mat.getResultat() << endl;
-		
+		seq1.alignementLocal(seq2, sub, indel, match);
 	}
 	else if(strcmp(argv[4], "BP") == 0)
 	{

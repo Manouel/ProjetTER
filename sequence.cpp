@@ -143,13 +143,13 @@ vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence() const{
 }
 
 template<typename TypeValeur>
-Alignement Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const
+Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<TypeValeur> >& s, int sub, int indel, int match) const
 {
 	int gauche; //valeur si on vient de la gauche
 	int diag; //valeur si on vient de la diagonale
 	int haut; //valeur si on vient du haut
 	
-	Alignement mat(this->getVecteur(0).size()+1,sequBis.size()+1);
+	Alignement mat(this->getVecteur(0).size()+1,s.size()+1);
 
 	mat.setElement(0,0,0);
 	
@@ -158,7 +158,7 @@ Alignement Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeVale
 	{
 		mat.setElement(i,0,0);
 	}
-	for(int j=1;j<sequBis.size()+1;j++)
+	for(int j=1;j<s.size()+1;j++)
 	{
 		mat.setElement(0,j,0);
 	}
@@ -166,13 +166,13 @@ Alignement Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeVale
 	/*Calcul des valeurs de la matrice*/
 	for(int i=1;i<this->getVecteur(0).size()+1;i++)
 	{
-		for(int j=1;j<sequBis.size()+1;j++)
+		for(int j=1;j<s.size()+1;j++)
 		{
 			/*Calcul des 3 valeurs possibles pour mat[i][j]*/
 			gauche=mat.getElement(i,j-1)+indel;
 			haut=mat.getElement(i-1,j)+indel;
 			
-			if(this->getElement(0,i-1).getValeur()==sequBis[j-1].getValeur()) //Modif pour pas prendre en compte orientation dans comparaison
+			if(this->getElement(0,i-1).getValeur()==s[j-1].getValeur()) //Modif pour pas prendre en compte orientation dans comparaison
 			{
 				diag=mat.getElement(i-1,j-1)+match;
 			}
@@ -234,7 +234,7 @@ Alignement Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeVale
 	
 	for(int i=0;i<this->getVecteur(0).size()+1;i++)
 	{
-		for(int j=0;j<sequBis.size()+1;j++)
+		for(int j=0;j<s.size()+1;j++)
 		{
 			cout<<mat.getElement(i,j)<<" ";
 		}
@@ -245,10 +245,27 @@ Alignement Sequence<TypeValeur>::alignementGlobal(const vector<Marqueur<TypeVale
 	return mat; //On retourne la dernière case de la matrice (le score)
 }
 
+
+template<typename TypeValeur>
+void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const
+{
+	// On applique l'algo d'alignement à chaque sous-séquence de s
+	for (int i = 0; i < s.nbSousSeq(); i++)
+	{
+		Alignement matrice = this->calculAlignement(s.getVecteur(i), sub, indel, match);
+		
+		if (indel < 0)
+			cout << "Score alignement local : " << matrice.getResultat() << endl;
+		else
+			cout << "Distance alignement local : " << matrice.getResultat() << endl;
+	}
+}
+
+
 template<typename TypeValeur>
 int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 	
-	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence(); 
+	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
 	vector<Adjacence<TypeValeur> > liste2 = s.listeAdjacence();
 	
 	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_difference
@@ -272,18 +289,18 @@ void Sequence<TypeValeur>::preproscessing(vector<Marqueur<TypeValeur>*>& s1, Seq
 }*/
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s2) const
+int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) const
 {	
 
 	//Partie 1: Init
 		
-	/* Possibilité de gestion de plusieurs sous-séquences dans s1 
-	   avec case NULL lorsqu'il y a un séparateur.
-	*/
-	vector<const Marqueur<TypeValeur>*> s1;
+	// Création de nouvelles séquences ne prenant pas en compte les signes
+	vector<Marqueur<TypeValeur> > s1;
 
+	// Création d'un vecteur avec l'ensemble des marqueurs de la 1e sous-séquence de s1
 	for(int j=0; j< this->getVecteur(0).size(); j++){
-		const Marqueur<TypeValeur> *m = &(this->sequence[0][j]);
+		Marqueur<TypeValeur> m = this->sequence[0][j];
+		m.setOrientation('+');
 		s1.push_back(m);
 	}
 	
@@ -293,9 +310,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s2) con
 	
 	// Remplissage de pos : parcours de s1 et ajout des positions pour chaque marqueur
 	for(int i=0; i< s1.size();i++){
-		if(s1[i] != NULL){
-			pos[*s1[i]].push_back(i);
-		}
+		pos[s1[i]].push_back(i);
 	}
 	
 	// Remplissage de num : calcul du nombre de marqueurs différents entre chaque indices de s1
@@ -312,8 +327,8 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s2) con
 				
 				// Parcours des marqueurs de i à j
 				for(int k = i; k<=j;k++){
-					if(find(present.begin(), present.end(), *s1[k]) == present.end()){		// Si le marqueur n'existe pas, on l'ajoute
-						present.push_back(*s1[k]);
+					if(find(present.begin(), present.end(), s1[k]) == present.end()){		// Si le marqueur n'existe pas, on l'ajoute
+						present.push_back(s1[k]);
 					}
 				}
 				
@@ -333,13 +348,25 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s2) con
 	
 	
 	// Parcours S2
-	for (int s = 0; s < s2.nbSousSeq(); s++)
+	for (int t = 0; t < s.nbSousSeq(); t++)
 	{	
+		vector<Marqueur<TypeValeur> > s2;
+		
+		// Création d'un vecteur avec l'ensemble des marqueurs de la sous-séquence de s2
+		for(int j=0; j< s.getVecteur(t).size(); j++){
+			Marqueur<TypeValeur> m = s.sequence[t][j];
+			m.setOrientation('+');
+			s2.push_back(m);
+		}
+		
+		
+		// Pointeur i représentant le début de l'intervalle courant sur s2
 		int i = 0;
 		
 		// On déplace le ptr i
-		while(i<s2.getVecteur(s).size())
+		while(i<s2.size())
 		{
+			// Pointeur j représentant la fin de l'intervalle courant sur s2
 			int j = i;
 			bool elementsVusS1[s1.size()];			// Chaque case du tableau est vrai si le marqueur est compris entre les pointeurs i et j
 			for (int j = 0; j < s1.size(); j++)
@@ -350,22 +377,22 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s2) con
 			vector<Marqueur<TypeValeur> > elementsS2;		// Elements entre i et j
 
 			// On déplace le ptr j
-			while(j< s2.getVecteur(s).size() && !pos[s2.getElement(s,j)].empty())
+			while(j< s2.size() && !pos[s2[j]].empty())
 			{
 				// Si on a pas vu l'élément
-				if(find(elementsS2.begin(), elementsS2.end(), s2.getElement(s,j)) == elementsS2.end() )
+				if(find(elementsS2.begin(), elementsS2.end(), s2[j]) == elementsS2.end() )
 				{
 					// on l'ajoute
-					elementsS2.push_back(s2.getElement(s,j));
+					elementsS2.push_back(s2[j]);
 					
 					// On encadre dans s1 avec pos
-					for(int k= 0 ; k<pos[s2.getElement(s,j)].size();k++ )
+					for(int k= 0 ; k<pos[s2[j]].size();k++ )
 					{
-						elementsVusS1[pos[s2.getElement(s,j)][k]]=1; // encadrement (marqué comme vu)
+						elementsVusS1[pos[s2[j]][k]]=1; // encadrement (marqué comme vu)
 					}
 				
 					// on étend à droite
-					while(j+1 < s2.getVecteur(s).size() && find(elementsS2.begin(), elementsS2.end(), s2.getElement(s,j+1)) != elementsS2.end() )
+					while(j+1 < s2.size() && find(elementsS2.begin(), elementsS2.end(), s2[j+1]) != elementsS2.end() )
 					{
 						j++;
 					}
@@ -374,7 +401,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s2) con
 				
 				// Si l'élément avant i se trouve aussi entre i et j, on a pas étendu à gauche
 				// On affiche le résultat si i n'a pas de précédent ou si l'élément d'avant n'est pas entre i et j
-				if(i == 0 || find(elementsS2.begin(), elementsS2.end(), s2.getElement(s,i-1)) == elementsS2.end() )
+				if(i == 0 || find(elementsS2.begin(), elementsS2.end(), s2[i-1]) == elementsS2.end() )
 				{	
 					//parcours du tableau de booléens
 					int l = 0;
@@ -421,9 +448,9 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s2) con
 			}
 		
 			// on a étendu à gauche, on passe les mêmes élements
-			Marqueur<TypeValeur> valprec(s2.getElement(s,i) );
+			Marqueur<TypeValeur> valprec(s2[i]);
 	
-			while(i<s2.getVecteur(s).size() && s2.getElement(s,i) == valprec)
+			while(i<s2.size() && s2[i] == valprec)
 				i++;
 		}
 	}

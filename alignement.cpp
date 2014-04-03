@@ -19,6 +19,20 @@ Alignement::Alignement(int lignes, int colonnes){
 	}
 }
 
+Alignement::Alignement(const Alignement& a){
+	this->lignes = a.lignes;
+	this->colonnes = a.colonnes;
+	
+	this->mat = new int*[lignes];
+	for(int i=0;i<lignes;i++){
+		this->mat[i]=new int[colonnes];
+		
+		for (int j = 0; j < colonnes; j++){
+			this->mat[i][j] = a.mat[i][j];
+		}
+	}
+}
+
 Alignement::~Alignement(){
 	for(int i =0; i<this->lignes;i++){
 		delete [] this->mat[i];

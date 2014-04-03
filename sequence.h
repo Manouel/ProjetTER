@@ -38,7 +38,17 @@ class Sequence{
 		/**
 		 @return Liste des adjacences de la séquence
 		*/
-		std::vector<Adjacence<TypeValeur> > listeAdjacence() const;		
+		std::vector<Adjacence<TypeValeur> > listeAdjacence() const;
+		
+		
+		/**
+		 @action Applique l'algorithme d'alignement local entre la première sous-séquence de this 
+		 		 et la sous-séquence s, puis retourne le score obtenu
+		 @param s sous-séquence à comparer avec this
+		 @param sub, inser, delet, match valeur des couts des opérations
+		 @return un objet alignement contenant la matrice finale
+		*/
+		Alignement calculAlignement(const std::vector<Marqueur<TypeValeur> >& s, int sub, int indel, int match) const;
 		
 	public:
 		
@@ -85,15 +95,16 @@ class Sequence{
 		virtual void affichage() const;
 		
 		
-		/* Algo alignement global */
+		/* Algo alignement local */
 		
 		/**
-		 @action Applique l'algorithme d'alignement global entre la séquence this et une séquence sequBis, puis retourne le score obtenu
-		 @param sequBis sequence à comparer avec this
+		 @action Appelle la méthode privée du calcul de l'algorithme d'alignement local avec la première sous-séquence de this 
+		 		 pour chaque sous-séquence de s
+		 @param s séquence à comparer avec this
 		 @param sub, inser, delet, match valeur des couts des opérations
-		 @return un alignement contenant la matrice finale
 		*/
-		virtual Alignement alignementGlobal(const std::vector<Marqueur<TypeValeur> >& sequBis, int sub, int indel, int match) const;
+		virtual void alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const;
+		
 		
 		/* Algo breakpoints */
 		
@@ -112,7 +123,7 @@ class Sequence{
 		 @param s2 sequence à comparer avec this
 		 @return nombre d'intervalles communs
 		*/
-		virtual int intervallesCommuns(const Sequence& s2) const;
+		virtual int intervallesCommuns(const Sequence<TypeValeur>& s) const;
 		
 };
 
