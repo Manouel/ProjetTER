@@ -269,16 +269,62 @@ int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
 	vector<Adjacence<TypeValeur> > liste2 = s.listeAdjacence();
 	
-	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_difference
-	sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_difference
+	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_intersection
+	sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_intersection
 	
-	vector<Adjacence<TypeValeur> > diff(liste1.size()+liste2.size()); //Création du tableau des différences entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
-	typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière différence retenue
+	vector<Adjacence<TypeValeur> > inter(liste1.size()+liste2.size()); //Création du tableau des intersection entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
+	typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière intersection retenue
 	
-	it = set_difference(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),diff.begin()); //Execution de la différence entre les deux listes, stockage des différences dans diff et stockage du nombre d'adjacences différentes dans it
-	diff.resize(it-diff.begin()); //Modification de la taille de diff pour que celle ci soit égale au nombre de différences stockées
+	it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
+	inter.resize(it-inter.begin()); //Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
 	
-	return diff.size(); //Nombre de différences retourné
+	extern bool log;
+	extern string nomFichier;
+	ofstream fichier;
+	
+	if(log==true){
+		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
+		if(!fichier){
+			cerr<<"Erreur lors de l'ouverture du fichier "<<nomFichier<<endl;
+		}
+		
+		//Affichage de la date du jour
+		struct tm date;
+		time_t maintenant;
+		time(&maintenant);
+		date=*localtime(&maintenant);
+		fichier<<"========================================================================"<<endl;
+		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
+		fichier<<"Algorithme : Breakpoint"<<endl;
+		fichier<<"Sequence 1 : ";
+		this->affichage(fichier);
+		fichier<<endl<<"Sequence 2 : ";
+		s.affichage(fichier );
+		fichier<<endl;
+		fichier<<"========================================================================"<<endl;
+		
+		//affichage de l'intersection
+		fichier << "Breakpoints communs aux 2 sequences : "<< endl ;
+		
+		for(it= inter.begin(); it!=inter.end(); it++ )
+		{
+			fichier <<"\t";
+			it->getMarqueur1().affiche(fichier);
+			it->getMarqueur2().affiche(fichier);
+			fichier << endl;
+		}
+		
+		int scoreAbsolu = inter.size();
+		int scoreRelatif = inter.size()/this->getVecteur(0).size();
+		
+		fichier << endl <<"Score absolu : "<< scoreAbsolu << endl;
+		fichier <<"Score relatif : " << scoreRelatif << endl ;
+		
+		
+		
+	}
+	
+	return inter.size(); //Nombre d'intersection retourné
 }
 
 /*
