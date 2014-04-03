@@ -92,7 +92,7 @@ class Sequence{
 		*/
 		virtual int save(const std::string& nomFichier,char delim);
 		
-		virtual void affichage() const;
+		virtual void affichage(std::ostream& os) const;
 		
 		
 		/* Algo alignement local */
