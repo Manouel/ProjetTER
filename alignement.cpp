@@ -56,6 +56,7 @@ void Alignement::setElement(int i, int j, int val){
 
 void Alignement::affiche(ostream& os) const{
 	for(int i=0;i<this->lignes;i++){
+		os << "\t";
 		for(int j=0; j<this->colonnes;j++){
 			os<<this->mat[i][j]<<" ";
 		}

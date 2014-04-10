@@ -144,6 +144,17 @@ vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence() const{
 }
 
 template<typename TypeValeur>
+vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence(int i) const
+{
+	vector<Adjacence<TypeValeur> > liste;
+	for(int j=0; j+1<this->getVecteur(i).size();j++){
+			Adjacence<TypeValeur> a(this->getElement(i, j),this->getElement(i, j+1));
+			liste.push_back(a);
+	}
+	return liste;
+}
+
+template<typename TypeValeur>
 Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<TypeValeur> >& s, int sub, int indel, int match) const
 {
 	int gauche; //valeur si on vient de la gauche
@@ -281,10 +292,22 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 	{
 		Alignement matrice = this->calculAlignement(s.getVecteur(i), sub, indel, match);
 		if(log==true){
+		
+			fichier<<"Sequence 2."<<i+1<<" : ";
+			for(int j=0; j<s.getVecteur(i).size();j++){
+				
+				s.getElement(i,j).affiche(fichier);
+				fichier<<" ";
+			}
+			fichier<<endl;
+		
 			matrice.affiche(fichier<<endl);
+			fichier << endl;
+			
 			if (indel < 0)
-				fichier<< "Score alignement local : " << matrice.getResultat() << endl;
-			else fichier<< "Distance alignement local : " << matrice.getResultat() << endl;
+				fichier<< "\tScore alignement local : " << matrice.getResultat() << endl << endl;
+			else 
+				fichier<< "\tDistance alignement local : " << matrice.getResultat() << endl << endl;
 		}
 		
 		if (indel < 0)
@@ -300,19 +323,7 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 
 template<typename TypeValeur>
 int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
-	
-	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
-	vector<Adjacence<TypeValeur> > liste2 = s.listeAdjacence();
-	
-	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_intersection
-	sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_intersection
-	
-	vector<Adjacence<TypeValeur> > inter(liste1.size()+liste2.size()); //Création du tableau des intersection entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
-	typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière intersection retenue
-	
-	it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
-	inter.resize(it-inter.begin()); //Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
-	
+
 	extern bool log;
 	extern string nomFichier;
 	ofstream fichier;
@@ -340,26 +351,57 @@ int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 		
 		//affichage de l'intersection
 		fichier << "Breakpoints communs aux 2 sequences : "<< endl ;
+	}
+	
+	int nbBreakpoints = 0;
+	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
+	
+	for (int i = 0; i < s.nbSousSeq(); i++)
+	{
+		vector<Adjacence<TypeValeur> > liste2 = s.listeAdjacence(i);
+	
+		sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_intersection
+		sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_intersection
+	
+		vector<Adjacence<TypeValeur> > inter(liste1.size()+liste2.size()); //Création du tableau des intersection entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
+		typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière intersection retenue
+	
+		it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
+		inter.resize(it-inter.begin()); //Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
+		nbBreakpoints += inter.size();
 		
-		for(it= inter.begin(); it!=inter.end(); it++ )
-		{
-			fichier <<"\t";
-			it->getMarqueur1().affiche(fichier);
-			it->getMarqueur2().affiche(fichier);
-			fichier << endl;
+		if(log==true){
+		
+			fichier<<"\tSequence 2."<<i+1<<" : ";
+			for(int j=0; j<s.getVecteur(i).size();j++){
+				
+				s.getElement(i,j).affiche(fichier);
+				fichier<<" ";
+			}
+			fichier<<endl;
+			
+			for(it= inter.begin(); it!=inter.end(); it++ )
+			{
+				fichier <<"\t\t";
+				it->getMarqueur1().affiche(fichier);
+				fichier << " ";
+				it->getMarqueur2().affiche(fichier);
+				fichier << endl;
+			}
+		
+			int scoreAbsolu = inter.size();
+			int scoreRelatif = inter.size()/this->getVecteur(0).size();
+		
+			fichier << endl <<"\tScore absolu : "<< scoreAbsolu << endl;
+			fichier <<"\tScore relatif : " << scoreRelatif << endl << endl;
 		}
-		
-		int scoreAbsolu = inter.size();
-		int scoreRelatif = inter.size()/this->getVecteur(0).size();
-		
-		fichier << endl <<"Score absolu : "<< scoreAbsolu << endl;
-		fichier <<"Score relatif : " << scoreRelatif << endl ;
-		
-		
+	}
+	
+	if(log==true){
 		fichier.close();
 	}
 	
-	return inter.size(); //Nombre d'intersection retourné
+	return nbBreakpoints; //Nombre d'intersection retourné
 }
 
 /*

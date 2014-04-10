@@ -38,7 +38,13 @@ class Sequence{
 		/**
 		 @return Liste des adjacences de la séquence
 		*/
-		std::vector<Adjacence<TypeValeur> > listeAdjacence() const;
+		virtual std::vector<Adjacence<TypeValeur> > listeAdjacence() const;
+		
+		/**
+		 @param Indice de la sous-séquence
+		 @return Liste des adjacences de la sous-séquence i
+		*/
+		virtual std::vector<Adjacence<TypeValeur> > listeAdjacence(int i) const;
 		
 		
 		/**
@@ -48,7 +54,7 @@ class Sequence{
 		 @param sub, inser, delet, match valeur des couts des opérations
 		 @return un objet alignement contenant la matrice finale
 		*/
-		Alignement calculAlignement(const std::vector<Marqueur<TypeValeur> >& s, int sub, int indel, int match) const;
+		virtual Alignement calculAlignement(const std::vector<Marqueur<TypeValeur> >& s, int sub, int indel, int match) const;
 		
 	public:
 		
