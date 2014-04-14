@@ -20,11 +20,12 @@ using namespace std;
 
 
 bool log = false;
+bool logDetaille=false;
 string nomFichier="out.txt";
 /**
 
-	f / s fichier/sequence  f / s fichier/sequence  separateur algo [log] [sortie]
-	en ligne de commande : onligation de mettre le signe
+	f / s fichier/sequence  f / s fichier/sequence  separateur algo [log : ls/ld] [sortie]
+	en ligne de commande : obligation de mettre le signe
 */
 
 int main(int argc, char *argv[])
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
 	
 	if (argc < 7 || argc>9)
 	{
-		cerr << "Mauvais nombre d'arguments ! ( type file/seq type file/seq separateur algo [l] [nomfichier])" << endl;
+		cerr << "Mauvais nombre d'arguments ! ( type file/seq type file/seq separateur algo [ls/ld] [nomfichier])" << endl;
 	}
 	
 	char separateur = argv[5][0];
@@ -63,14 +64,15 @@ int main(int argc, char *argv[])
 		seq2.load(argv[4], separateur);
 	}
 	
-	if (argc >= 8  && strcmp(argv[7], "l") == 0)
+	if (argc >= 8  && (strcmp(argv[7], "ls") == 0 ||strcmp(argv[7], "ld") == 0))
 	{
-		
 		log = true;
 		if(argc==9){
 			nomFichier=argv[8];
 		}
-		
+		if(strcmp(argv[7], "ld") == 0 ){
+			logDetaille=true;
+		}	
 	}	
 
 	
@@ -90,8 +92,8 @@ int main(int argc, char *argv[])
 	}
 	else if(strcmp(argv[6], "BP") == 0)
 	{
-		int nbBreakpoints = seq1.breakpoints(seq2);
-		cout << "Nombre de breakpoints : " << nbBreakpoints << endl;
+		int nbAdjacencesCommunes = seq1.adjacencesCommunes(seq2);
+		cout << "Nombre d'adjacences communes : " << nbAdjacencesCommunes << endl;
 	}
 	else if(strcmp(argv[6], "IC") == 0)
 	{

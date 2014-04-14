@@ -120,14 +120,14 @@ class Sequence{
 		virtual void alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const;
 		
 		
-		/* Algo breakpoints */
+		/* Algo adjacences communes */
 		
 		/**
-		 @action Retourne le nombre d'adjacences différentes entre la séquence this et une séquence s
+		 @action Retourne le nombre d'adjacences communes entre la séquence this et une séquence s
 		 @param s sequence à comparer avec this
-		 @return nombre d'adjacences différentes
+		 @return nombre d'adjacences comm
 		*/
-		virtual int breakpoints(const Sequence<TypeValeur>& s) const;
+		virtual int adjacencesCommunes(const Sequence<TypeValeur>& s) const;
 		
 		
 		/* Intervalles communs */
