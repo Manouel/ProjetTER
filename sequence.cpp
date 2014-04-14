@@ -11,6 +11,7 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+#include <sstream>
 #include <algorithm>
 #include <time.h>
 #include "sequence.h"
@@ -25,12 +26,8 @@ Sequence<TypeValeur>::Sequence(){
 }
 
 template<typename TypeValeur>
-Sequence<TypeValeur>::Sequence(const string& nomFichier, char delim){
-	ajoutSousSeq();
-	if (!load(nomFichier, delim))
-	{
-		cerr << "Erreur du chargement depuis le fichier " << nomFichier << endl;
-	}
+Sequence<TypeValeur>::Sequence(const string& seq, char delim){
+	remplirSequence(seq, delim);	
 }
 
 template<typename TypeValeur>
@@ -80,26 +77,82 @@ void Sequence<TypeValeur>::affichage(ostream& os) const{
 }
 
 template<typename TypeValeur>
+void Sequence<TypeValeur>::remplirSequence(const std::string& seq, char delim){
+	
+	char ori;
+	char premierCar;
+	TypeValeur val;
+	stringstream ss(seq);
+	
+	while (ss >> premierCar)
+	{
+		if (premierCar == delim)
+		{
+			this->ajoutSousSeq();
+		
+		}
+		else
+		{
+			if(premierCar=='+' || premierCar=='-')
+			{
+			
+				ori=premierCar;
+			
+			}
+			else
+			{ //Sinon ça veut dire qu'on va mettre comme orientation + par défaut
+
+				ori='+';
+				ss.seekg(-1,ios::cur);
+			
+			}
+			
+			ss >> val;
+			Marqueur<TypeValeur> m(val, ori);
+	
+			this->ajoutElement(m);
+		}
+	}
+}
+
+template<typename TypeValeur>
 int Sequence<TypeValeur>::load(const string& nomFichier, char delim){
 	ifstream fichier(nomFichier.c_str());
-	if (!fichier)
+	if (!fichier){
 		return 0;
+	}
 	
+	char premierCar;
 	char ori;
 	TypeValeur val;
 	
 	/* Lecture du signe puis de la valeur du marqueur */
-	while (fichier >> ori)
+	while (fichier >> premierCar)
 	{
-		if (ori == delim)
+		if (premierCar == delim)
 		{
 			this->ajoutSousSeq();
+		
 		}
 		else
 		{
+			if(premierCar=='+' || premierCar=='-')
+			{
+			
+				ori=premierCar;
+			
+			}
+			else
+			{ //Sinon ça veut dire qu'on va mettre comme orientation + par défaut
+
+				ori='+';
+				fichier.seekg(-1,ios::cur);
+			
+			}
+			
 			fichier >> val;
 			Marqueur<TypeValeur> m(val, ori);
-			
+	
 			this->ajoutElement(m);
 		}
 	}
@@ -601,7 +654,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 								cpt++;
 								if(log==true){
 									
-									fichier <<"\t"<< debut+1 << " - " << fin+1 << " - " << i+1 << " - " << j+1 << endl;
+									fichier <<"\t("<< debut+1 << " - " << fin+1 << ") - (" << i+1 << " - " << j+1 <<")"<< endl;
 								}
 								else{ //A ENLEVER PLUS TARD
 									cout<< debut+1 << " - " << fin+1 << " - " << i+1 << " - " << j+1 << endl;
