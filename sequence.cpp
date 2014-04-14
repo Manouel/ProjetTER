@@ -336,6 +336,9 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 		this->affichage(fichier);
 		fichier<<endl<<"Sequence 2 : ";
 		s.affichage(fichier);
+		fichier<<endl<<"Coût substitution : "<<sub<<endl;
+		fichier<<"Coût insertion/deletion : "<<indel<<endl;
+		fichier<<"Coût de correspondance : "<<match<<endl;
 		fichier<<endl;
 		fichier<<"========================================================================"<<endl;
 	}
