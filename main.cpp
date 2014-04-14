@@ -21,30 +21,60 @@ using namespace std;
 
 bool log = false;
 string nomFichier="out.txt";
+/**
 
+	f / s fichier/sequence  f / s fichier/sequence  separateur algo [log] [sortie]
+	en ligne de commande : onligation de mettre le signe
+*/
 
 int main(int argc, char *argv[])
 {
-	if (argc != 5 && argc != 6 && argc !=7)
+	
+	if (argc < 7 || argc>9)
 	{
-		cerr << "Mauvais nombre d'arguments ! (file1 file2 separateur algo [l] [nomfichier])" << endl;
+		cerr << "Mauvais nombre d'arguments ! ( type file/seq type file/seq separateur algo [l] [nomfichier])" << endl;
 	}
 	
-	char separateur = argv[3][0];
-	Sequence<char> seq1(argv[1], separateur);
-	Sequence<char> seq2(argv[2], separateur);
+	char separateur = argv[5][0];
 	
-	if (argc >= 6  && strcmp(argv[5], "l") == 0)
+	Sequence<string> seq1;
+	Sequence<string> seq2;
+	
+	if(strcmp(argv[1],"s")==0){
+		
+		seq1.remplirSequence(argv[2], separateur);
+		
+
+	}
+	
+	else{
+		
+		seq1.load(argv[2],separateur);
+	
+		
+	}
+	
+	if(strcmp(argv[3],"s")==0){
+		
+		seq2.remplirSequence(argv[4], separateur);
+		
+	}
+	else{
+		seq2.load(argv[4], separateur);
+	}
+	
+	if (argc >= 8  && strcmp(argv[7], "l") == 0)
 	{
+		
 		log = true;
-		if(argc==7){
-			nomFichier=argv[6];
+		if(argc==9){
+			nomFichier=argv[8];
 		}
 		
 	}	
 
 	
-	if (strcmp(argv[4], "AL") == 0)
+	if (strcmp(argv[6], "AL") == 0)
 	{
 		int sub, indel, match;
 	
@@ -58,16 +88,17 @@ int main(int argc, char *argv[])
 		
 		seq1.alignementLocal(seq2, sub, indel, match);
 	}
-	else if(strcmp(argv[4], "BP") == 0)
+	else if(strcmp(argv[6], "BP") == 0)
 	{
 		int nbBreakpoints = seq1.breakpoints(seq2);
 		cout << "Nombre de breakpoints : " << nbBreakpoints << endl;
 	}
-	else if(strcmp(argv[4], "IC") == 0)
+	else if(strcmp(argv[6], "IC") == 0)
 	{
 		cout << seq1.intervallesCommuns(seq2) << endl;
 	}
 	
-
 	return 0;
 }
+
+
