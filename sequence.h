@@ -19,6 +19,7 @@ sous-séquences de marqueurs.
 #include "marqueur.h"
 #include "adjacence.h"
 #include "alignement.h"
+#include "exceptionFichier.h"
 
 template<typename TypeValeur>
 class Sequence{
@@ -97,14 +98,14 @@ class Sequence{
 		  @param Nom du fichier à lire 
 		  @param Délimiteur indiquant le changement de sous-séquences 
 		*/
-		virtual int load(const std::string& nomFichier, char delim);
+		virtual void load(const std::string& nomFichier, char delim) throw(ExceptionFichier);
 		
 		/**
 		  @action Ecris le contenu d'une Séquence dans le fichier
 		  @param Nom du fichier à écrire 
 		  @param Délimiteur indiquant le changement de sous-séquences 
 		*/
-		virtual int save(const std::string& nomFichier,char delim);
+		virtual void save(const std::string& nomFichier,char delim) throw(ExceptionFichier);
 		
 		virtual void affichage(std::ostream& os) const;
 		
@@ -117,7 +118,7 @@ class Sequence{
 		 @param s séquence à comparer avec this
 		 @param sub, inser, delet, match valeur des couts des opérations
 		*/
-		virtual void alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const;
+		virtual void alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const throw(ExceptionFichier);
 		
 		
 		/* Algo adjacences communes */
@@ -127,7 +128,7 @@ class Sequence{
 		 @param s sequence à comparer avec this
 		 @return nombre d'adjacences comm
 		*/
-		virtual int adjacencesCommunes(const Sequence<TypeValeur>& s) const;
+		virtual int adjacencesCommunes(const Sequence<TypeValeur>& s) const throw(ExceptionFichier);
 		
 		
 		/* Intervalles communs */
@@ -137,7 +138,7 @@ class Sequence{
 		 @param s2 sequence à comparer avec this
 		 @return nombre d'intervalles communs
 		*/
-		virtual int intervallesCommuns(const Sequence<TypeValeur>& s) const;
+		virtual int intervallesCommuns(const Sequence<TypeValeur>& s) const throw(ExceptionFichier);
 		
 };
 
