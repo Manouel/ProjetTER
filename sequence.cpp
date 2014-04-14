@@ -314,7 +314,7 @@ Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<Typ
 template<typename TypeValeur>
 void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const
 {
-	extern bool log;
+	extern bool log,logDetaille;
 	extern string nomFichier;
 	ofstream fichier;
 	
@@ -331,15 +331,17 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 		date=*localtime(&maintenant);
 		fichier<<"========================================================================"<<endl;
 		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
-		fichier<<"Algorithme : Alignement local"<<endl;
-		fichier<<"Sequence 1 : ";
-		this->affichage(fichier);
-		fichier<<endl<<"Sequence 2 : ";
-		s.affichage(fichier);
+		fichier<<"Algorithme : Alignement local";
+		if(logDetaille){
+			fichier<<endl<<"Sequence 1 : ";
+			this->affichage(fichier);
+			fichier<<endl<<"Sequence 2 : ";
+			s.affichage(fichier);
+			fichier<<endl;
+		}
 		fichier<<endl<<"Coût substitution : "<<sub<<endl;
 		fichier<<"Coût insertion/deletion : "<<indel<<endl;
 		fichier<<"Coût de correspondance : "<<match<<endl;
-		fichier<<endl;
 		fichier<<"========================================================================"<<endl;
 	}
 	
@@ -347,23 +349,25 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 	for (int i = 0; i < s.nbSousSeq(); i++)
 	{
 		Alignement matrice = this->calculAlignement(s.getVecteur(i), sub, indel, match);
-		if(log==true){
-		
-			fichier<<"Sequence 2."<<i+1<<" : ";
-			for(int j=0; j<s.getVecteur(i).size();j++){
+		if(log){
+			if(logDetaille){
+				fichier<<"Sequence 2."<<i+1<<" : ";
+				for(int j=0; j<s.getVecteur(i).size();j++){
 				
-				s.getElement(i,j).affiche(fichier);
-				fichier<<" ";
-			}
-			fichier<<endl;
+					s.getElement(i,j).affiche(fichier);
+					fichier<<" ";
+				}
+				fichier<<endl;
 		
-			matrice.affiche(fichier<<endl);
-			fichier << endl;
-			
-			if (indel < 0)
+				matrice.affiche(fichier<<endl);
+				fichier << endl;
+			}
+			if (indel < 0){
 				fichier<< "\tScore alignement local : " << matrice.getResultat() << endl << endl;
-			else 
+			}
+			else{ 
 				fichier<< "\tDistance alignement local : " << matrice.getResultat() << endl << endl;
+			}
 		}
 		
 		if (indel < 0)
@@ -378,9 +382,9 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
+int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) const{
 
-	extern bool log;
+	extern bool log,logDetaille;
 	extern string nomFichier;
 	ofstream fichier;
 	
@@ -398,18 +402,20 @@ int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 		fichier<<"========================================================================"<<endl;
 		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
 		fichier<<"Algorithme : Breakpoint"<<endl;
-		fichier<<"Sequence 1 : ";
-		this->affichage(fichier);
-		fichier<<endl<<"Sequence 2 : ";
-		s.affichage(fichier );
-		fichier<<endl;
+		if(logDetaille){
+			fichier<<"Sequence 1 : ";
+			this->affichage(fichier);
+			fichier<<endl<<"Sequence 2 : ";
+			s.affichage(fichier );
+			fichier<<endl;
+		}
 		fichier<<"========================================================================"<<endl;
 		
 		//affichage de l'intersection
-		fichier << "Breakpoints communs aux 2 sequences : "<< endl ;
+		fichier << "adjacences communes aux 2 sequences : "<< endl ;
 	}
 	
-	int nbBreakpoints = 0;
+	int nbAdjacencesCommunes = 0;
 	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
 	
 	for (int i = 0; i < s.nbSousSeq(); i++)
@@ -424,18 +430,19 @@ int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 	
 		it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
 		inter.resize(it-inter.begin()); //Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
-		nbBreakpoints += inter.size();
+		nbAdjacencesCommunes += inter.size();
 		
-		if(log==true){
-		
-			fichier<<"\tSequence 2."<<i+1<<" : ";
-			for(int j=0; j<s.getVecteur(i).size();j++){
-				
-				s.getElement(i,j).affiche(fichier);
-				fichier<<" ";
-			}
-			fichier<<endl;
+		if(log){
+			if(logDetaille){
+				fichier<<"\tSequence 2."<<i+1<<" : ";
 			
+				for(int j=0; j<s.getVecteur(i).size();j++){
+				
+					s.getElement(i,j).affiche(fichier);
+					fichier<<" ";
+				}
+				fichier<<endl;
+			}
 			for(it= inter.begin(); it!=inter.end(); it++ )
 			{
 				fichier <<"\t\t";
@@ -446,7 +453,7 @@ int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 			}
 		
 			int scoreAbsolu = inter.size();
-			int scoreRelatif = inter.size()/this->getVecteur(0).size();
+			float scoreRelatif = (float)scoreAbsolu/(this->getVecteur(i).size()-1);
 		
 			fichier << endl <<"\tScore absolu : "<< scoreAbsolu << endl;
 			fichier <<"\tScore relatif : " << scoreRelatif << endl << endl;
@@ -457,7 +464,7 @@ int Sequence<TypeValeur>::breakpoints(const Sequence<TypeValeur>& s) const{
 		fichier.close();
 	}
 	
-	return nbBreakpoints; //Nombre d'intersection retourné
+	return nbAdjacencesCommunes; //Nombre d'intersection retourné
 }
 
 /*
@@ -471,7 +478,7 @@ void Sequence<TypeValeur>::preproscessing(vector<Marqueur<TypeValeur>*>& s1, Seq
 template<typename TypeValeur>
 int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) const
 {	
-	extern bool log;
+	extern bool log, logDetaille;
 	extern string nomFichier;
 	ofstream fichier;
 	
@@ -490,11 +497,13 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		fichier<<"========================================================================"<<endl;
 		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
 		fichier<<"Algorithme : Intervalles Communs"<<endl;
-		fichier<<"Sequence 1 : ";
-		this->affichage(fichier);
-		fichier<<endl<<"Sequence 2 : ";
-		s.affichage(fichier );
-		fichier<<endl;
+		if(logDetaille){
+			fichier<<"Sequence 1 : ";
+			this->affichage(fichier);
+			fichier<<endl<<"Sequence 2 : ";
+			s.affichage(fichier );
+			fichier<<endl;
+		}
 		fichier<<"========================================================================"<<endl;
 	}
 
@@ -559,13 +568,16 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	{	
 		int cpt=0;
 		if(log==true){
-			fichier<<"Sequence 2."<<t+1<<" : ";
-			for(int i=0; i<s.getVecteur(t).size();i++){
+			if(logDetaille){
+				fichier<<"Sequence 2."<<t+1<<" : ";
+			
+				for(int i=0; i<s.getVecteur(t).size();i++){
 				
-				s.getElement(t,i).affiche(fichier);
-				fichier<<" ";
+					s.getElement(t,i).affiche(fichier);
+					fichier<<" ";
+				}
+				fichier<<endl;
 			}
-			fichier<<endl;
 		}
 		vector<Marqueur<TypeValeur> > s2;
 		
