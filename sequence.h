@@ -59,7 +59,7 @@ class Sequence{
 	public:
 		
 		Sequence();
-		Sequence(const std::string& nomFichier, char delim);
+		Sequence(const std::string& seq, char delim);
 		//Sequence(const Sequence& sequ);
 		virtual ~Sequence();
 		
@@ -83,6 +83,14 @@ class Sequence{
 		virtual void ajoutSousSeq();
 		//virtual void supElement(Marqueur<TypeValeur>& t);
 		//virtual bool rechercheElement(const Marqueur<TypeValeur>& t);
+		
+		
+		/**
+			@param seq chaîne de caractères contenant la séquence
+			@param delim délimiteur indiquant le changement de séquence
+			@action remplit this avec les données de seq
+		*/
+		virtual void remplirSequence(const std::string& seq, char delim);
 		
 		/**
 		  @action Créé une Séquence à partir du fichier
