@@ -55,10 +55,15 @@ bool operator== (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a
 		{
 			if(a1.getMarqueur2().getValeur()==a2.getMarqueur1().getValeur())
 			{
-				return true;
+				if(a1.getMarqueur1().getOrientation()!=a2.getMarqueur2().getOrientation())
+				{
+					if(a1.getMarqueur2().getOrientation()!=a2.getMarqueur1().getOrientation())
+					{
+						return true;
+					}
+				}
 			}
 		}
-	
 	}
 	return false;
 }
