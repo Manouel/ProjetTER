@@ -116,10 +116,10 @@ void Sequence<TypeValeur>::remplirSequence(const std::string& seq, char delim){
 }
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::load(const string& nomFichier, char delim){
+void Sequence<TypeValeur>::load(const string& nomFichier, char delim) throw(ExceptionFichier){
 	ifstream fichier(nomFichier.c_str());
 	if (!fichier){
-		return 0;
+		throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
 	}
 	
 	char premierCar;
@@ -158,15 +158,15 @@ int Sequence<TypeValeur>::load(const string& nomFichier, char delim){
 	}
 	
 	fichier.close();
-	return 1;
 }
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::save(const string& nomFichier,char delim)
+void Sequence<TypeValeur>::save(const string& nomFichier,char delim) throw(ExceptionFichier)
 {
 	ofstream fichier(nomFichier.c_str());
-	if (!fichier)
-		return 0;
+	if (!fichier){
+		throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
+	}
 	
 	for(int i = 0; i<nbSousSeq(); i++)
 	{
@@ -181,7 +181,6 @@ int Sequence<TypeValeur>::save(const string& nomFichier,char delim)
 	}
 	
 	fichier.close();
-	return 1;
 }
 
 template<typename TypeValeur>
@@ -312,7 +311,7 @@ Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<Typ
 
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const
+void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const throw(ExceptionFichier)
 {
 	extern bool log,logDetaille;
 	extern string nomFichier;
@@ -321,7 +320,7 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 	if(log==true){
 		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
 		if(!fichier){
-			cerr<<"Erreur lors de l'ouverture du fichier "<<nomFichier<<endl;
+			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
 		}
 		
 		//Affichage de la date du jour
@@ -382,7 +381,7 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) const{
+int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) const throw(ExceptionFichier){
 
 	extern bool log,logDetaille;
 	extern string nomFichier;
@@ -391,7 +390,7 @@ int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) cons
 	if(log==true){
 		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
 		if(!fichier){
-			cerr<<"Erreur lors de l'ouverture du fichier "<<nomFichier<<endl;
+			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
 		}
 		
 		//Affichage de la date du jour
@@ -476,7 +475,7 @@ void Sequence<TypeValeur>::preproscessing(vector<Marqueur<TypeValeur>*>& s1, Seq
 }*/
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) const
+int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) const throw(ExceptionFichier)
 {	
 	extern bool log, logDetaille;
 	extern string nomFichier;
@@ -486,7 +485,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	if(log==true){
 		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
 		if(!fichier){
-			cerr<<"Erreur lors de l'ouverture du fichier "<<nomFichier<<endl;
+			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
 		}
 		
 		//Affichage de la date du jour

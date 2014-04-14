@@ -15,6 +15,7 @@ algorithmes de comparaison.
 #include "sequence.h"
 #include "adjacence.h"
 #include "alignement.h"
+#include "exceptionFichier.h"
 
 using namespace std;
 
@@ -50,8 +51,13 @@ int main(int argc, char *argv[])
 	
 	else{
 		
-		seq1.load(argv[2],separateur);
-	
+		try{
+			seq1.load(argv[2],separateur);
+		}
+		catch(ExceptionFichier e){
+			cerr<<"ERREUR Sequence 1 : "<<e.verdict()<<endl;
+			return 0;
+		}
 		
 	}
 	
@@ -61,7 +67,13 @@ int main(int argc, char *argv[])
 		
 	}
 	else{
-		seq2.load(argv[4], separateur);
+		try{
+			seq2.load(argv[4],separateur);
+		}
+		catch(ExceptionFichier e){
+			cerr<<"ERREUR Sequence 2 : "<<e.verdict()<<endl;
+			return 0;
+		}
 	}
 	
 	if (argc >= 8  && (strcmp(argv[7], "ls") == 0 ||strcmp(argv[7], "ld") == 0))
@@ -87,17 +99,34 @@ int main(int argc, char *argv[])
 		cout << "Veuillez entrer le cout de correspondance de l'alignement local : ";
 		cin >> match;
 		
-		
-		seq1.alignementLocal(seq2, sub, indel, match);
+		try{
+			seq1.alignementLocal(seq2, sub, indel, match);
+		}
+		catch(ExceptionFichier e){
+			cerr<<"ERREUR Fichier log Alignement Local : "<<e.verdict()<<endl;
+			return 0;
+		}
 	}
 	else if(strcmp(argv[6], "BP") == 0)
 	{
-		int nbAdjacencesCommunes = seq1.adjacencesCommunes(seq2);
-		cout << "Nombre d'adjacences communes : " << nbAdjacencesCommunes << endl;
+		try{
+			int nbAdjacencesCommunes = seq1.adjacencesCommunes(seq2);
+			cout << "Nombre d'adjacences communes : " << nbAdjacencesCommunes << endl;
+		}
+		catch(ExceptionFichier e){
+			cerr<<"ERREUR Fichier log Adjacences communes : "<<e.verdict()<<endl;
+			return 0;
+		}
 	}
 	else if(strcmp(argv[6], "IC") == 0)
 	{
-		cout << seq1.intervallesCommuns(seq2) << endl;
+		try{
+			cout << seq1.intervallesCommuns(seq2) << endl;
+		}
+		catch(ExceptionFichier e){
+			cerr<<"ERREUR Fichier log Intervalles Communs : "<<e.verdict()<<endl;
+			return 0;
+		}
 	}
 	
 	return 0;
