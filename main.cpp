@@ -11,11 +11,13 @@ algorithmes de comparaison.
 #include <iostream>
 #include <string>
 #include <string.h>
+#include <time.h>
 #include "marqueur.h"
 #include "sequence.h"
 #include "adjacence.h"
 #include "alignement.h"
 #include "exceptionFichier.h"
+#include <fstream>
 
 using namespace std;
 
@@ -26,6 +28,7 @@ string nomFichier="out.txt";
 /**
 
 	f / s fichier/sequence  f / s fichier/sequence  separateur algo [log : ls/ld] [sortie]
+	exemple : s "+10 +3 +5" f monfichier.txt '&' AC ls sortie.txt 
 	en ligne de commande : obligation de mettre le signe
 */
 
@@ -84,7 +87,32 @@ int main(int argc, char *argv[])
 		}
 		if(strcmp(argv[7], "ld") == 0 ){
 			logDetaille=true;
-		}	
+		}
+		ofstream fichier;
+		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
+		if(!fichier){
+			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
+		}
+		fichier<<"========================================================================"<<endl;
+		//Affichage de la date du jour
+		struct tm date;
+		time_t maintenant;
+		time(&maintenant);
+		date=*localtime(&maintenant);
+		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
+		
+		//Affichage des noms de fichier
+		if(strcmp(argv[1],"f")==0){
+			fichier<<"Sequence 1 : "<<argv[2]<<endl;
+			if(strcmp(argv[3],"f")==0){
+				fichier<<"Sequence 2 : "<<argv[4]<<endl;
+			}
+		}
+		else {
+			if(strcmp(argv[3],"f")==0){
+				fichier<<"Sequence 1 : "<<argv[4]<<endl;
+			}
+		}
 	}	
 
 	
@@ -107,7 +135,7 @@ int main(int argc, char *argv[])
 			return 0;
 		}
 	}
-	else if(strcmp(argv[6], "BP") == 0)
+	else if(strcmp(argv[6], "AC") == 0)
 	{
 		try{
 			int nbAdjacencesCommunes = seq1.adjacencesCommunes(seq2);
