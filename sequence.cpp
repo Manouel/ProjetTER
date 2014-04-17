@@ -295,16 +295,6 @@ Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<Typ
 			}
 		}
 	}
-	
-	for(int i=0;i<this->getVecteur(0).size()+1;i++)
-	{
-		for(int j=0;j<s.size()+1;j++)
-		{
-			cout<<mat.getElement(i,j)<<" ";
-		}
-		cout<<"\n";
-	}
-	cout<<endl;
 		
 	return mat; //On retourne la dernière case de la matrice (le score)
 }
@@ -486,7 +476,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	}
 
 	//Partie 1: Init
-		
+	
 	// Création de nouvelles séquences ne prenant pas en compte les signes
 	vector<Marqueur<TypeValeur> > s1;
 
@@ -497,9 +487,13 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		s1.push_back(m);
 	}
 	
-	map<Marqueur<TypeValeur>,vector<int> > pos;			// Liste des positions de chaque Marqueur dans s1
-	int num[s1.size()][s1.size()];						// Nombre de marqueurs différents entre les pos i et j dans s1
 	
+	map<Marqueur<TypeValeur>,vector<int> > pos;			// Liste des positions de chaque Marqueur dans s1
+	int **num=new int*[s1.size()];				// Nombre de marqueurs différents entre les pos i et j dans s1
+
+	for(int i=0;i<s1.size();i++){
+		num[i]=new int[s1.size()];
+	}
 	
 	// Remplissage de pos : parcours de s1 et ajout des positions pour chaque marqueur
 	for(int i=0; i< s1.size();i++){
@@ -509,6 +503,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	// Remplissage de num : calcul du nombre de marqueurs différents entre chaque indices de s1
 	for(int i=0; i<s1.size();i++){
 		for(int j=0; j<s1.size();j++){
+			
 			if(i == j){					// Entre l'indice i et i, 1 marqueur donc 1 différence
 				num[i][j] = 1;
 			}
@@ -530,7 +525,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 			}
 		}
 	}
-
+	
 	// Partie 2: Algo
 	
 	/* Vecteur des résultats, chaque ligne comprend 4 valeurs : 
@@ -668,6 +663,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 				i++;
 			}
 		}
+		
 		if(log==true){
 			fichier<<"Nombre d'intervalles communs : "<<cpt<<endl<<endl;
 		}
@@ -677,6 +673,15 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		fichier<<endl << endl;
 		fichier.close(); //fermeture du ficher car on a fini d'écrire dedans
 	}
+
+	
+	//On libère la mémoire :
+	for(int i =0; i<s1.size();i++){
+		delete [] num[i];
+	}
+	delete [] num;
+	
+	
 	return output.size();
 }
 
