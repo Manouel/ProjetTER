@@ -322,14 +322,7 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 		if(!fichier){
 			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
 		}
-		
-		//Affichage de la date du jour
-		struct tm date;
-		time_t maintenant;
-		time(&maintenant);
-		date=*localtime(&maintenant);
-		fichier<<"========================================================================"<<endl;
-		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
+			
 		fichier<<"Algorithme : Alignement local";
 		if(logDetaille){
 			fichier<<endl<<"Sequence 1 : ";
@@ -393,13 +386,6 @@ int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) cons
 			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
 		}
 		
-		//Affichage de la date du jour
-		struct tm date;
-		time_t maintenant;
-		time(&maintenant);
-		date=*localtime(&maintenant);
-		fichier<<"========================================================================"<<endl;
-		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
 		fichier<<"Algorithme : Breakpoint"<<endl;
 		if(logDetaille){
 			fichier<<"Sequence 1 : ";
@@ -488,13 +474,6 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
 		}
 		
-		//Affichage de la date du jour
-		struct tm date;
-		time_t maintenant;
-		time(&maintenant);
-		date=*localtime(&maintenant);
-		fichier<<"========================================================================"<<endl;
-		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
 		fichier<<"Algorithme : Intervalles Communs"<<endl;
 		if(logDetaille){
 			fichier<<"Sequence 1 : ";
@@ -690,11 +669,11 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 			}
 		}
 		if(log==true){
-			fichier<<"Nombre d'intervales communs : "<<cpt<<endl<<endl;
+			fichier<<"Nombre d'intervalles communs : "<<cpt<<endl<<endl;
 		}
 	}
 	if(log==true){
-		fichier<<"Nombre total d'intervales communs : "<<output.size()<<endl;
+		fichier<<"Nombre total d'intervalles communs : "<<output.size()<<endl;
 		fichier<<endl << endl;
 		fichier.close(); //fermeture du ficher car on a fini d'écrire dedans
 	}
