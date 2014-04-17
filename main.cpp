@@ -17,6 +17,7 @@ algorithmes de comparaison.
 #include "adjacence.h"
 #include "alignement.h"
 #include "exceptionFichier.h"
+#include "logFichier.h"
 #include <fstream>
 
 using namespace std;
@@ -29,11 +30,12 @@ string nomFichier="out.txt";
 
 	f / s fichier/sequence  f / s fichier/sequence  separateur algo [log : ls/ld] [sortie]
 	exemple : s "+10 +3 +5" f monfichier.txt '&' AC ls sortie.txt 
-	en ligne de commande : obligation de mettre le signe
 */
 
 int main(int argc, char *argv[])
 {
+	LogFichier l;
+	l.open("","","","","","");
 	
 	if (argc < 7 || argc>9)
 	{
