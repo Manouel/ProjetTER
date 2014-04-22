@@ -17,7 +17,6 @@ algorithmes de comparaison.
 #include "adjacence.h"
 #include "alignement.h"
 #include "exceptionFichier.h"
-#include "logFichier.h"
 #include <fstream>
 
 using namespace std;
@@ -34,9 +33,6 @@ string nomFichier="out.txt";
 
 int main(int argc, char *argv[])
 {
-	LogFichier l;
-	l.open("","","","","","");
-	
 	if (argc < 7 || argc>9)
 	{
 		cerr << "Mauvais nombre d'arguments ! ( type file/seq type file/seq separateur algo [ls/ld] [nomfichier])" << endl;
