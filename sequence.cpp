@@ -13,6 +13,7 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 #include <stdlib.h>
 #include <sstream>
 #include <algorithm>
+#include <list>
 #include <time.h>
 #include "sequence.h"
 #include "adjacence.h"
@@ -502,22 +503,22 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	
 	// Remplissage de num : calcul du nombre de marqueurs différents entre chaque indices de s1
 	for(int i=0; i<s1.size();i++){
+
+		list<Marqueur<TypeValeur> > present;			// Liste des marqueurs différents présents de i à j
+
 		for(int j=0; j<s1.size();j++){
 			
 			if(i == j){					// Entre l'indice i et i, 1 marqueur donc 1 différence
 				num[i][j] = 1;
+				present.push_back(s1[j]);
 			}
 			else if (j<i){				// Partie vide de la matrice (j,i -> i,j)
 				num[i][j] = 0;
 			}
 			else{						// Calcul du nombre de marqueurs différents entre i et j
-				vector<Marqueur<TypeValeur> > present;			// Liste des marqueurs différents présents de i à j
-				
-				// Parcours des marqueurs de i à j
-				for(int k = i; k<=j;k++){
-					if(find(present.begin(), present.end(), s1[k]) == present.end()){		// Si le marqueur n'existe pas, on l'ajoute
-						present.push_back(s1[k]);
-					}
+
+				if(find(present.begin(), present.end(), s1[j]) == present.end()){		// Si le marqueur n'existe pas, on l'ajoute
+					present.push_back(s1[j]);
 				}
 				
 				// On stocke le nombre de marqueurs différents trouvés
@@ -538,7 +539,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	// Parcours S2
 
 	for (int t = 0; t < s.nbSousSeq(); t++)
-	{	
+	{
 		int cpt=0;
 		if(log==true){
 			if(logDetaille){
@@ -582,7 +583,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 			while(j< s2.size() && !pos[s2[j]].empty())
 			{
 				// Si on a pas vu l'élément
-				if(find(elementsS2.begin(), elementsS2.end(), s2[j]) == elementsS2.end() )
+				if(find(elementsS2.begin(), elementsS2.end(), s2[j]) == elementsS2.end())
 				{
 					// on l'ajoute
 					elementsS2.push_back(s2[j]);
@@ -594,7 +595,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 					}
 				
 					// on étend à droite
-					while(j+1 < s2.size() && find(elementsS2.begin(), elementsS2.end(), s2[j+1]) != elementsS2.end() )
+					while(j+1 < s2.size() && find(elementsS2.begin(), elementsS2.end(), s2[j+1]) != elementsS2.end())
 					{
 						j++;
 					}
@@ -643,9 +644,6 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 								if(log==true){
 									
 									fichier <<"\t("<< debut+1 << " - " << fin+1 << ") - (" << i+1 << " - " << j+1 <<")"<< endl;
-								}
-								else{ //A ENLEVER PLUS TARD
-									cout<< debut+1 << " - " << fin+1 << " - " << i+1 << " - " << j+1 << endl;
 								}
 							}
 						}
