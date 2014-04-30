@@ -10,7 +10,8 @@ Un marqueur est un objet composé d'une valeur et d'une orientation.
 #ifndef MARQUEUR_H
 #define MARQUEUR_H
 
-#include<iostream>
+#include <iostream>
+#include <string>
 
 template<typename TypeValeur>
 class Marqueur
@@ -32,6 +33,12 @@ class Marqueur
 	  virtual void setValeur(TypeValeur val);
 	  virtual void setOrientation(char ori);
 	  
+	  
+	  /**
+	  	@return chaine de caractère contenant l'orientation et la valeur du marqueur
+	  */
+	  virtual std::string toString() const;
+	  
 	  /*
 	  	@param istream& is flot d'entrée
 	  	@action lit dans le flot d'entrée l'orientation suivie de la valeur d'un Marqueur
@@ -42,7 +49,7 @@ class Marqueur
 	  	@param ostream os flot de sortie
 	  	@action affiche dans la sortie standard un Marqueur
 	  */
-	  virtual void affiche(std::ostream& os)const;
+	  virtual void affiche(std::ostream& os) const;
 };
 
 
