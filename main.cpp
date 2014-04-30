@@ -17,14 +17,11 @@ algorithmes de comparaison.
 #include "adjacence.h"
 #include "alignement.h"
 #include "exceptionFichier.h"
+#include "logFichier.h"
 #include <fstream>
 
 using namespace std;
 
-
-bool log = false;
-bool logDetaille=false;
-string nomFichier="out.txt";
 /**
 
 	f / s fichier/sequence  f / s fichier/sequence  separateur algo [log : ls/ld] [sortie]
@@ -44,13 +41,10 @@ int main(int argc, char *argv[])
 	Sequence<string> seq2;
 	
 	if(strcmp(argv[1],"s")==0){
-		
 		seq1.remplirSequence(argv[2], separateur);
-		
-
 	}
 	
-	else{
+	else if (strcmp(argv[1],"f")==0){
 		
 		try{
 			seq1.load(argv[2],separateur);
@@ -63,11 +57,11 @@ int main(int argc, char *argv[])
 	}
 	
 	if(strcmp(argv[3],"s")==0){
-		
+
 		seq2.remplirSequence(argv[4], separateur);
 		
 	}
-	else{
+	else if(strcmp(argv[3],"f")==0){
 		try{
 			seq2.load(argv[4],separateur);
 		}
@@ -79,40 +73,20 @@ int main(int argc, char *argv[])
 	
 	if (argc >= 8  && (strcmp(argv[7], "ls") == 0 ||strcmp(argv[7], "ld") == 0))
 	{
-		log = true;
+		LogFichier::log = true;
 		if(argc==9){
-			nomFichier=argv[8];
+			LogFichier::nomFichier=argv[8];
 		}
 		if(strcmp(argv[7], "ld") == 0 ){
-			logDetaille=true;
+			LogFichier::logDetaille=true;
 		}
-		ofstream fichier;
-		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
-		if(!fichier){
-			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
-		}
-		fichier<<"========================================================================"<<endl;
-		//Affichage de la date du jour
-		struct tm date;
-		time_t maintenant;
-		time(&maintenant);
-		date=*localtime(&maintenant);
-		fichier<<"Date : "<<date.tm_mday<<"/"<<date.tm_mon+1<<"/"<<date.tm_year+1900<<" "<<date.tm_hour<<":"<<date.tm_min<<endl;
-		
-		//Affichage des noms de fichier
-		if(strcmp(argv[1],"f")==0){
-			fichier<<"Sequence 1 : "<<argv[2]<<endl;
-			if(strcmp(argv[3],"f")==0){
-				fichier<<"Sequence 2 : "<<argv[4]<<endl;
-			}
-		}
-		else {
-			if(strcmp(argv[3],"f")==0){
-				fichier<<"Sequence 1 : "<<argv[4]<<endl;
-			}
-		}
-	}	
-
+	}
+	
+	if(LogFichier::log){
+		LogFichier l;
+		l.ecrireEnTete(argv[1], argv[2], argv[3], argv[4], argv[6], seq1.toString(), seq2.toString());
+	}
+	
 	
 	if (strcmp(argv[6], "AL") == 0)
 	{
@@ -125,6 +99,7 @@ int main(int argc, char *argv[])
 		cout << "Veuillez entrer le cout de correspondance de l'alignement local : ";
 		cin >> match;
 		
+
 		try{
 			seq1.alignementLocal(seq2, sub, indel, match);
 		}
@@ -137,7 +112,6 @@ int main(int argc, char *argv[])
 	{
 		try{
 			int nbAdjacencesCommunes = seq1.adjacencesCommunes(seq2);
-			cout << "Nombre d'adjacences communes : " << nbAdjacencesCommunes << endl;
 		}
 		catch(ExceptionFichier e){
 			cerr<<"ERREUR Fichier log Adjacences communes : "<<e.verdict()<<endl;

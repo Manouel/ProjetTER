@@ -6,6 +6,7 @@ Projet: Comparaison de séquences de gènes
 Specification:
 Ce fichier contient l'implémentation des fonctions de la classe Marqueur.
 =========================================================================*/
+#include <sstream>
 #include "marqueur.h"
 
 using namespace std;
@@ -40,6 +41,15 @@ void Marqueur<TypeValeur>::setValeur(TypeValeur val)
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::setOrientation(char ori)
 {this->orientation= ori;}
+
+template<typename TypeValeur>
+string Marqueur<TypeValeur>::toString() const
+{
+	stringstream ss;
+	ss << this->orientation << this->valeur;
+	
+	return ss.str();
+}
 
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::saisie(istream& is){

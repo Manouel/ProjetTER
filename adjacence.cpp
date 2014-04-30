@@ -31,6 +31,13 @@ Marqueur<TypeValeur> Adjacence<TypeValeur>::getMarqueur2() const{
 }
 
 template<typename TypeValeur>
+string Adjacence<TypeValeur>::toString() const
+{
+	string s="( "+getMarqueur1().toString()+" - "+getMarqueur2().toString()+" )";
+	return s;
+}
+
+template<typename TypeValeur>
 void Adjacence<TypeValeur>::affiche() const{
 	cout << "(" << marqueur1.getOrientation() << marqueur1.getValeur() << "|" << marqueur2.getOrientation() << marqueur2.getValeur() << ")"<<endl;
 }

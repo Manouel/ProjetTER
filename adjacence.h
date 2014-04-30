@@ -29,6 +29,11 @@ public:
 	virtual Marqueur<TypeValeur> getMarqueur1() const;
 	virtual Marqueur<TypeValeur> getMarqueur2() const;
 	
+	/**
+		@return chaine de caractère contenant les deux marqueurs de l'adjacence
+	*/
+	virtual std::string toString() const;
+	
 	/*
 	  	@param ostream os flot de sortie
 	  	@action affiche dans la sortie standard une Adjacence

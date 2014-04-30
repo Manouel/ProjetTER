@@ -13,13 +13,15 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 #include <stdlib.h>
 #include <sstream>
 #include <algorithm>
-#include <list>
 #include <time.h>
 #include "sequence.h"
 #include "adjacence.h"
+#include"logFichier.h"
 
 
 using namespace std;
+
+extern string nomFichier;
 
 template<typename TypeValeur>
 Sequence<TypeValeur>::Sequence(){
@@ -65,20 +67,52 @@ void Sequence<TypeValeur>::ajoutSousSeq(){
 }
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::affichage(ostream& os) const{
+string Sequence<TypeValeur>::toString() const
+{
+	string seq = "";
+	
 	for(int i=0;i<nbSousSeq();i++)
 	{
 		for(int j=0;j<this->getVecteur(i).size();j++)
 		{
-			os<< getElement(i,j).getOrientation() << getElement(i,j).getValeur()<<" ";
+			seq += getElement(i,j).toString() + " ";
+		}
+		seq += "& ";
+	}
+	
+	return seq;
+}
+
+template<typename TypeValeur>
+string Sequence<TypeValeur>::toString(int i) const
+{
+	string seq = "";
+	
+	for(int j=0;j<this->getVecteur(i).size();j++)
+	{
+		seq += getElement(i,j).toString() + " ";
+	}
+
+	return seq;
+}
+
+template<typename TypeValeur>
+void Sequence<TypeValeur>::affiche(ostream& os) const{
+	for(int i=0;i<nbSousSeq();i++)
+	{
+		for(int j=0;j<this->getVecteur(i).size();j++)
+		{
+			getElement(i,j).affiche(os);
+			os << " ";
 		}
 		os<<"& ";
 	}
-	
 }
 
 template<typename TypeValeur>
 void Sequence<TypeValeur>::remplirSequence(const std::string& seq, char delim){
+	
+	
 	
 	char ori;
 	char premierCar;
@@ -130,7 +164,7 @@ void Sequence<TypeValeur>::load(const string& nomFichier, char delim) throw(Exce
 	/* Lecture du signe puis de la valeur du marqueur */
 	while (fichier >> premierCar)
 	{
-		if (premierCar == delim)
+		if (premierCar == delim) 
 		{
 			this->ajoutSousSeq();
 		
@@ -304,95 +338,38 @@ Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<Typ
 template<typename TypeValeur>
 void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const throw(ExceptionFichier)
 {
-	extern bool log,logDetaille;
-	extern string nomFichier;
-	ofstream fichier;
-	
-	if(log==true){
-		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
-		if(!fichier){
-			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
-		}
-			
-		fichier<<"Algorithme : Alignement local";
-		if(logDetaille){
-			fichier<<endl<<"Sequence 1 : ";
-			this->affichage(fichier);
-			fichier<<endl<<"Sequence 2 : ";
-			s.affichage(fichier);
-			fichier<<endl;
-		}
-		fichier<<endl<<"Coût substitution : "<<sub<<endl;
-		fichier<<"Coût insertion/deletion : "<<indel<<endl;
-		fichier<<"Coût de correspondance : "<<match<<endl;
-		fichier<<"========================================================================"<<endl;
+	LogFichier l;
+	if(LogFichier::log)
+	{
+		//On écrit les coûts dans le fichier
+		l.afficherCouts(indel,match,sub);
 	}
 	
 	// On applique l'algo d'alignement à chaque sous-séquence de s
 	for (int i = 0; i < s.nbSousSeq(); i++)
 	{
 		Alignement matrice = this->calculAlignement(s.getVecteur(i), sub, indel, match);
-		if(log){
-			if(logDetaille){
-				fichier<<"Sequence 2."<<i+1<<" : ";
-				for(int j=0; j<s.getVecteur(i).size();j++){
-				
-					s.getElement(i,j).affiche(fichier);
-					fichier<<" ";
-				}
-				fichier<<endl;
-		
-				matrice.affiche(fichier<<endl);
-				fichier << endl;
-			}
-			if (indel < 0){
-				fichier<< "\tScore alignement local : " << matrice.getResultat() << endl << endl;
-			}
-			else{ 
-				fichier<< "\tDistance alignement local : " << matrice.getResultat() << endl << endl;
-			}
+		if(l.log){
+			l.ecrireResultatAlignement(i, s.toString(i), matrice, indel);
 		}
-		
-		if (indel < 0)
-			cout << "Score alignement local : " << matrice.getResultat() << endl;
-		else
-			cout << "Distance alignement local : " << matrice.getResultat() << endl;
+		else{
+			if (indel < 0)
+				cout << "Score alignement local : " << matrice.getResultat() << endl;
+			else
+				cout << "Distance alignement local : " << matrice.getResultat() << endl;
+		}
 	}
-	
-	if(log==true)
-		fichier.close();
 }
 
 
 template<typename TypeValeur>
-int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) const throw(ExceptionFichier){
-
-	extern bool log,logDetaille;
-	extern string nomFichier;
-	ofstream fichier;
-	
-	if(log==true){
-		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
-		if(!fichier){
-			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
-		}
-		
-		fichier<<"Algorithme : Breakpoint"<<endl;
-		if(logDetaille){
-			fichier<<"Sequence 1 : ";
-			this->affichage(fichier);
-			fichier<<endl<<"Sequence 2 : ";
-			s.affichage(fichier );
-			fichier<<endl;
-		}
-		fichier<<"========================================================================"<<endl;
-		
-		//affichage de l'intersection
-		fichier << "adjacences communes aux 2 sequences : "<< endl ;
-	}
+int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) const throw(ExceptionFichier)
+{
+	LogFichier l;
 	
 	int nbAdjacencesCommunes = 0;
 	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
+	
 	
 	for (int i = 0; i < s.nbSousSeq(); i++)
 	{
@@ -403,43 +380,26 @@ int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) cons
 	
 		vector<Adjacence<TypeValeur> > inter(liste1.size()+liste2.size()); //Création du tableau des intersection entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
 		typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière intersection retenue
-	
+
 		it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
+		
 		inter.resize(it-inter.begin()); //Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
 		nbAdjacencesCommunes += inter.size();
 		
-		if(log){
-			if(logDetaille){
-				fichier<<"\tSequence 2."<<i+1<<" : ";
-			
-				for(int j=0; j<s.getVecteur(i).size();j++){
-				
-					s.getElement(i,j).affiche(fichier);
-					fichier<<" ";
-				}
-				fichier<<endl;
-			}
-			for(it= inter.begin(); it!=inter.end(); it++ )
+		int scoreAbsolu = inter.size();
+		
+		float scoreRelatif = (float)scoreAbsolu/(s.getVecteur(i).size()-1);
+		
+		if (l.log)
+		{ 
+			vector<string> interString;
+			for(int j = 0; j < inter.size(); j++)
 			{
-				fichier <<"\t\t";
-				it->getMarqueur1().affiche(fichier);
-				fichier << " ";
-				it->getMarqueur2().affiche(fichier);
-				fichier << endl;
+				interString.push_back(inter[j].toString());
 			}
-		
-			int scoreAbsolu = inter.size();
-			float scoreRelatif = (float)scoreAbsolu/(this->getVecteur(i).size()-1);
-		
-			fichier << endl <<"\tScore absolu : "<< scoreAbsolu << endl;
-			fichier <<"\tScore relatif : " << scoreRelatif << endl << endl;
+			l.ecrireResultatAdjacencesCommunes(i , s.toString(i), interString, scoreAbsolu, scoreRelatif);
 		}
 	}
-	
-	if(log==true){
-		fichier.close();
-	}
-	
 	return nbAdjacencesCommunes; //Nombre d'intersection retourné
 }
 
@@ -454,27 +414,7 @@ void Sequence<TypeValeur>::preproscessing(vector<Marqueur<TypeValeur>*>& s1, Seq
 template<typename TypeValeur>
 int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) const throw(ExceptionFichier)
 {	
-	extern bool log, logDetaille;
-	extern string nomFichier;
-	ofstream fichier;
-	
-	//Si log, ouverture du fichier dans lequel on mettra le resultat de la fonction :
-	if(log==true){
-		fichier.open(nomFichier.c_str(),ios::out|ios::app); //On ouvre le fichiers et on place le curseur à la fin pour ne pas écrire par dessus d'autres données du fichier de sortie.
-		if(!fichier){
-			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
-		}
-		
-		fichier<<"Algorithme : Intervalles Communs"<<endl;
-		if(logDetaille){
-			fichier<<"Sequence 1 : ";
-			this->affichage(fichier);
-			fichier<<endl<<"Sequence 2 : ";
-			s.affichage(fichier );
-			fichier<<endl;
-		}
-		fichier<<"========================================================================"<<endl;
-	}
+	LogFichier log;
 
 	//Partie 1: Init
 	
@@ -503,22 +443,22 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	
 	// Remplissage de num : calcul du nombre de marqueurs différents entre chaque indices de s1
 	for(int i=0; i<s1.size();i++){
-
-		list<Marqueur<TypeValeur> > present;			// Liste des marqueurs différents présents de i à j
-
 		for(int j=0; j<s1.size();j++){
 			
 			if(i == j){					// Entre l'indice i et i, 1 marqueur donc 1 différence
 				num[i][j] = 1;
-				present.push_back(s1[j]);
 			}
 			else if (j<i){				// Partie vide de la matrice (j,i -> i,j)
 				num[i][j] = 0;
 			}
 			else{						// Calcul du nombre de marqueurs différents entre i et j
-
-				if(find(present.begin(), present.end(), s1[j]) == present.end()){		// Si le marqueur n'existe pas, on l'ajoute
-					present.push_back(s1[j]);
+				vector<Marqueur<TypeValeur> > present;			// Liste des marqueurs différents présents de i à j
+				
+				// Parcours des marqueurs de i à j
+				for(int k = i; k<=j;k++){
+					if(find(present.begin(), present.end(), s1[k]) == present.end()){		// Si le marqueur n'existe pas, on l'ajoute
+						present.push_back(s1[k]);
+					}
 				}
 				
 				// On stocke le nombre de marqueurs différents trouvés
@@ -539,20 +479,11 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	// Parcours S2
 
 	for (int t = 0; t < s.nbSousSeq(); t++)
-	{
+	{	
 		int cpt=0;
-		if(log==true){
-			if(logDetaille){
-				fichier<<"Sequence 2."<<t+1<<" : ";
-			
-				for(int i=0; i<s.getVecteur(t).size();i++){
-				
-					s.getElement(t,i).affiche(fichier);
-					fichier<<" ";
-				}
-				fichier<<endl;
-			}
-		}
+		
+		log.ecrireSousSequence(t, s.toString(t));
+		
 		vector<Marqueur<TypeValeur> > s2;
 		
 		// Création d'un vecteur avec l'ensemble des marqueurs de la sous-séquence de s2
@@ -583,7 +514,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 			while(j< s2.size() && !pos[s2[j]].empty())
 			{
 				// Si on a pas vu l'élément
-				if(find(elementsS2.begin(), elementsS2.end(), s2[j]) == elementsS2.end())
+				if(find(elementsS2.begin(), elementsS2.end(), s2[j]) == elementsS2.end() )
 				{
 					// on l'ajoute
 					elementsS2.push_back(s2[j]);
@@ -595,7 +526,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 					}
 				
 					// on étend à droite
-					while(j+1 < s2.size() && find(elementsS2.begin(), elementsS2.end(), s2[j+1]) != elementsS2.end())
+					while(j+1 < s2.size() && find(elementsS2.begin(), elementsS2.end(), s2[j+1]) != elementsS2.end() )
 					{
 						j++;
 					}
@@ -635,16 +566,14 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 							if(num[debut][fin] == elementsS2.size() )
 							{
 								//ajout ligne output
-								output.push_back(vector< int >());
+								output.push_back(vector<int>());
 								output.back().push_back(debut);
 								output.back().push_back(fin);
 								output.back().push_back(i);
 								output.back().push_back(j);
 								cpt++;
-								if(log==true){
-									
-									fichier <<"\t("<< debut+1 << " - " << fin+1 << ") - (" << i+1 << " - " << j+1 <<")"<< endl;
-								}
+								
+								log.affichierIntervallesCommuns(debut+1, fin+1, i+1, j+1);
 							}
 						}
 						l++;
@@ -662,16 +591,10 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 			}
 		}
 		
-		if(log==true){
-			fichier<<"Nombre d'intervalles communs : "<<cpt<<endl<<endl;
-		}
+		log.resultatSousSeq(cpt);
 	}
-	if(log==true){
-		fichier<<"Nombre total d'intervalles communs : "<<output.size()<<endl;
-		fichier<<endl << endl;
-		fichier.close(); //fermeture du ficher car on a fini d'écrire dedans
-	}
-
+	
+	log.resultatSeq(output.size());
 	
 	//On libère la mémoire :
 	for(int i =0; i<s1.size();i++){

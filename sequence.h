@@ -107,7 +107,18 @@ class Sequence{
 		*/
 		virtual void save(const std::string& nomFichier,char delim) throw(ExceptionFichier);
 		
-		virtual void affichage(std::ostream& os) const;
+		/**
+		  @return string contenant la séquence
+		*/
+		virtual std::string toString() const;
+		
+		/**
+		  @param numéro de la sous-séquence
+		  @return string contenant la sous-séquence i
+		*/
+		virtual std::string toString(int i) const;
+		
+		virtual void affiche(std::ostream& os) const;
 		
 		
 		/* Algo alignement local */
