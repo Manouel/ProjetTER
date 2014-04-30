@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
 	{
 		try{
 			int nbAdjacencesCommunes = seq1.adjacencesCommunes(seq2);
+			cout << "Nombre d'adjacences communes : " << nbAdjacencesCommunes << endl;
 		}
 		catch(ExceptionFichier e){
 			cerr<<"ERREUR Fichier log Adjacences communes : "<<e.verdict()<<endl;
@@ -121,7 +122,7 @@ int main(int argc, char *argv[])
 	else if(strcmp(argv[6], "IC") == 0)
 	{
 		try{
-			cout << seq1.intervallesCommuns(seq2) << endl;
+			cout << "Nombre d'intervalles communs : " << seq1.intervallesCommuns(seq2) << endl;
 		}
 		catch(ExceptionFichier e){
 			cerr<<"ERREUR Fichier log Intervalles Communs : "<<e.verdict()<<endl;

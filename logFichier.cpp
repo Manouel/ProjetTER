@@ -44,7 +44,7 @@ void LogFichier::ecrireEnTete(const string& typeEntree1, const string& entree1, 
 	if(logDetaille){		
 			
 		if(typeEntree1 == "s"){
-			fichier<<"Sequence 1 : "<< entree1 <<endl;
+			fichier<<"Sequence 1 : "<< seq1 <<endl;
 		}
 		else if(typeEntree1 == "f") {
 			fichier<<"Fichier 1 : "<<entree1<<endl;
@@ -53,7 +53,7 @@ void LogFichier::ecrireEnTete(const string& typeEntree1, const string& entree1, 
 		
 			
 		if(typeEntree2 == "s"){
-			fichier<<"Sequence 2 : "<< entree2 <<endl;
+			fichier<<"Sequence 2 : "<< seq2 <<endl;
 		}
 		else if(typeEntree2 == "f") {
 			fichier<<"Fichier 2 : "<<entree2<<endl;
