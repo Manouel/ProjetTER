@@ -14,7 +14,6 @@ dans le fichier de sortie.
 
 #include <fstream>
 #include <iostream>
-#include <time.h>
 #include <string>
 #include <vector>
 #include "alignement.h"

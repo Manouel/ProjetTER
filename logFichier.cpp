@@ -11,6 +11,7 @@ Ce fichier contient l'implémentation des fonctions de la classe Log.
 
 #include <iostream>
 #include <string>
+#include <time.h>
 
 using namespace std;
 

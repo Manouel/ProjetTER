@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 	if (argc < 7 || argc>9)
 	{
 		cerr << "Mauvais nombre d'arguments ! ( type file/seq type file/seq separateur algo [ls/ld] [nomfichier])" << endl;
+		return -1;
 	}
 	
 	char separateur = argv[5][0];
