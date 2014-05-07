@@ -1,5 +1,5 @@
 
-all : main libprojet.so
+all : main libprojet.so fenetre
 
 main : main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o
 	g++ -o main main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o	
@@ -8,6 +8,7 @@ libprojet.so : main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFi
 	g++ -o libprojet.so -shared main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o
 
  
+
 main.o : main.cpp
 	g++ -c main.cpp
 
@@ -31,3 +32,10 @@ logFichier.o : logFichier.cpp logFichier.h
 
 marqueurType.o : marqueurType.cpp
 	g++ -c marqueurType.cpp
+	
+	
+	
+fenetre :
+	(cd Interface && qmake && make)
+	
+	
