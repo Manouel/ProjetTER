@@ -1,41 +1,48 @@
+# Makefile de compilation du projet
 
-all : main libprojet.so fenetre
+CXX = g++
+OBJS = main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o
 
-main : main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o
-	g++ -o main main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o	
+FICHIERS_CPP = marqueur.cpp sequence.cpp adjacence.cpp alignement.cpp exceptionFichier.cpp logFichier.cpp marqueurType.cpp
+FICHIERS_H = marqueur.h sequence.h adjacence.h alignement.h exceptionFichier.h logFichier.h
+
+all : main libprojet.so interface
+
+main : $(OBJS)
+	$(CXX) -o main $(OBJS)
+
+libprojet.so : $(FICHIERS_CPP) $(FICHIERS_H)
+	$(CXX) -fPIC -shared -o libprojet.so $(FICHIERS_CPP)
+
+interface :
+	cd Interface && qmake && make
 	
-libprojet.so : main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o
-	g++ -o libprojet.so -shared main.o marqueur.o sequence.o adjacence.o alignement.o exceptionFichier.o logFichier.o marqueurType.o
 
- 
-
+# Objets
+	
 main.o : main.cpp
-	g++ -c main.cpp
-
+	$(CXX) -c main.cpp
+	
 marqueur.o : marqueur.cpp marqueur.h
-	g++ -c marqueur.cpp
+	$(CXX) -c marqueur.cpp
 	
 sequence.o : sequence.cpp sequence.h
-	g++ -c sequence.cpp
+	$(CXX) -c sequence.cpp
 	
 adjacence.o : adjacence.cpp adjacence.h
-	g++ -c adjacence.cpp
+	$(CXX) -c adjacence.cpp
 	
 alignement.o : alignement.cpp alignement.h
-	g++ -c alignement.cpp
+	$(CXX) -c alignement.cpp
 	
 exceptionFichier.o : exceptionFichier.cpp exceptionFichier.h
-	g++ -c exceptionFichier.cpp
+	$(CXX) -c exceptionFichier.cpp
 	
 logFichier.o : logFichier.cpp logFichier.h
-	g++ -c logFichier.cpp
-
+	$(CXX) -c logFichier.cpp
+	
 marqueurType.o : marqueurType.cpp
-	g++ -c marqueurType.cpp
+	$(CXX) -c marqueurType.cpp
 	
 	
-	
-fenetre :
-	(cd Interface && qmake && make)
-	
-	
+
