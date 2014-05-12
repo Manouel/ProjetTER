@@ -548,7 +548,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 
 				// Si l'élément avant i se trouve aussi entre i et j, on a pas étendu à gauche
 				// On affiche le résultat si i n'a pas de précédent ou si l'élément d'avant n'est pas entre i et j
-				if(i == 0 || (!pos[s2[i-1]].empty() && !elementsVusS1[pos[s2[i-1]][0]]))
+				if(i == 0 || (pos[s2[i-1]].empty() || (!pos[s2[i-1]].empty() && !elementsVusS1[pos[s2[i-1]][0]])))
 				{
 					//parcours du tableau de booléens
 					int l = 0;
