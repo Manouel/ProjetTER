@@ -14,8 +14,8 @@ using namespace std;
 
 Fenetre::Fenetre() : QWidget(), seq1("Séquence 1"), seq2("Séquence 2"), fichierLogs("Résultats")
 {
-    setWindowTitle(tr("Comparaison de gènes"));
-    resize(750,300);
+    setWindowTitle(tr("Comparaison d'ordre de gènes"));
+    resize(810,300);
 
 
     QVBoxLayout *layoutPrincipal = new QVBoxLayout();
@@ -26,6 +26,7 @@ Fenetre::Fenetre() : QWidget(), seq1("Séquence 1"), seq2("Séquence 2"), fichie
     QWidget *pageBreakpoints = new QWidget();
     QWidget *pageIntervalles = new QWidget();
 
+    onglets.setUsesScrollButtons(false);
     onglets.addTab(pageAlignement, "Alignement local");
     onglets.addTab(pageBreakpoints, "Adjacences communes");
     onglets.addTab(pageIntervalles, "Intervalles communs");

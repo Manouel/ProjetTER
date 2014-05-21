@@ -1,13 +1,13 @@
 #include "EntreeSequence.h"
 #include <QVBoxLayout>
 
-EntreeSequence::EntreeSequence(QString titreBox) : QGroupBox(titreBox), fichier("Fichier contenant la squence")
+EntreeSequence::EntreeSequence(QString titreBox) : QGroupBox(titreBox), fichier("Fichier contenant la séquence")
 {
     QVBoxLayout *layout = new QVBoxLayout();
 
     boutonTexte.setText("Ligne de commande");
     boutonFichier.setText("Fichier");
-    entree.setPlaceholderText("Squence  entrer");
+    entree.setPlaceholderText("Séquence à entrer");
 
     layout->addWidget(&boutonTexte);
     layout->addWidget(&entree);
