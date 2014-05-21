@@ -52,9 +52,13 @@ int main(int argc, char *argv[])
 		}
 		catch(ExceptionFichier e){
 			cerr<<"ERREUR Sequence 1 : "<<e.verdict()<<endl;
-			return 0;
+			return -1;
 		}
 		
+	}
+	else{
+		cerr<<"ERREUR Type Sequence 1"<<endl ;
+		return -1;
 	}
 	
 	if(strcmp(argv[3],"s")==0){
@@ -70,6 +74,10 @@ int main(int argc, char *argv[])
 			cerr<<"ERREUR Sequence 2 : "<<e.verdict()<<endl;
 			return 0;
 		}
+	}
+	else{
+	cerr<<"ERREUR Type Sequence 2"<<endl ;
+	return -1;
 	}
 	
 	if (argc >= 8  && (strcmp(argv[7], "ls") == 0 ||strcmp(argv[7], "ld") == 0))
