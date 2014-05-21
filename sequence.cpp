@@ -363,19 +363,19 @@ int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) cons
 {
 	int nbAdjacencesCommunes = 0;
 	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
-
+	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_intersection
 
 	for (int i = 0; i < s.nbSousSeq(); i++)
 	{
 		vector<Adjacence<TypeValeur> > liste2 = s.listeAdjacence(i);
 
-		sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_intersection
+		
 		sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_intersection
 
 		vector<Adjacence<TypeValeur> > inter(liste1.size()+liste2.size()); //Création du tableau des intersection entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
 		typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière intersection retenue
 
-		it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
+it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
 
 		inter.resize(it-inter.begin()); //Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
 		nbAdjacencesCommunes += inter.size();
