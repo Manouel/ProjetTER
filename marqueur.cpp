@@ -35,7 +35,7 @@ char Marqueur<TypeValeur>::getOrientation() const
 {return this->orientation;}
 
 template<typename TypeValeur>
-void Marqueur<TypeValeur>::setValeur(TypeValeur val)
+void Marqueur<TypeValeur>::setValeur(const TypeValeur& val)
 {this->valeur= val;}
 
 template<typename TypeValeur>

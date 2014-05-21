@@ -76,7 +76,7 @@ class Sequence{
 		/**
 		  @param Marqueur à ajouter en fin de Séquence
 		*/
-		virtual void ajoutElement(Marqueur<TypeValeur>& t);
+		virtual void ajoutElement(const Marqueur<TypeValeur>& t);
 		
 		/**
 		  @action Ajout d'une nouvelle sous-séquence

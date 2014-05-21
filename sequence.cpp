@@ -55,7 +55,7 @@ int Sequence<TypeValeur>::nbSousSeq() const{
 }
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::ajoutElement(Marqueur<TypeValeur>& m){
+void Sequence<TypeValeur>::ajoutElement(const Marqueur<TypeValeur>& m){
 	this->sequence[this->nbSousSeq()-1].push_back(m);
 }
 
@@ -502,7 +502,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	{
 		int cpt=0;
 		
-		if(l.log){
+		if(LogFichier::log){
 		log.ecrireSousSequence(t, s.toString(t));
 		}
 
@@ -579,7 +579,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 							if(num[debut][fin] == nbElementsVus)
 							{
 								cpt++;
-								if(l.log){
+								if(LogFichier::log){
 								log.affichierIntervallesCommuns(debut+1, fin+1, i+1, j+1);
 								}
 							}
@@ -601,12 +601,12 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 
 		nbIntervallesTotal += cpt;
 		
-		if(l.log){
+		if(LogFichier::log){
 		log.resultatSousSeq(cpt);
 		}
 	}
 	
-	if(l.log){
+	if(LogFichier::log){
 	log.resultatSeq(nbIntervallesTotal);
 	}
 

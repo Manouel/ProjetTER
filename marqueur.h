@@ -30,7 +30,7 @@ class Marqueur
 	  virtual TypeValeur getValeur()const;
 	  virtual char getOrientation()const;
 	
-	  virtual void setValeur(TypeValeur val);
+	  virtual void setValeur(const TypeValeur& val);
 	  virtual void setOrientation(char ori);
 	  
 	  
