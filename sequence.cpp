@@ -21,8 +21,6 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 
 using namespace std;
 
-extern string nomFichier;
-
 template<typename TypeValeur>
 Sequence<TypeValeur>::Sequence(){
 	ajoutSousSeq();
@@ -363,8 +361,6 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 template<typename TypeValeur>
 int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) const throw(ExceptionFichier)
 {
-	LogFichier l;
-
 	int nbAdjacencesCommunes = 0;
 	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
 
@@ -388,8 +384,10 @@ int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) cons
 
 		float scoreRelatif = (float)scoreAbsolu/(s.getVecteur(i).size()-1);
 
-		if (l.log)
+		if (LogFichier::log)
 		{
+			LogFichier l;
+			
 			vector<string> interString;
 			for(int j = 0; j < inter.size(); j++)
 			{
@@ -503,8 +501,10 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	for (int t = 0; t < s.nbSousSeq(); t++)
 	{
 		int cpt=0;
-
+		
+		if(l.log){
 		log.ecrireSousSequence(t, s.toString(t));
+		}
 
 		vector<Marqueur<TypeValeur> > s2;
 
@@ -579,7 +579,9 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 							if(num[debut][fin] == nbElementsVus)
 							{
 								cpt++;
+								if(l.log){
 								log.affichierIntervallesCommuns(debut+1, fin+1, i+1, j+1);
+								}
 							}
 						}
 						l++;
@@ -598,10 +600,15 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		}
 
 		nbIntervallesTotal += cpt;
+		
+		if(l.log){
 		log.resultatSousSeq(cpt);
+		}
 	}
-
+	
+	if(l.log){
 	log.resultatSeq(nbIntervallesTotal);
+	}
 
 	//On libère la mémoire :
 	for(int i =0; i<s1.size();i++){
