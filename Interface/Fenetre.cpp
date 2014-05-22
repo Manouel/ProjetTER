@@ -12,12 +12,13 @@
 
 using namespace std;
 
-Fenetre::Fenetre() : QWidget(), seq1("Séquence 1"), seq2("Séquence 2"), fichierLogs("Résultats")
+Fenetre::Fenetre() : QScrollArea(), seq1("Séquence 1"), seq2("Séquence 2"), fichierLogs("Résultats")
 {
     setWindowTitle(tr("Comparaison d'ordre de gènes"));
+    setWidgetResizable(true);
     resize(810,300);
 
-
+    QWidget *widgetPrincipal = new QWidget();
     QVBoxLayout *layoutPrincipal = new QVBoxLayout();
 
     QHBoxLayout *layout = new QHBoxLayout();
@@ -116,7 +117,8 @@ Fenetre::Fenetre() : QWidget(), seq1("Séquence 1"), seq2("Séquence 2"), fichie
     layoutPrincipal->addLayout(layout);
     layoutPrincipal->addLayout(runLayout);
 
-    setLayout(layoutPrincipal);
+    widgetPrincipal->setLayout(layoutPrincipal);
+    setWidget(widgetPrincipal);
 
     connect(run, SIGNAL(clicked()), this, SLOT(executeAlgo()));
 }
@@ -183,10 +185,7 @@ void Fenetre::executeAlgo()
             LogFichier::nomFichier = fichierLogs.getChemin().toStdString();
         }
 
-        if (logDetaille.isChecked())
-        {
-            LogFichier::logDetaille = true;
-        }
+        LogFichier::logDetaille = logDetaille.isChecked();
 
         LogFichier l;
         std::string typeEntree1 = (seq1.sequenceTexte() ? "s" : "f");

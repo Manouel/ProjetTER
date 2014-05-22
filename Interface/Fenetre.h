@@ -6,10 +6,11 @@
 #include <QSpinBox>
 #include <QGroupBox>
 #include <QRadioButton>
+#include <QScrollArea>
 #include "EntreeSequence.h"
 #include "CheminFichier.h"
 
-class Fenetre : public QWidget
+class Fenetre : public QScrollArea
 {
     Q_OBJECT
 

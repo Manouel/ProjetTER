@@ -16,33 +16,33 @@ libprojet.so : $(FICHIERS_CPP) $(FICHIERS_H)
 
 interface :
 	cd Interface && qmake && make
-	
+
 
 # Objets
 	
 main.o : main.cpp
-	$(CXX) -c main.cpp
+	$(CXX) -o main.o -c main.cpp
 	
 marqueur.o : marqueur.cpp marqueur.h
-	$(CXX) -c marqueur.cpp
+	$(CXX) -o marqueur.o -c marqueur.cpp
 	
 sequence.o : sequence.cpp sequence.h
-	$(CXX) -c sequence.cpp
+	$(CXX) -o sequence.o -c sequence.cpp
 	
 adjacence.o : adjacence.cpp adjacence.h
-	$(CXX) -c adjacence.cpp
+	$(CXX) -o adjacence.o -c adjacence.cpp
 	
 alignement.o : alignement.cpp alignement.h
-	$(CXX) -c alignement.cpp
+	$(CXX) -o alignement.o -c alignement.cpp
 	
 exceptionFichier.o : exceptionFichier.cpp exceptionFichier.h
-	$(CXX) -c exceptionFichier.cpp
+	$(CXX) -o exceptionFichier.o -c exceptionFichier.cpp
 	
 logFichier.o : logFichier.cpp logFichier.h
-	$(CXX) -c logFichier.cpp
+	$(CXX) -o logFichier.o -c logFichier.cpp
 	
 marqueurType.o : marqueurType.cpp
-	$(CXX) -c marqueurType.cpp
+	$(CXX) -o marqueurType.o -c marqueurType.cpp
 	
 	
 
