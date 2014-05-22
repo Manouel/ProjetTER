@@ -1,11 +1,12 @@
 /*========================================================================
 Nom: marqueur.cpp           auteur: Geoffrey DUMAS
-Maj:  27/03/2014         Creation: 27/01/2014
+Maj:  22/05/2014         Creation: 27/01/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
 Ce fichier contient l'implémentation des fonctions de la classe Marqueur.
 =========================================================================*/
+
 #include <sstream>
 #include "marqueur.h"
 
@@ -41,13 +42,13 @@ char Marqueur<TypeValeur>::getOrientation() const
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::setValeur(const TypeValeur& val)
 {
-	this->valeur= val;
+	this->valeur = val;
 }
 
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::setOrientation(char ori)
 {
-	this->orientation= ori;
+	this->orientation = ori;
 }
 
 template<typename TypeValeur>
@@ -62,11 +63,11 @@ string Marqueur<TypeValeur>::toString() const
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::saisie(istream& is)
 {
-	is>>valeur>>orientation;
+	is >> valeur >> orientation;
 }
 
 template<typename TypeValeur>
-void Marqueur<TypeValeur>::affiche(ostream& os)const
+void Marqueur<TypeValeur>::affiche(ostream& os) const
 {
 	os << getOrientation() << getValeur(); 
 }
@@ -80,11 +81,11 @@ bool operator== (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2)
 template<typename TypeValeur>
 bool operator< (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2)
 {
-	if (m1.getValeur() < m2.getValeur())
+	if(m1.getValeur() < m2.getValeur())
 	{
 		return true;
 	}
-	else if (m1.getValeur() > m2.getValeur())
+	else if(m1.getValeur() > m2.getValeur())
 	{
 		return false;
 	}

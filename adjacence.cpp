@@ -1,11 +1,12 @@
 /*========================================================================
 Nom: adjacence.cpp           auteur: Morgane Vidal
-Maj:  27/03/2014         Creation: 13/02/2014
+Maj:  22/05/2014         Creation: 13/02/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
 Ce fichier contient l'implémentation des fonctions de la classe Adjacence.
 =========================================================================*/
+
 #include <iostream>
 #include "adjacence.h"
 
@@ -35,7 +36,7 @@ Marqueur<TypeValeur> Adjacence<TypeValeur>::getMarqueur2() const
 template<typename TypeValeur>
 string Adjacence<TypeValeur>::toString() const
 {
-	string s="( "+getMarqueur1().toString()+" - "+getMarqueur2().toString()+" )";
+	string s = "( " + getMarqueur1().toString() + " - " + getMarqueur2().toString() + " )";
 	return s;
 }
 
@@ -75,13 +76,14 @@ bool operator== (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a
 			}
 		}
 	}
+	
 	return false;
 }
 
 template<typename TypeValeur>
 bool operator< (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2)
 {
-	if (a1 == a2)
+	if(a1 == a2)
 	{
 		return false;
 	}
@@ -111,6 +113,9 @@ bool operator< (const Adjacence<TypeValeur>& a1, const Adjacence<TypeValeur>& a2
 		{
 			return false;
 		}
-		else return (a1.getMarqueur2().getOrientation() > a2.getMarqueur2().getOrientation());
+		else 
+		{
+			return (a1.getMarqueur2().getOrientation() > a2.getMarqueur2().getOrientation());
+		}
 	}
 }

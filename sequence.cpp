@@ -592,7 +592,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 								cpt++;
 								if(LogFichier::log)
 								{
-									log.affichierIntervallesCommuns(debut+1, fin+1, i+1, j+1);
+									log.afficherIntervallesCommuns(debut+1, fin+1, i+1, j+1);
 								}
 							}
 						}

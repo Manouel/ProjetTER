@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: main.cpp           auteur: Manuel Chataigner
-Maj:  14/03/2014           Creation: 14/03/2014
+Maj:  22/05/2014           Creation: 14/03/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
@@ -11,26 +11,24 @@ algorithmes de comparaison.
 #include <iostream>
 #include <string>
 #include <string.h>
-#include <time.h>
+#include <fstream>
 #include "marqueur.h"
 #include "sequence.h"
 #include "adjacence.h"
 #include "alignement.h"
 #include "exceptionFichier.h"
 #include "logFichier.h"
-#include <fstream>
 
 using namespace std;
 
 /**
-
 	f / s fichier/sequence  f / s fichier/sequence  separateur algo [log : ls/ld] [sortie]
 	exemple : s "+10 +3 +5" f monfichier.txt '&' AC ls sortie.txt 
 */
 
 int main(int argc, char *argv[])
 {
-	if (argc < 7 || argc>9)
+	if(argc < 7 || argc>9)
 	{
 		cerr << "Mauvais nombre d'arguments ! ( type file/seq type file/seq separateur algo [ls/ld] [nomfichier])" << endl;
 		return -1;
@@ -41,24 +39,23 @@ int main(int argc, char *argv[])
 	Sequence<string> seq1;
 	Sequence<string> seq2;
 	
+	/* Séquence 1 */
 	if(strcmp(argv[1],"s") == 0)
 	{
 		seq1.remplirSequence(argv[2], separateur);
 	}
 	
-	else if (strcmp(argv[1],"f") == 0)
+	else if(strcmp(argv[1],"f") == 0)
 	{
-		
 		try
 		{
-			seq1.load(argv[2],separateur);
+			seq1.load(argv[2], separateur);
 		}
 		catch(ExceptionFichier e)
 		{
 			cerr << "ERREUR Sequence 1 : " << e.verdict() << endl;
 			return -1;
 		}
-		
 	}
 	else
 	{
@@ -66,11 +63,10 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	
+	/* Séquence 2 */
 	if(strcmp(argv[3],"s") == 0)
 	{
-
-		seq2.remplirSequence(argv[4], separateur);
-		
+		seq2.remplirSequence(argv[4], separateur);	
 	}
 	else if(strcmp(argv[3],"f") == 0)
 	{
@@ -90,16 +86,18 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	
-	if (argc >= 8  && (strcmp(argv[7], "ls") == 0 || strcmp(argv[7], "ld") == 0))
+	
+	/* Logs */
+	if (argc >= 8 && (strcmp(argv[7], "ls") == 0 || strcmp(argv[7], "ld") == 0))
 	{
 		LogFichier::log = true;
 		if(argc == 9)
 		{
-			LogFichier::nomFichier=argv[8];
+			LogFichier::nomFichier = argv[8];
 		}
-		if(strcmp(argv[7], "ld") == 0 )
+		if(strcmp(argv[7], "ld") == 0)
 		{
-			LogFichier::logDetaille=true;
+			LogFichier::logDetaille = true;
 		}
 	}
 	
@@ -110,6 +108,7 @@ int main(int argc, char *argv[])
 	}
 	
 	
+	/* Algorithme */
 	if (strcmp(argv[6], "AL") == 0)
 	{
 		int sub, indel, match;

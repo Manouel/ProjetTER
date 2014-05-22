@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: log.cpp           auteur: Morgane Vidal
-Maj:  27/03/2014         Creation: 13/02/2014
+Maj:  22/05/2014         Creation: 13/02/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
@@ -15,18 +15,18 @@ Ce fichier contient l'implémentation des fonctions de la classe Log.
 
 using namespace std;
 
-bool LogFichier::log=false;
-bool LogFichier::logDetaille=false;
-string LogFichier::nomFichier="out.txt";
+bool LogFichier::log = false;
+bool LogFichier::logDetaille = false;
+string LogFichier::nomFichier = "out.txt";
 
 LogFichier::LogFichier() throw(ExceptionFichier)
 {
-	if (log)
+	if(log)
 	{
-		fichier.open(nomFichier.c_str(), ios::out|ios::app);
+		fichier.open(nomFichier.c_str(), ios::out | ios::app);
 		if(!fichier)
 		{
-			throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+"!");
+			throw ExceptionFichier("Erreur lors de l'ouverture du fichier " + nomFichier + " !");
 		}
 	}
 }
@@ -36,8 +36,8 @@ LogFichier::~LogFichier()
 	fichier.close();
 }
 
-void LogFichier::ecrireEnTete(const string& typeEntree1, const string& entree1, const string& typeEntree2, const string& entree2, const string& nomAlgo, const string& seq1, const string& seq2)
-{	
+void LogFichier::ecrireEnTete(const string& typeEntree1, const string& entree1, const string& typeEntree2, const string& entree2, 									const string& nomAlgo, const string& seq1, const string& seq2)
+{
 	fichier << "========================================================================" << endl;
 
 	ecrireDate();
@@ -75,7 +75,7 @@ void LogFichier::ecrireEnTete(const string& typeEntree1, const string& entree1, 
 	{
 		fichier << "Algorithme d'intervalles communs" << endl;
 	}
-	else if(nomAlgo.compare("AC")==0)
+	else if(nomAlgo.compare("AC") == 0)
 	{
 		fichier << "Algorithme d'adjacences communes" << endl;
 	}
@@ -88,8 +88,9 @@ void LogFichier::ecrireDate()
 	struct tm date;
 	time_t maintenant;
 	time(&maintenant);
-	date=*localtime(&maintenant);
-	fichier << "Date : " << date.tm_mday << "/" << date.tm_mon+1 << "/" << date.tm_year+1900 << " " << date.tm_hour << ":" << date.tm_min << endl;
+	date = *localtime(&maintenant);
+	fichier << "Date : " << date.tm_mday << "/" << date.tm_mon+1 << "/" << date.tm_year+1900 << " " << date.tm_hour << ":" 
+			<< date.tm_min << endl;
 }
 
 void LogFichier::ecrireResultatAlignement(int i, const string& sousSeq, const Alignement& a, const int indel)
@@ -100,7 +101,7 @@ void LogFichier::ecrireResultatAlignement(int i, const string& sousSeq, const Al
 		a.affiche(fichier);
 	}
 	
-	if (indel < 0)
+	if(indel < 0)
 	{
 		fichier << "\tScore alignement local : " << a.getResultat() << endl << endl;
 	}
@@ -117,10 +118,8 @@ void LogFichier::ecrireResultatAdjacencesCommunes(int i, const string& sousSeq, 
 		ecrireSousSequence(i, sousSeq);
 	}
 		
-	//fichier << "adjacences communes aux 2 sequences : " << endl ;
-		
 	vector<string>::iterator it;
-	for(it=inter.begin(); it!=inter.end(); it++)
+	for(it = inter.begin(); it != inter.end(); it++)
 	{
 			fichier << "\t\t" << *it << endl;
 	}
@@ -134,10 +133,10 @@ void LogFichier::ecrireSousSequence(int i, const std::string& sousSeq)
 	if(logDetaille)
 	{
 		fichier << "Sequence 2." << i+1 << " : " << sousSeq << endl;
-	}
+	}s
 }
 
-void LogFichier::affichierIntervallesCommuns(int a, int b, int c, int d)
+void LogFichier::afficherIntervallesCommuns(int a, int b, int c, int d)
 {
 
 	fichier << "\t(" << a << " - " << b << ") - (" << c << " - " << d << ")" << endl;
@@ -150,7 +149,7 @@ void LogFichier::resultatSousSeq(int nbIntervalles)
 
 void LogFichier::resultatSeq(int nbTotalIntervalles)
 {
-			fichier << "Nombre total d'intervalles communs : " << nbTotalIntervalles << endl;
+	fichier << "Nombre total d'intervalles communs : " << nbTotalIntervalles << endl;
 }
 
 void LogFichier::afficherCouts(int indel, int match, int sub)

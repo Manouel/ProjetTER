@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: log.cpp           auteur: Morgane Vidal
-Maj:  17/04/2014         Creation: 17/04/2014
+Maj:  22/05/2014         Creation: 17/04/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
@@ -95,7 +95,7 @@ class LogFichier
 			@param c, d bornes de l'intervalle commun dans s2
 			@action écrit dans le fichier les bornes de l'intervalle commun trouvé
 		*/
-		virtual void affichierIntervallesCommuns(int a, int b, int c, int d);
+		virtual void afficherIntervallesCommuns(int a, int b, int c, int d);
 		
 		/**
 			@param nbIntervalles Nombre d'intervalles communs trouvés dans une sous-séquence
