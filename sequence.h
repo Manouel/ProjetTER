@@ -47,7 +47,6 @@ class Sequence{
 		*/
 		virtual std::vector<Adjacence<TypeValeur> > listeAdjacence(int i) const;
 		
-		
 		/**
 		 @action Applique l'algorithme d'alignement local entre la première sous-séquence de this 
 		 		 et la sous-séquence s, puis retourne le score obtenu
@@ -131,7 +130,6 @@ class Sequence{
 		*/
 		virtual void alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const throw(ExceptionFichier);
 		
-		
 		/* Algo adjacences communes */
 		
 		/**
@@ -140,7 +138,6 @@ class Sequence{
 		 @return nombre d'adjacences comm
 		*/
 		virtual int adjacencesCommunes(const Sequence<TypeValeur>& s) const throw(ExceptionFichier);
-		
 		
 		/* Intervalles communs */
 		
