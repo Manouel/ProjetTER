@@ -41,57 +41,70 @@ int main(int argc, char *argv[])
 	Sequence<string> seq1;
 	Sequence<string> seq2;
 	
-	if(strcmp(argv[1],"s")==0){
+	if(strcmp(argv[1],"s") == 0)
+	{
 		seq1.remplirSequence(argv[2], separateur);
 	}
 	
-	else if (strcmp(argv[1],"f")==0){
+	else if (strcmp(argv[1],"f") == 0)
+	{
 		
-		try{
+		try
+		{
 			seq1.load(argv[2],separateur);
 		}
-		catch(ExceptionFichier e){
-			cerr<<"ERREUR Sequence 1 : "<<e.verdict()<<endl;
+		catch(ExceptionFichier e)
+		{
+			cerr << "ERREUR Sequence 1 : " << e.verdict() << endl;
 			return -1;
 		}
 		
 	}
-	else{
-		cerr<<"ERREUR Type Sequence 1"<<endl ;
+	else
+	{
+		cerr << "ERREUR Type Sequence 1" << endl;
 		return -1;
 	}
 	
-	if(strcmp(argv[3],"s")==0){
+	if(strcmp(argv[3],"s") == 0)
+	{
 
 		seq2.remplirSequence(argv[4], separateur);
 		
 	}
-	else if(strcmp(argv[3],"f")==0){
-		try{
+	else if(strcmp(argv[3],"f") == 0)
+	{
+		try
+		{
 			seq2.load(argv[4],separateur);
 		}
-		catch(ExceptionFichier e){
-			cerr<<"ERREUR Sequence 2 : "<<e.verdict()<<endl;
+		catch(ExceptionFichier e)
+		{
+			cerr << "ERREUR Sequence 2 : " << e.verdict() << endl;
 			return 0;
 		}
 	}
-	else{
-	cerr<<"ERREUR Type Sequence 2"<<endl ;
-	return -1;
+	else
+	{
+		cerr << "ERREUR Type Sequence 2" << endl;
+		return -1;
 	}
 	
-	if (argc >= 8  && (strcmp(argv[7], "ls") == 0 ||strcmp(argv[7], "ld") == 0))
+	if (argc >= 8  && (strcmp(argv[7], "ls") == 0 || strcmp(argv[7], "ld") == 0))
 	{
 		LogFichier::log = true;
-		if(argc==9){
+		if(argc == 9)
+		{
 			LogFichier::nomFichier=argv[8];
 		}
-		if(strcmp(argv[7], "ld") == 0 ){
+		if(strcmp(argv[7], "ld") == 0 )
+		{
 			LogFichier::logDetaille=true;
 		}
 	}
 	
-	if(LogFichier::log){
+	if(LogFichier::log)
+	{
 		LogFichier l;
 		l.ecrireEnTete(argv[1], argv[2], argv[3], argv[4], argv[6], seq1.toString(), seq2.toString());
 	}
@@ -109,32 +122,38 @@ int main(int argc, char *argv[])
 		cin >> match;
 		
 
-		try{
+		try
+		{
 			seq1.alignementLocal(seq2, sub, indel, match);
 		}
-		catch(ExceptionFichier e){
-			cerr<<"ERREUR Fichier log Alignement Local : "<<e.verdict()<<endl;
+		catch(ExceptionFichier e)
+		{
+			cerr << "ERREUR Fichier log Alignement Local : " << e.verdict() << endl;
 			return 0;
 		}
 	}
 	else if(strcmp(argv[6], "AC") == 0)
 	{
-		try{
+		try
+		{
 			int nbAdjacencesCommunes = seq1.adjacencesCommunes(seq2);
 			cout << "Nombre d'adjacences communes : " << nbAdjacencesCommunes << endl;
 		}
-		catch(ExceptionFichier e){
-			cerr<<"ERREUR Fichier log Adjacences communes : "<<e.verdict()<<endl;
+		catch(ExceptionFichier e)
+		{
+			cerr << "ERREUR Fichier log Adjacences communes : " << e.verdict() << endl;
 			return 0;
 		}
 	}
 	else if(strcmp(argv[6], "IC") == 0)
 	{
-		try{
+		try
+		{
 			cout << "Nombre d'intervalles communs : " << seq1.intervallesCommuns(seq2) << endl;
 		}
-		catch(ExceptionFichier e){
-			cerr<<"ERREUR Fichier log Intervalles Communs : "<<e.verdict()<<endl;
+		catch(ExceptionFichier e)
+		{
+			cerr << "ERREUR Fichier log Intervalles Communs : " << e.verdict() << endl;
 			return 0;
 		}
 	}

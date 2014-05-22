@@ -15,32 +15,40 @@ template<typename TypeValeur>
 Marqueur<TypeValeur>::Marqueur(){}
 
 template<typename TypeValeur>
-Marqueur<TypeValeur>::Marqueur(TypeValeur val) : valeur(val), orientation('+') {}
+Marqueur<TypeValeur>::Marqueur(TypeValeur val) : valeur(val), orientation('+'){}
 
 template<typename TypeValeur>
-Marqueur<TypeValeur>::Marqueur(TypeValeur val, char ori) : valeur(val), orientation(ori) {}
+Marqueur<TypeValeur>::Marqueur(TypeValeur val, char ori) : valeur(val), orientation(ori){}
 
 template<typename TypeValeur>
-Marqueur<TypeValeur>::Marqueur(const Marqueur& m) : valeur(m.valeur), orientation(m.orientation) {}
+Marqueur<TypeValeur>::Marqueur(const Marqueur& m) : valeur(m.valeur), orientation(m.orientation){}
 
 template<typename TypeValeur>
-Marqueur<TypeValeur>::~Marqueur() {}
+Marqueur<TypeValeur>::~Marqueur(){}
 
 template<typename TypeValeur>
 TypeValeur Marqueur<TypeValeur>::getValeur() const
-{return this->valeur;}
+{
+	return this->valeur;
+}
 
 template<typename TypeValeur>
 char Marqueur<TypeValeur>::getOrientation() const
-{return this->orientation;}
+{
+	return this->orientation;
+}
 
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::setValeur(const TypeValeur& val)
-{this->valeur= val;}
+{
+	this->valeur= val;
+}
 
 template<typename TypeValeur>
 void Marqueur<TypeValeur>::setOrientation(char ori)
-{this->orientation= ori;}
+{
+	this->orientation= ori;
+}
 
 template<typename TypeValeur>
 string Marqueur<TypeValeur>::toString() const
@@ -52,29 +60,38 @@ string Marqueur<TypeValeur>::toString() const
 }
 
 template<typename TypeValeur>
-void Marqueur<TypeValeur>::saisie(istream& is){
+void Marqueur<TypeValeur>::saisie(istream& is)
+{
 	is>>valeur>>orientation;
 }
 
 template<typename TypeValeur>
-void Marqueur<TypeValeur>::affiche(ostream& os)const{
-	os<<getOrientation()<<getValeur(); 
-}
-
-
-template<typename TypeValeur>
-bool operator== (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2){
-	return (m1.getValeur() == m2.getValeur() && m1.getOrientation()==m2.getOrientation());
+void Marqueur<TypeValeur>::affiche(ostream& os)const
+{
+	os << getOrientation() << getValeur(); 
 }
 
 template<typename TypeValeur>
-bool operator< (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2){
+bool operator== (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2)
+{
+	return (m1.getValeur() == m2.getValeur() && m1.getOrientation() == m2.getOrientation());
+}
+
+template<typename TypeValeur>
+bool operator< (const Marqueur<TypeValeur>& m1, const Marqueur<TypeValeur>& m2)
+{
 	if (m1.getValeur() < m2.getValeur())
+	{
 		return true;
+	}
 	else if (m1.getValeur() > m2.getValeur())
+	{
 		return false;
+	}
 	else
+	{
 		return (m1.getOrientation() > m2.getOrientation());
+	}
 }
 
 
