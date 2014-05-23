@@ -1,3 +1,13 @@
+/*========================================================================
+Nom: main.cpp           auteur: Manuel Chataigner
+Maj:  22/05/2014           Creation: 02/04/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient le main de l'interface graphique et la création de
+l'objet Fenetre.
+=========================================================================*/
+
 #include <QApplication>
 #include <QTextCodec>
 #include "Fenetre.h"

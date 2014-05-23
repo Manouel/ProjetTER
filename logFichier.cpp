@@ -133,7 +133,7 @@ void LogFichier::ecrireSousSequence(int i, const std::string& sousSeq)
 	if(logDetaille)
 	{
 		fichier << "Sequence 2." << i+1 << " : " << sousSeq << endl;
-	}s
+	}
 }
 
 void LogFichier::afficherIntervallesCommuns(int a, int b, int c, int d)

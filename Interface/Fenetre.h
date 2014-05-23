@@ -1,3 +1,13 @@
+/*========================================================================
+Nom: Fenetre.cpp           auteur: Manuel Chataigner
+Maj:  22/05/2014           Creation: 02/04/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient la classe représentant la fenêtre, avec l'ensemble des 
+éléments qui la composent.
+=========================================================================*/
+
 #ifndef FENETRE_H
 #define FENETRE_H
 

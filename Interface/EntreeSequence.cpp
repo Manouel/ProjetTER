@@ -1,3 +1,12 @@
+/*========================================================================
+Nom: EntreeSequence.cpp           auteur: Manuel Chataigner
+Maj:  22/05/2014           Creation: 22/04/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient l'implémentation des fonctions de la classe EntreeSequence.
+=========================================================================*/
+
 #include "EntreeSequence.h"
 #include <QVBoxLayout>
 
@@ -37,7 +46,7 @@ bool EntreeSequence::sequenceTexte() const
 
 QString EntreeSequence::getSequence() const
 {
-    if (boutonTexte.isChecked())
+    if(boutonTexte.isChecked())
     {
         return entree.text();
     }

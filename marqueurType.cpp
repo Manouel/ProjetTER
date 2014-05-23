@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: marqueurType.cpp           auteur: Manuel Chataigner
-Maj:  14/03/2014           Creation: 14/03/2014
+Maj:  22/05/2014           Creation: 14/03/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:

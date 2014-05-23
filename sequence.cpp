@@ -1,6 +1,6 @@
 /*========================================================================
 Nom: sequence.cpp           auteur: Jonathan Dufetel
-Maj:  27/03/2014           Creation: 27/01/2014
+Maj:  22/05/2014           Creation: 27/01/2014
 Projet: Comparaison de séquences de gènes
 --------------------------------------------------------------------------
 Specification:
@@ -9,15 +9,13 @@ Ce fichier contient l'implémentation des fonctions de la classe Sequence.
 =========================================================================*/
 
 #include <fstream>
-#include <string>
 #include <stdlib.h>
 #include <sstream>
 #include <algorithm>
 #include <list>
 #include "sequence.h"
 #include "adjacence.h"
-#include"logFichier.h"
-
+#include "logFichier.h"
 
 using namespace std;
 
@@ -35,12 +33,6 @@ Sequence<TypeValeur>::Sequence(const string& seq, char delim)
 
 template<typename TypeValeur>
 Sequence<TypeValeur>::~Sequence(){}
-
-template<typename TypeValeur>
-vector<vector<Marqueur<TypeValeur> > > Sequence<TypeValeur>::getSequence() const
-{
-	return this->sequence;
-}
 
 template<typename TypeValeur>
 Marqueur<TypeValeur> Sequence<TypeValeur>::getElement(int i, int j) const
@@ -77,11 +69,11 @@ string Sequence<TypeValeur>::toString() const
 {
 	string seq = "";
 
-	for(int i=0; i<nbSousSeq(); i++)
+	for(int i = 0; i < nbSousSeq(); i++)
 	{
-		for(int j=0; j<this->getVecteur(i).size(); j++)
+		for(int j = 0; j < this->getVecteur(i).size(); j++)
 		{
-			seq += getElement(i,j).toString()+" ";
+			seq += getElement(i,j).toString() + " ";
 		}
 		seq += "& ";
 	}
@@ -94,7 +86,7 @@ string Sequence<TypeValeur>::toString(int i) const
 {
 	string seq = "";
 
-	for(int j=0; j<this->getVecteur(i).size(); j++)
+	for(int j = 0; j < this->getVecteur(i).size(); j++)
 	{
 		seq += getElement(i,j).toString() + " ";
 	}
@@ -105,9 +97,9 @@ string Sequence<TypeValeur>::toString(int i) const
 template<typename TypeValeur>
 void Sequence<TypeValeur>::affiche(ostream& os) const
 {
-	for(int i=0; i<nbSousSeq(); i++)
+	for(int i = 0; i < nbSousSeq(); i++)
 	{
-		for(int j=0; j<this->getVecteur(i).size(); j++)
+		for(int j = 0; j < this->getVecteur(i).size(); j++)
 		{
 			getElement(i,j).affiche(os);
 			os << " ";
@@ -117,39 +109,34 @@ void Sequence<TypeValeur>::affiche(ostream& os) const
 }
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::remplirSequence(const std::string& seq, char delim)
+void Sequence<TypeValeur>::remplirSequence(const string& seq, char delim)
 {
 	char ori;
 	char premierCar;
 	TypeValeur val;
 	stringstream ss(seq);
 
-	while (ss >> premierCar)
+	while(ss >> premierCar)
 	{
-		if (premierCar == delim)
+		if(premierCar == delim)
 		{
 			this->ajoutSousSeq();
-
 		}
 		else
 		{
-			if(premierCar=='+' || premierCar=='-')
+			if(premierCar == '+' || premierCar == '-')
 			{
-
-				ori=premierCar;
-
+				ori = premierCar;
 			}
-			else
-			{ //Sinon ça veut dire qu'on va mettre comme orientation + par défaut
-
-				ori='+';
-				ss.seekg(-1,ios::cur);
-
+			else		//Sinon ça veut dire qu'on va mettre comme orientation + par défaut
+			{
+				ori = '+';
+				ss.seekg(-1, ios::cur);
 			}
 
 			ss >> val;
+			
 			Marqueur<TypeValeur> m(val, ori);
-
 			this->ajoutElement(m);
 		}
 	}
@@ -159,9 +146,9 @@ template<typename TypeValeur>
 void Sequence<TypeValeur>::load(const string& nomFichier, char delim) throw(ExceptionFichier)
 {
 	ifstream fichier(nomFichier.c_str());
-	if (!fichier)
+	if(!fichier)
 	{
-		throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
+		throw ExceptionFichier("Erreur lors de l'ouverture du fichier " + nomFichier + " !");
 	}
 
 	char premierCar;
@@ -169,32 +156,27 @@ void Sequence<TypeValeur>::load(const string& nomFichier, char delim) throw(Exce
 	TypeValeur val;
 
 	/* Lecture du signe puis de la valeur du marqueur */
-	while (fichier >> premierCar)
+	while(fichier >> premierCar)
 	{
-		if (premierCar == delim)
+		if(premierCar == delim)
 		{
 			this->ajoutSousSeq();
-
 		}
 		else
 		{
 			if(premierCar == '+' || premierCar == '-')
 			{
-
-				ori=premierCar;
-
+				ori = premierCar;
 			}
-			else
-			{ //Sinon ça veut dire qu'on va mettre comme orientation + par défaut
-
-				ori='+';
+			else		//Sinon ça veut dire qu'on va mettre comme orientation + par défaut
+			{ 
+				ori = '+';
 				fichier.seekg(-1,ios::cur);
-
 			}
 
 			fichier >> val;
+			
 			Marqueur<TypeValeur> m(val, ori);
-
 			this->ajoutElement(m);
 		}
 	}
@@ -203,20 +185,21 @@ void Sequence<TypeValeur>::load(const string& nomFichier, char delim) throw(Exce
 }
 
 template<typename TypeValeur>
-void Sequence<TypeValeur>::save(const string& nomFichier,char delim) throw(ExceptionFichier)
+void Sequence<TypeValeur>::save(const string& nomFichier, char delim) throw(ExceptionFichier)
 {
 	ofstream fichier(nomFichier.c_str());
-	if (!fichier)
+	if(!fichier)
 	{
-		throw ExceptionFichier("Erreur lors de l'ouverture du fichier "+nomFichier+" !");
+		throw ExceptionFichier("Erreur lors de l'ouverture du fichier " + nomFichier + " !");
 	}
 
-	for(int i=0; i<nbSousSeq(); i++)
+	for(int i = 0; i < nbSousSeq(); i++)
 	{
-		for(int j=0; j<getVecteur(i).size(); j++)
+		for(int j = 0; j < getVecteur(i).size(); j++)
 		{
 			fichier << getElement(i,j).getOrientation() << getElement(i,j).getValeur() << endl;
 		}
+		
 		if(i != nbSousSeq()-1)
 		{
 			fichier << delim << endl;
@@ -230,14 +213,15 @@ template<typename TypeValeur>
 vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence() const
 {
 	vector<Adjacence<TypeValeur> > liste;
-	for(int i=0; i<this->nbSousSeq(); i++)
+	for(int i = 0; i < this->nbSousSeq(); i++)
 	{
-		for(int j=0; j+1<this->getVecteur(i).size(); j++)
+		for(int j = 0; j+1 < this->getVecteur(i).size(); j++)
 		{
-			Adjacence<TypeValeur> a(this->getElement(i,j),this->getElement(i,j+1));
+			Adjacence<TypeValeur> a(this->getElement(i,j), this->getElement(i, j+1));
 			liste.push_back(a);
 		}
 	}
+	
 	return liste;
 }
 
@@ -245,75 +229,76 @@ template<typename TypeValeur>
 vector<Adjacence<TypeValeur> > Sequence<TypeValeur>::listeAdjacence(int i) const
 {
 	vector<Adjacence<TypeValeur> > liste;
-	for(int j=0; j+1<this->getVecteur(i).size(); j++)
+	for(int j = 0; j+1 < this->getVecteur(i).size(); j++)
 	{
-			Adjacence<TypeValeur> a(this->getElement(i, j),this->getElement(i, j+1));
-			liste.push_back(a);
+		Adjacence<TypeValeur> a(this->getElement(i, j), this->getElement(i, j+1));
+		liste.push_back(a);
 	}
+	
 	return liste;
 }
 
 template<typename TypeValeur>
 Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<TypeValeur> >& s, int sub, int indel, int match) const
 {
-	int gauche; //valeur si on vient de la gauche
-	int diag; //valeur si on vient de la diagonale
-	int haut; //valeur si on vient du haut
+	int gauche; 	// Valeur si on vient de la gauche
+	int diag; 		// Valeur si on vient de la diagonale
+	int haut; 		// Valeur si on vient du haut
 
-	Alignement mat(this->getVecteur(0).size()+1,s.size()+1);
+	Alignement mat(this->getVecteur(0).size()+1, s.size()+1);
 
-	mat.setElement(0,0,0);
+	mat.setElement(0, 0, 0);
 
-	/*Initialisation ligne et colonne 0 :*/
-	for(int i=1; i<this->getVecteur(0).size()+1; i++)
+	/* Initialisation ligne et colonne 0 */
+	for(int i = 1; i < this->getVecteur(0).size()+1; i++)
 	{
-		mat.setElement(i,0,0);
+		mat.setElement(i, 0, 0);
 	}
-	for(int j=1; j<s.size()+1; j++)
+	for(int j = 1; j < s.size()+1; j++)
 	{
-		mat.setElement(0,j,0);
+		mat.setElement(0, j, 0);
 	}
 
-	/*Calcul des valeurs de la matrice*/
-	for(int i=1; i<this->getVecteur(0).size()+1; i++)
+	/* Calcul des valeurs de la matrice */
+	for(int i = 1; i < this->getVecteur(0).size()+1; i++)
 	{
-		for(int j=1; j<s.size()+1; j++)
+		for(int j = 1; j < s.size()+1; j++)
 		{
-			/*Calcul des 3 valeurs possibles pour mat[i][j]*/
-			gauche=mat.getElement(i,j-1)+indel;
-			haut=mat.getElement(i-1,j)+indel;
+			/* Calcul des 3 valeurs possibles pour mat[i][j] */
+			gauche = mat.getElement(i, j-1) + indel;
+			haut = mat.getElement(i-1, j) + indel;
 
-			if(this->getElement(0,i-1).getValeur() == s[j-1].getValeur()) //Modif pour pas prendre en compte orientation dans comparaison
+			if(this->getElement(0, i-1).getValeur() == s[j-1].getValeur()) // Modif pour pas prendre en compte orientation dans comparaison
 			{
-				diag=mat.getElement(i-1,j-1)+match;
+				diag = mat.getElement(i-1, j-1) + match;
 			}
 			else
 			{
-				diag=mat.getElement(i-1,j-1)+sub;
+				diag = mat.getElement(i-1, j-1) + sub;
 			}
 			if(indel < 0)
 			{
-				/*Calcul de la valeur la plus grande pour mettre dans mat[i][j]*/
+				/* Calcul de la valeur la plus grande pour mettre dans mat[i][j] */
 				if(gauche > haut)
 				{
 					if(gauche > diag)
 					{
-						mat.setElement(i,j,gauche);
+						mat.setElement(i, j, gauche);
 					}
 					else
 					{
-						mat.setElement(i,j,diag);
+						mat.setElement(i, j, diag);
 					}
 				}	
 				else
 				{
 					if(haut > diag)
 					{
-						mat.setElement(i,j,haut);
+						mat.setElement(i, j, haut);
 					}
 					else
 					{
-						mat.setElement(i,j,diag);
+						mat.setElement(i, j, diag);
 					}
 				}
 			}
@@ -323,31 +308,30 @@ Alignement Sequence<TypeValeur>::calculAlignement(const std::vector<Marqueur<Typ
 				{
 					if(gauche < diag)
 					{
-						mat.setElement(i,j,gauche);
+						mat.setElement(i, j, gauche);
 					}
 					else
 					{
-						mat.setElement(i,j,diag);
+						mat.setElement(i, j, diag);
 					}
 				}
 				else
 				{
 					if(haut < diag)
 					{
-						mat.setElement(i,j,haut);
+						mat.setElement(i, j, haut);
 					}
 					else
 					{
-						mat.setElement(i,j,diag);
+						mat.setElement(i, j, diag);
 					}
 				}
 			}
 		}
 	}
 
-	return mat; //On retourne la dernière case de la matrice (le score)
+	return mat; 	// On retourne la dernière case de la matrice (le score)
 }
-
 
 template<typename TypeValeur>
 void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int sub, int indel, int match) const throw(ExceptionFichier)
@@ -355,12 +339,12 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 	LogFichier l;
 	if(LogFichier::log)
 	{
-		//On écrit les coûts dans le fichier
-		l.afficherCouts(indel,match,sub);
+		// On écrit les coûts dans le fichier
+		l.afficherCouts(indel, match, sub);
 	}
 
 	// On applique l'algo d'alignement à chaque sous-séquence de s
-	for (int i=0; i<s.nbSousSeq(); i++)
+	for(int i = 0; i < s.nbSousSeq(); i++)
 	{
 		Alignement matrice = this->calculAlignement(s.getVecteur(i), sub, indel, match);
 		if(l.log)
@@ -369,7 +353,7 @@ void Sequence<TypeValeur>::alignementLocal(const Sequence<TypeValeur>& s, int su
 		}
 		else
 		{
-			if (indel < 0)
+			if(indel < 0)
 				cout << "Score alignement local : " << matrice.getResultat() << endl;
 			else
 				cout << "Distance alignement local : " << matrice.getResultat() << endl;
@@ -383,39 +367,47 @@ int Sequence<TypeValeur>::adjacencesCommunes(const Sequence<TypeValeur>& s) cons
 {
 	int nbAdjacencesCommunes = 0;
 	vector<Adjacence<TypeValeur> > liste1 = this->listeAdjacence();
-	sort(liste1.begin(),liste1.begin()+liste1.size()); //Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_intersection
+	
+	// Tri des adjacences de la liste de this par ordre de valeur croissante pour la fonction set_intersection
+	sort(liste1.begin(), liste1.begin()+liste1.size()); 
 
-	for (int i=0; i<s.nbSousSeq(); i++)
+	// Pour chaque sous-séquence
+	for (int i = 0; i < s.nbSousSeq(); i++)
 	{
-		vector<Adjacence<TypeValeur> > liste2=s.listeAdjacence(i);
+		vector<Adjacence<TypeValeur> > liste2 = s.listeAdjacence(i);
 
-		sort(liste2.begin(),liste2.begin()+liste2.size()); //Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_intersection
+		// Tri des adjacences de la liste de s par ordre de valeur croissante pour la fonction set_intersection
+		sort(liste2.begin(), liste2.begin()+liste2.size());
 
-		vector<Adjacence<TypeValeur> > inter(liste1.size()+liste2.size()); //Création du tableau des intersection entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
-		typename vector<Adjacence<TypeValeur> >::iterator it; //Itérateur sur la dernière intersection retenue
+		// Création du tableau des intersection entre liste1 et liste2. Sa taille est égale à celle de liste1 ajoutée à celle de liste 2
+		vector<Adjacence<TypeValeur> > inter(liste1.size() + liste2.size()); 
+		typename vector<Adjacence<TypeValeur> >::iterator it; 	// Itérateur sur la dernière intersection retenue
 
-		it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(),liste2.begin(),liste2.begin()+liste2.size(),inter.begin()); //Execution de la intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
+		
+		// Intersection entre les deux listes, stockage des intersection dans inter et stockage du nombre d'adjacences intersection dans it
+		it = set_intersection(liste1.begin(), liste1.begin()+liste1.size(), liste2.begin(), liste2.begin()+liste2.size(), inter.begin()); 
 
-		inter.resize(it-inter.begin()); //Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
+		// Modification de la taille de inter pour que celle ci soit égale au nombre de intersection stockées
+		inter.resize(it-inter.begin()); 
 		nbAdjacencesCommunes += inter.size();
 
 		int scoreAbsolu = inter.size();
-
 		float scoreRelatif = (float)scoreAbsolu/(s.getVecteur(i).size()-1);
 
-		if (LogFichier::log)
+		if(LogFichier::log)
 		{
 			LogFichier l;
 			
 			vector<string> interString;
-			for(int j=0; j<inter.size(); j++)
+			for(int j = 0; j < inter.size(); j++)
 			{
 				interString.push_back(inter[j].toString());
 			}
 			l.ecrireResultatAdjacencesCommunes(i , s.toString(i), interString, scoreAbsolu, scoreRelatif);
 		}
 	}
-	return nbAdjacencesCommunes; //Nombre d'intersection retourné
+	
+	return nbAdjacencesCommunes; 	// Nombre d'intersection retourné
 }
 
 template<typename TypeValeur>
@@ -423,13 +415,13 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 {	
 	LogFichier log;
 
-	//Partie 1: Init
+	// Partie 1: Init
 
 	// Création de nouvelles séquences ne prenant pas en compte les signes
 	vector<Marqueur<TypeValeur> > s1;
 
 	// Création d'un vecteur avec l'ensemble des marqueurs de la 1e sous-séquence de s1
-	for(int j=0; j< this->getVecteur(0).size(); j++)
+	for(int j = 0; j < this->getVecteur(0).size(); j++)
 	{
 		Marqueur<TypeValeur> m = this->sequence[0][j];
 		m.setOrientation('+');
@@ -437,11 +429,11 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	}
 
 	map<Marqueur<TypeValeur>,vector<int> > pos;			// Liste des positions de chaque Marqueur dans s1
-	int **num=new int*[s1.size()];				// Nombre de marqueurs différents entre les pos i et j dans s1
+	int **num=new int*[s1.size()];						// Nombre de marqueurs différents entre les pos i et j dans s1
 
 
 	// Remplissage de pos : parcours de s1 et ajout des positions pour chaque marqueur
-	for(int i=0; i<s1.size(); i++)
+	for(int i = 0; i < s1.size(); i++)
 	{
 		pos[s1[i]].push_back(i);
 	}
@@ -450,7 +442,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 
 	// Remplissage de num : calcul du nombre de marqueurs différents entre chaque indices de s1
 	// Première ligne : i = 0
-	for(int j=0; j<s1.size(); j++)
+	for(int j = 0; j < s1.size(); j++)
 	{
 		num[j] = new int[s1.size()]();
 
@@ -460,20 +452,20 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		}
 
 		// On stocke le nombre de marqueurs différents trouvés
-		num[0][j]= present.size();
+		num[0][j] = present.size();
 	}
 
 
-	for(int i=1; i<s1.size(); i++)
+	for(int i = 1; i < s1.size(); i++)
 	{
 		num[i][i] = 1;
-		for(int j=(i+1); j<s1.size(); j++)
+		for(int j = (i+1); j < s1.size(); j++)
 		{
-      			// Element supplémentaire ligne précédente (entre i-1 et j) => élément supp entre i et j
-	      		if (num[i-1][j-1] != num[i-1][j])
-	      		{
+			// Element supplémentaire ligne précédente (entre i-1 et j) => élément supp entre i et j
+      		if (num[i-1][j-1] != num[i-1][j])
+      		{
 				num[i][j] = num[i][j-1] + 1;
-	      		}
+      		}
 			else			// s1[j] déjà vu ligne du dessus (i-1 et j-1)
 			{
 				if (s1[i-1].getValeur() != s1[j].getValeur())		// s1[j] déjà vu entre i et j-1 => pas élément supp
@@ -493,8 +485,8 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 					{
 						num[i][j] = num[i][j-1];
 					}
-					else
-					{			// Element pas vu
+					else			// Element pas vu
+					{
 						num[i][j] = num[i][j-1] + 1;
 					}
 				}
@@ -507,10 +499,9 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 	int nbIntervallesTotal = 0;
 
 	// Parcours S2
-
-	for (int t=0; t<s.nbSousSeq(); t++)
+	for (int t = 0; t < s.nbSousSeq(); t++)
 	{
-		int cpt=0;
+		int cpt = 0;
 		
 		if(LogFichier::log)
 		{
@@ -520,7 +511,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		vector<Marqueur<TypeValeur> > s2;
 
 		// Création d'un vecteur avec l'ensemble des marqueurs de la sous-séquence de s2
-		for(int j=0; j< s.getVecteur(t).size(); j++)
+		for(int j = 0; j < s.getVecteur(t).size(); j++)
 		{
 			Marqueur<TypeValeur> m = s.sequence[t][j];
 			m.setOrientation('+');
@@ -535,7 +526,7 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		{
 			// Pointeur j représentant la fin de l'intervalle courant sur s2
 			int j = i;
-			bool *elementsVusS1 = new bool[s1.size()]();			// Chaque case du tableau est vrai si le marqueur est compris entre les pointeurs i et j
+			bool *elementsVusS1 = new bool[s1.size()]();		// Chaque case du tableau est vrai si le marqueur est compris entre les pointeurs i et j
 
 			int nbElementsVus = 0;		// Elements entre i et j
 
@@ -546,9 +537,9 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 				nbElementsVus++;
 
 				// On encadre dans s1 avec pos
-				for(int k=0; k<pos[s2[j]].size(); k++ )
+				for(int k = 0; k < pos[s2[j]].size(); k++ )
 				{
-					elementsVusS1[pos[s2[j]][k]]=1; // encadrement (marqué comme vu)
+					elementsVusS1[pos[s2[j]][k]] = 1; 	// encadrement (marqué comme vu)
 				}
 				
 				// on étend à droite
@@ -563,15 +554,15 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 				{
 					//parcours du tableau de booléens
 					int l = 0;
-					while (l < s1.size())
+					while(l < s1.size())
 					{
 						int debut, fin;
 
 						// Debut et fin représentent un encadrement continu
 						if(elementsVusS1[l])
 						{
-							debut=l;
-							fin=l;
+							debut = l;
+							fin = l;
 							while(l+1 < s1.size() && elementsVusS1[l+1])
 							{
 								fin++;
@@ -602,10 +593,10 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 				j++;
 			}
 			
-			// on a étendu à gauche, on passe les mêmes élements
+			// On a étendu à gauche, on passe les mêmes élements
 			Marqueur<TypeValeur> valprec(s2[i]);
 
-			while(i<s2.size() && s2[i] == valprec)
+			while(i < s2.size() && s2[i] == valprec)
 			{
 				i++;
 			}
@@ -624,8 +615,8 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 		log.resultatSeq(nbIntervallesTotal);
 	}
 
-	//On libère la mémoire :
-	for(int i =0; i<s1.size();i++)
+	// On libère la mémoire :
+	for(int i = 0; i < s1.size(); i++)
 	{
 		delete [] num[i];
 	}
@@ -633,3 +624,4 @@ int Sequence<TypeValeur>::intervallesCommuns(const Sequence<TypeValeur>& s) cons
 
 	return nbIntervallesTotal;
 }
+

@@ -1,3 +1,12 @@
+/*========================================================================
+Nom: CheminFichier.cpp           auteur: Manuel Chataigner
+Maj:  22/05/2014           Creation: 22/04/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient l'implémentation des fonctions de la classe CheminFichier.
+=========================================================================*/
+
 #include "CheminFichier.h"
 #include <QHBoxLayout>
 #include <QFileDialog>
@@ -33,7 +42,7 @@ void CheminFichier::chargementFichier()
 {
     QString fichier = QFileDialog::getOpenFileName(this, "Ouvrir un fichier", QString(), "");
 
-    if (!fichier.isNull())
+    if(!fichier.isNull())
     {
         chemin.setText(fichier);
     }

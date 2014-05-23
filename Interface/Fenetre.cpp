@@ -1,3 +1,12 @@
+/*========================================================================
+Nom: Fenetre.cpp           auteur: Manuel Chataigner
+Maj:  22/05/2014           Creation: 02/04/2014
+Projet: Comparaison de séquences de gènes
+--------------------------------------------------------------------------
+Specification:
+Ce fichier contient l'implémentation des fonctions de la classe Fenetre.
+=========================================================================*/
+
 #include "Fenetre.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -9,8 +18,6 @@
 #include <sequence.h>
 #include <exceptionFichier.h>
 #include <logFichier.h>
-
-using namespace std;
 
 Fenetre::Fenetre() : QScrollArea(), seq1("Séquence 1"), seq2("Séquence 2"), fichierLogs("Résultats")
 {
@@ -44,11 +51,6 @@ Fenetre::Fenetre() : QScrollArea(), seq1("Séquence 1"), seq2("Séquence 2"), fi
     layoutAlignement->addRow("Coût match", &coutMatch);
     layoutAlignement->addRow("Coût substitution", &coutSubstitution);
     pageAlignement->setLayout(layoutAlignement);
-
-    /* Breakpoints */
-
-
-    /* Intervalles communs */
 
 
     QVBoxLayout *layoutFichiers = new QVBoxLayout();
@@ -130,13 +132,13 @@ Fenetre::~Fenetre()
 
 void Fenetre::executeAlgo()
 {
-    if (seq1.getSequence().isEmpty() || seq2.getSequence().isEmpty())
+    if(seq1.getSequence().isEmpty() || seq2.getSequence().isEmpty())
     {
         QMessageBox::critical(this, "Erreur fichiers séquences", "Les fichiers de séquences à comparer n'ont pas été correctement renseignés !");
         return;
     }
 
-    if (separateur.text().isEmpty())
+    if(separateur.text().isEmpty())
     {
         QMessageBox::critical(this, "Erreur séparateur", "Le caractère séparateur de sous-séquences n'a pas été renseigné !");
         return;
@@ -147,27 +149,35 @@ void Fenetre::executeAlgo()
 
     char sep = separateur.text().at(0).toAscii();
 
-    if (seq1.sequenceTexte()) {
+    if(seq1.sequenceTexte())
+    {
         s1.remplirSequence(seq1.getSequence().toStdString(), sep);
     }
-    else {
-        try{
+    else
+    {
+        try
+        {
             s1.load(seq1.getSequence().toStdString(), sep);
         }
-        catch(ExceptionFichier e){
+        catch(ExceptionFichier e)
+        {
             QMessageBox::critical(this, "Erreur fichiers séquences", "Erreur avec le fichier séquence 1 : " + QString::fromStdString(e.verdict()));
             return;
         }
     }
 
-    if (seq2.sequenceTexte()) {
+    if(seq2.sequenceTexte())
+    {
         s2.remplirSequence(seq2.getSequence().toStdString(), sep);
     }
-    else {
-        try{
+    else
+    {
+        try
+        {
             s2.load(seq2.getSequence().toStdString(), sep);
         }
-        catch(ExceptionFichier e){
+        catch(ExceptionFichier e)
+        {
             QMessageBox::critical(this, "Erreur fichiers séquences", "Erreur avec le fichier séquence 2 : " + QString::fromStdString(e.verdict()));
             return;
         }
@@ -176,11 +186,11 @@ void Fenetre::executeAlgo()
     QString algo = onglets.tabText(onglets.currentIndex());
 
     /* Logs activés */
-    if (boxLogs.isChecked())
+    if(boxLogs.isChecked())
     {
         LogFichier::log = true;
 
-        if (!fichierLogs.getChemin().isEmpty())
+        if(!fichierLogs.getChemin().isEmpty())
         {
             LogFichier::nomFichier = fichierLogs.getChemin().toStdString();
         }
@@ -191,39 +201,49 @@ void Fenetre::executeAlgo()
         std::string typeEntree1 = (seq1.sequenceTexte() ? "s" : "f");
         std::string typeEntree2 = (seq2.sequenceTexte() ? "s" : "f");
         std::string nomAlgo = "";
-        if (algo == "Alignement local")
+        if(algo == "Alignement local")
+        {
             nomAlgo = "AL";
-        else if (algo == "Adjacences communes")
+        }
+        else if(algo == "Adjacences communes")
+        {
             nomAlgo = "AC";
-        else if (algo == "Intervalles communs")
+        }
+        else if(algo == "Intervalles communs")
+        {
             nomAlgo = "IC";
+		}
 
         l.ecrireEnTete(typeEntree1, seq1.getSequence().toStdString(), typeEntree2, seq2.getSequence().toStdString(),
                        nomAlgo, s1.toString(), s2.toString());
     }
 
-    if (algo == "Alignement local")
+    if(algo == "Alignement local")
     {
         int sub = coutSubstitution.value(), indel = coutIndel.value(), match = coutMatch.value();
         s1.alignementLocal(s2, sub, indel, match);
     }
-    else if (algo == "Adjacences communes")
+    else if(algo == "Adjacences communes")
     {
-        try{
+        try
+        {
             int nbAdjacencesCommunes = s1.adjacencesCommunes(s2);
              affichageLogs.setText("Nombre d'adjacences communes : " + QString::number(nbAdjacencesCommunes));
         }
-        catch(ExceptionFichier e){
-            QMessageBox::critical(this, "Erreur", "ERREUR Fichier log Adjacences communes : "+QString::fromStdString(e.verdict()));
+        catch(ExceptionFichier e)
+        {
+            QMessageBox::critical(this, "Erreur", "ERREUR Fichier log Adjacences communes : " + QString::fromStdString(e.verdict()));
             return;
         }
     }
-    else if (algo == "Intervalles communs")
+    else if(algo == "Intervalles communs")
     {
-        try{
+        try
+        {
             affichageLogs.setText("Nombre d'intervalles communs : " + QString::number(s1.intervallesCommuns(s2)));
         }
-        catch(ExceptionFichier e){
+        catch(ExceptionFichier e)
+        {
             QMessageBox::critical(this, "Erreur", "ERREUR Fichier log Intervalles Communs : " + QString::fromStdString(e.verdict()));
             return;
         }
